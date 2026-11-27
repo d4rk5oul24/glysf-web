@@ -11,6 +11,7 @@
 <style>
 :root{--navy:#0B1F4B;--blue:#2F55F5;--ink:#3B4A6B;--line:#E3E8F2;--soft:#F4F7FC}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;font-family:Inter,sans-serif;color:var(--navy);background:#fff;font-size:16px;line-height:1.55}
 a{color:var(--navy)}a:hover{color:var(--blue)}
 h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0}
@@ -52,6 +53,88 @@ legend{font-weight:600;font-size:14px;margin-bottom:10px;padding:0}
 details{border-bottom:1px solid var(--line);padding:16px 0}
 summary{cursor:pointer;font-weight:600;font-size:18px}
 nav a{text-decoration:none}
+
+/* ---- vista por negocio ---- */
+#sectorView{position:relative;min-height:100vh;background:var(--bg);color:var(--navy);overflow:hidden}
+#sectorView.dark{color:#fff}
+#scene{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .8s ease}
+#scene.in{opacity:.55}
+#scene svg{width:100%;height:100%;display:block}
+.svinner{position:relative;z-index:1}
+.svback{font-weight:600;color:inherit;text-decoration:none;font-size:15px}
+#sectorView.dark .svback{color:#fff}
+.svtab{flex:none;min-height:40px;display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;color:inherit;border:1.5px solid currentColor;background:rgba(255,255,255,.08);backdrop-filter:blur(6px)}
+#sectorView.dark .svtab{color:#fff}
+.svtab[aria-current=page]{background:var(--acc);border-color:var(--acc);color:#0B1F4B!important}
+#sectorView:not(.dark) .svtab[aria-current=page]{color:#fff!important}
+.svcta{background:var(--acc);color:#0B1F4B;border-color:var(--acc)}
+#sectorView:not(.dark) .svcta{background:var(--navy);color:#fff;border-color:var(--navy)}
+.mtab{flex:none;min-height:44px;padding:10px 16px;border-radius:12px;font:600 15px Inter,sans-serif;cursor:pointer;border:1.5px solid currentColor;background:rgba(255,255,255,.1);color:inherit;backdrop-filter:blur(6px)}
+.mtab[aria-selected=true]{background:#fff;color:#0B1F4B;border-color:#fff}
+#sectorView:not(.dark) .mtab[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.stage{background:#fff;color:var(--navy);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:18px;box-shadow:0 20px 60px rgba(0,0,0,.18);min-height:440px}
+.rise{animation:rise .5s ease}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.mbody{display:flex;flex-direction:column;gap:10px}
+.mrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:12px;font-size:14px;animation:rise .4s ease}
+.mrow.inv{grid-template-columns:minmax(140px,1.2fr) minmax(120px,2fr) minmax(90px,.8fr)}
+.num{font-variant-numeric:tabular-nums;font-weight:600}
+.badge{justify-self:start;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:#EEF1F6;color:var(--ink);transition:all .3s}
+.badge.ok{background:#DCFAE6;color:#067647}.badge.warn{background:#FEF0C7;color:#93370D}.badge.info{background:#E0EAFF;color:#2F55F5}
+.bigsum{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-radius:14px;background:var(--soft)}
+.bigsum span{color:var(--ink);font-size:14px}.bigsum strong{font:700 28px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums}
+.bar{height:12px;border-radius:999px;background:#EEF1F6;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue);border-radius:999px;transition:width 1.6s ease}
+.bar.low i{background:#D92D20}
+.toast{align-self:flex-start;background:#0B1F4B;color:#fff;padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;animation:rise .4s ease}
+.agenda{display:grid;gap:6px;font-size:13px}
+.ahead{font-weight:700;padding:6px;text-align:center}
+.atime{color:var(--ink);padding:10px 4px;font-variant-numeric:tabular-nums}
+.acell{border:1px dashed #C9D3E6;border-radius:10px;padding:10px;text-align:center;color:#98A2B3;transition:all .4s}
+.acell.booked{background:var(--navy);border:1px solid var(--navy);color:#fff;font-weight:600;animation:pop .35s ease}
+.pitem{font-weight:600;font-size:16px}
+.pipe{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.pstep{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:14px;border:1.5px solid var(--line);color:#98A2B3;font-weight:600;font-size:14px;transition:all .4s}
+.pdot{width:30px;height:30px;border-radius:50%;background:#EEF1F6;display:flex;align-items:center;justify-content:center;font-size:13px}
+.pstep.done{color:var(--navy);border-color:var(--navy)}.pstep.done .pdot{background:var(--navy);color:#fff}
+.pstep.now{box-shadow:0 0 0 4px #E0EAFF;transform:translateY(-3px)}
+.phone{max-width:420px;background:var(--navy);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.phead{color:#fff;display:flex;flex-direction:column}.phead small{color:#A9B8DA}
+.biz{position:relative;display:flex;align-items:flex-end;min-height:200px;border-radius:20px;overflow:hidden;text-decoration:none;color:var(--navy);transition:transform .3s}
+.biz:hover{transform:translateY(-4px)}
+.biz.dark{color:#fff}
+.bizbg{position:absolute;inset:0}.bizbg svg{width:100%;height:100%;display:block}
+.biztx{position:relative;padding:20px;display:flex;flex-direction:column;gap:4px;width:100%}
+.biztx strong{font:700 22px 'Space Grotesk',sans-serif}.biztx span{font-size:14px;font-weight:500}
+.biz:not(.dark) .biztx{background:linear-gradient(transparent,rgba(255,255,255,.85))}
+.biz.dark .biztx{background:linear-gradient(transparent,rgba(0,0,0,.45))}
+/* animaciones de escena */
+.an-ball{animation:ball 3.2s ease-in-out infinite}
+@keyframes ball{0%{transform:translate(320px,640px)}25%{transform:translate(560px,330px)}50%{transform:translate(880px,200px)}75%{transform:translate(640px,520px)}100%{transform:translate(320px,640px)}}
+.an-beat{stroke-dasharray:1400;animation:beat 3s linear infinite}
+@keyframes beat{from{stroke-dashoffset:1400}to{stroke-dashoffset:-1400}}
+.an-float{animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-30px)}}
+.an-lift{animation:lift 2.4s ease-in-out infinite}
+@keyframes lift{50%{opacity:.55}}
+.an-pulse{transform-origin:600px 420px;animation:pulse 2.4s ease-out infinite}
+@keyframes pulse{from{transform:scale(.6);opacity:.8}to{transform:scale(1.8);opacity:0}}
+.an-carriage{animation:car 4s ease-in-out infinite}
+@keyframes car{50%{transform:translateX(220px)}}
+.an-steam{animation:steam 2.4s ease-in-out infinite;opacity:0}
+@keyframes steam{0%{opacity:0;transform:translateY(10px)}40%{opacity:.9}100%{opacity:0;transform:translateY(-40px)}}
+.an-snip{animation:snip 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes snip{50%{transform:translate(930px,260px) rotate(-12deg)}}
+.an-twinkle{animation:tw 2.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes tw{50%{opacity:.2;scale:.6}}
+.an-box{animation:boxin 4s ease-in-out infinite}
+@keyframes boxin{0%,100%{opacity:1}50%{opacity:.55}}
+.an-jib{animation:jib 7s ease-in-out infinite}
+@keyframes jib{50%{transform:rotate(-6deg)}}
+.an-hook{animation:hook 3.5s ease-in-out infinite}
+@keyframes hook{50%{transform:translateY(60px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:640px){#svTitle{font-size:36px!important}.stage{padding:18px}}
 @media (max-width:640px){.h2{font-size:32px}h1{font-size:40px!important}.sec{padding:56px 0}}
 </style>
 </head>
@@ -61,7 +144,7 @@ nav a{text-decoration:none}
 <div class="wrap" style="padding-top:18px;padding-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
 <a href="#inicio" style="display:flex;align-items:center;text-decoration:none;padding-bottom:10px" aria-label="Glysf, inicio"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;letter-spacing:-.5px;line-height:1;white-space:nowrap"><svg width="33.1" height="53.8" viewBox="164 120 234 380" aria-hidden="true" style="vertical-align:-17.6px"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/><circle cx="372" cy="150" r="22" fill="#0B1F4B"/><circle cx="214" cy="462" r="22" fill="#0B1F4B"/></svg><span style="margin-left:2px">lysf</span></span></a>
 <nav style="display:flex;flex-wrap:wrap;align-items:center;gap:22px;font-weight:500;font-size:15px">
-<a href="#demo">Tu negocio</a>
+<a href="#negocios">Tu negocio</a>
 <a href="#automatizaciones">Automatizaciones</a>
 <a href="#como">Cómo trabajamos</a>
 <a href="#faq">Preguntas</a>
@@ -70,7 +153,7 @@ nav a{text-decoration:none}
 </div>
 </header>
 
-<main>
+<main id="home">
 <section id="inicio" class="wrap" style="padding-top:72px;padding-bottom:80px;display:flex;flex-wrap:wrap;align-items:center;gap:56px">
 <div style="flex:999 1 460px;min-width:0;display:flex;flex-direction:column;gap:22px">
 <span style="align-self:flex-start;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:#EEF2FB;color:var(--blue);padding:6px 12px;border-radius:999px">Automatización con inteligencia artificial</span>
@@ -78,7 +161,7 @@ nav a{text-decoration:none}
 <p style="font-size:19px;color:var(--ink);max-width:560px">Creamos agentes de IA y chatbots para WhatsApp, Instagram y Telegram, automatizamos tus procesos y diseñamos tu página web. Tú te enfocas en crecer; Glysf se encarga de lo repetitivo.</p>
 <div style="display:flex;flex-wrap:wrap;gap:12px">
 <a href="#cotizar" class="btn primary">Pide tu cotización</a>
-<a href="#demo" class="btn ghost">Ver demo de mi negocio</a>
+<a href="#negocios" class="btn ghost">Ver demo de mi negocio</a>
 </div>
 <div style="display:flex;flex-wrap:wrap;gap:22px;font-size:14px;color:var(--ink)"><span>✓ Respuestas en segundos</span><span>✓ Todo a nombre de tu empresa</span><span>✓ Soporte incluido</span></div>
 </div>
@@ -93,35 +176,10 @@ nav a{text-decoration:none}
 </div>
 </section>
 
-<section id="demo" class="sec soft" style="scroll-margin-top:0">
+<section id="negocios" class="sec soft">
 <div class="wrap" style="display:flex;flex-direction:column;gap:28px">
-<div><h2 class="h2">Mira lo que haría Glysf en tu negocio</h2><p class="lead">Elige tu tipo de negocio, prueba la conversación y mira todo lo que podemos automatizar.</p></div>
-<div id="sectors" style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Tipo de negocio"></div>
-<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
-<div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:10px">
-<div style="background:var(--navy);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px">
-<div style="display:flex;align-items:center;gap:10px;color:#fff;padding-bottom:10px;border-bottom:1px solid #22396E">
-<div style="width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="22" viewBox="170 120 260 380" aria-hidden="true"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/></svg></div>
-<div style="flex:1;min-width:0"><div id="botName" style="font-weight:600;font-size:15px"></div><div style="font-size:12px;color:#A9B8DA">en línea · <span id="channelName"></span></div></div>
-<div id="channels" style="display:flex;gap:4px" role="group" aria-label="Canal"></div>
-</div>
-<div id="chat" style="height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px" aria-live="polite"></div>
-<div id="tags" style="display:flex;flex-wrap:wrap;gap:8px"></div>
-<div id="opts" style="display:flex;flex-wrap:wrap;gap:8px"></div>
-<form id="say" style="display:flex;gap:8px">
-<label for="sayInput" style="position:absolute;left:-9999px">Escribe un mensaje</label>
-<input id="sayInput" autocomplete="off" placeholder="Escribe un mensaje…" style="flex:1;min-width:0;min-height:44px;border-radius:12px;border:0;padding:10px 14px;font:400 15px Inter,sans-serif">
-<button type="submit" aria-label="Enviar" style="min-width:44px;min-height:44px;border-radius:12px;border:0;background:var(--blue);color:#fff;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
-</form>
-</div>
-<p style="font-size:13px;color:var(--ink)">Demo simulada con respuestas de ejemplo. El agente real entiende lo que escribas con IA.</p>
-</div>
-<div class="card" style="flex:1 1 340px;min-width:0;padding:28px;gap:16px">
-<h3 id="forTitle" style="font-size:24px"></h3>
-<ul id="forList" style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px"></ul>
-<a id="forCta" href="#cotizar" class="btn primary" style="align-self:flex-start;margin-top:6px"></a>
-</div>
-</div>
+<div><h2 class="h2">Elige tu negocio y míralo funcionando</h2><p class="lead">Cada negocio tiene su propia demo: el bot, la agenda, los pagos, la nómina, el inventario y los proveedores, todo en movimiento.</p></div>
+<div id="bizGrid" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))"></div>
 </div>
 </section>
 
@@ -249,6 +307,47 @@ nav a{text-decoration:none}
 </section>
 </main>
 
+<div id="sectorView" hidden>
+<div id="scene" aria-hidden="true"></div>
+<div class="svinner">
+<div class="wrap" style="padding-top:20px;display:flex;flex-direction:column;gap:14px">
+<a href="#negocios" class="svback">← Todos los negocios</a>
+<nav id="svTabs" aria-label="Negocios" style="display:flex;flex-wrap:wrap;gap:8px"></nav>
+</div>
+<div id="svHero" class="wrap" style="padding-top:40px;padding-bottom:36px;display:flex;flex-direction:column;gap:14px;max-width:1180px">
+<h1 id="svTitle" style="font-size:52px;line-height:1.05;letter-spacing:-1.5px;max-width:820px"></h1>
+<p id="svSub" style="font-size:19px;max-width:640px;opacity:.85"></p>
+<a id="svCta" href="#cotizar" class="btn svcta" style="align-self:flex-start;margin-top:6px"></a>
+</div>
+<div class="wrap" style="padding-bottom:80px;display:flex;flex-direction:column;gap:16px">
+<div id="modTabs" role="tablist" aria-label="Automatizaciones" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<div id="modStage" class="stage">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px">
+<h2 id="modTitle" style="font-size:26px"></h2>
+<div style="display:flex;gap:8px;align-items:center"><span style="font-size:12px;color:var(--ink)">Datos de ejemplo</span><button type="button" id="modReplay" class="btn ghost" style="min-height:40px;padding:8px 14px;font-size:14px">↻ Repetir</button></div>
+</div>
+<div id="chatBox" style="background:var(--navy);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:10px;color:#fff;padding-bottom:10px;border-bottom:1px solid #22396E">
+<div style="width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="22" viewBox="170 120 260 380" aria-hidden="true"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/></svg></div>
+<div style="flex:1;min-width:0"><div id="botName" style="font-weight:600;font-size:15px"></div><div style="font-size:12px;color:#A9B8DA">en línea · <span id="channelName"></span></div></div>
+<div id="channels" style="display:flex;gap:4px" role="group" aria-label="Canal"></div>
+</div>
+<div id="chat" style="height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px" aria-live="polite"></div>
+<div id="tags" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<div id="opts" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<form id="say" style="display:flex;gap:8px">
+<label for="sayInput" style="position:absolute;left:-9999px">Escribe un mensaje</label>
+<input id="sayInput" autocomplete="off" placeholder="Escribe un mensaje…" style="flex:1;min-width:0;min-height:44px;border-radius:12px;border:0;padding:10px 14px;font:400 15px Inter,sans-serif">
+<button type="submit" aria-label="Enviar" style="min-width:44px;min-height:44px;border-radius:12px;border:0;background:var(--blue);color:#fff;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+</form>
+</div>
+<div id="modBody" class="mbody"></div>
+<button type="button" id="modNext" class="btn primary" style="align-self:flex-end"></button>
+</div>
+</div>
+</div>
+</div>
+
 <footer style="border-top:1px solid var(--line)">
 <div class="wrap" style="padding-top:24px;padding-bottom:24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink)">
 <span aria-label="Glysf" style="color:var(--navy)"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.5px;line-height:1;white-space:nowrap"><svg width="21.4" height="34.8" viewBox="164 120 234 380" aria-hidden="true" style="vertical-align:-11.4px"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/><circle cx="372" cy="150" r="22" fill="#0B1F4B"/><circle cx="214" cy="462" r="22" fill="#0B1F4B"/></svg><span style="margin-left:2px">lysf</span></span></span>
@@ -264,15 +363,6 @@ const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className
 
 /* ---------- Demo interactivo ---------- */
 // Cada paso: mensaje del bot + opciones. Cada opción: lo que dice el cliente, la respuesta del bot y el paso siguiente (null = fin).
-const INFO={
-padel:{name:'Canchas de pádel',your:'tus canchas',form:'Canchas de pádel o fútbol',list:[['Reservas 24/7','El cliente reserva por WhatsApp según la disponibilidad real de cada cancha.'],['Cobro anticipado','Envía el link de pago para asegurar el turno y lo registra solo.'],['Recordatorios','Avisa al jugador antes de su partido para que no se olvide.'],['Lista de espera','Si alguien cancela, ofrece la cancha al siguiente interesado.'],['Clases y torneos','Inscribe jugadores a clases y torneos sin hojas a mano.'],['Reporte diario','Ocupación e ingresos del día directo a tu celular.']]},
-clinica:{name:'Clínica',your:'tu clínica',form:'Clínica o consultorio',list:[['Agenda por especialista','Asigna citas según la agenda de cada profesional.'],['Menos inasistencias','Recordatorios 24 horas antes con confirmación del paciente.'],['Reprogramar sin llamar','El paciente cambia su cita por chat y libera el espacio.'],['Datos del paciente','Recoge los datos antes de la cita y los guarda en orden.'],['Preguntas frecuentes','Precios, preparación para exámenes y horarios, a cualquier hora.'],['Reseñas en Google','Pide la reseña después de cada cita.']]},
-gym:{name:'Gimnasio',your:'tu gimnasio',form:'Gimnasio',list:[['Precios y horarios 24/7','Responde al instante a quien pregunta por planes.'],['Clase de prueba','Agenda la clase gratis y avisa al entrenador.'],['Seguimiento a prospectos','Escribe a quien preguntó y no se inscribió.'],['Renovación de mensualidad','Avisa antes del vencimiento y envía el link de pago.'],['Reactivar socios','Contacta a quien dejó de venir con una oferta.'],['Registro de socios','Cada inscripción queda guardada en tu hoja de cálculo.']]},
-pilates:{name:'Pilates y yoga',your:'tu estudio',form:'Pilates o yoga',list:[['Reserva de cupos','Las alumnas reservan su clase y se respeta el cupo de cada horario.'],['Control de paquetes','Descuenta cada clase y avisa cuántas quedan.'],['Recordatorios','Avisa antes de cada clase para no perder cupos.'],['Lista de espera','Ofrece el cupo liberado a quien estaba esperando.'],['Renovación de paquete','Recuerda renovar cuando se acaban las clases.'],['Reporte de ocupación','Qué horarios se llenan y cuáles no, cada semana.']]},
-resto:{name:'Restaurante',your:'tu restaurante',form:'Restaurante',list:[['Menú y pedidos','Envía el menú y toma el pedido completo por chat.'],['Directo a cocina','El pedido llega a cocina sin que nadie lo transcriba.'],['Reservas de mesa','Agenda mesas según la capacidad de cada horario.'],['Pagos registrados','Recibe el comprobante de transferencia y lo registra.'],['Clientes frecuentes','Promociones a quienes ya te compraron y aceptaron recibirlas.'],['Reseñas','Pide la calificación después de cada pedido.']]},
-pelu:{name:'Peluquería y spa',your:'tu salón',form:'Peluquería o spa',list:[['Agenda por profesional','Citas según el estilista y la duración de cada servicio.'],['Lista de servicios','Envía precios y servicios con fotos dentro del chat.'],['Anticipos','Cobra un anticipo para asegurar la cita.'],['Recordatorios','Avisa un día antes para evitar citas perdidas.'],['Que vuelvan','Recuerda el retoque o el próximo corte a las pocas semanas.'],['Reseñas en Google','Pide la reseña después de cada visita.']]},
-tienda:{name:'Tienda o ferretería',your:'tu tienda',form:'Tienda o ferretería',list:[['Catálogo en el chat','Productos con foto y precio dentro de WhatsApp.'],['Pedidos y stock','Toma el pedido y confirma si hay disponibilidad.'],['Alertas de inventario','Te avisa cuando un producto se está agotando.'],['Pedidos a proveedores','Genera la orden de compra cuando baja el stock.'],['Cartera','Recuerda pagos pendientes a clientes con crédito.'],['Reporte de ventas','Lo vendido en el día, directo a tu celular.']]},
-fabrica:{name:'Fábrica o constructora',your:'tu empresa',form:'Fábrica o constructora',list:[['Cotizaciones en PDF','Arma la cotización con tus precios y la envía en segundos.'],['Visitas técnicas','Agenda la toma de medidas o visita de obra.'],['Pedido a proveedores','Pide el material automáticamente cuando aprueban la cotización.'],['Seguimiento de cotizaciones','Vuelve a escribir a quien no ha respondido.'],['Estado del pedido','Informa al cliente en qué va su producción o su obra.'],['Cartera','Recuerda anticipos y saldos pendientes.']]}};
 const S={
 padel:{label:'Pádel',bot:'Club Pádel Norte',tags:['Cancha reservada','Pago confirmado','Recordatorio al jugador'],steps:[
  {bot:'¡Hola! Soy el asistente del Club Pádel Norte. ¿Qué necesitas?',opts:[
@@ -350,14 +440,7 @@ function showOpts(){const o=$('opts');o.replaceChildren();const s=S[sector];if(s
  s.steps[step].opts.forEach(op=>{const b=el('button','opt',op.u);b.type='button';b.onclick=()=>choose(op);o.append(b);});}
 function choose(op){if(busy)return;$('opts').replaceChildren();bubble('u',op.u);typing(()=>{bubble('b',op.b);step=op.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
 function start(){clearTimeout(timer);busy=false;step=0;$('chat').replaceChildren();$('tags').replaceChildren();$('opts').replaceChildren();renderHeader();typing(()=>{bubble('b',S[sector].steps[0].bot);showOpts();},600);}
-function renderPanel(){const i=INFO[sector];$('forTitle').textContent='Lo que automatizamos en '+i.your;
- $('forList').replaceChildren(...i.list.map(([h,p])=>{const li=el('li');li.style.cssText='display:flex;gap:12px';const ic=el('span',null,'✓');ic.style.cssText='flex:none;width:26px;height:26px;border-radius:50%;background:#EEF2FB;color:#2F55F5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px';const tx=el('div');tx.append(el('strong',null,h),el('p',null,p));tx.lastChild.style.cssText='font-size:14px;color:#3B4A6B';li.append(ic,tx);return li;}));
- $('forCta').textContent='Cotizar para '+i.your;}
-function pick(k){sector=k;start();}
 function renderHeader(){
- $('heroSectors').replaceChildren(...Object.keys(INFO).map(k=>{const b=el('button','pill',INFO[k].name);b.type='button';b.style.cssText='border-radius:12px;text-align:left;width:100%';b.onclick=()=>{pick(k);$('demo').scrollIntoView({behavior:'smooth'});};return b;}));
- renderPanel();
- $('sectors').replaceChildren(...Object.keys(INFO).map(k=>{const b=el('button','pill',INFO[k].name);b.type='button';b.setAttribute('aria-pressed',k===sector);b.onclick=()=>pick(k);return b;}));
  $('channels').replaceChildren(...Object.keys(CH).map(k=>{const b=el('button','chip',CH[k]);b.type='button';b.setAttribute('aria-pressed',k===channel);b.onclick=()=>{channel=k;renderHeader();document.querySelectorAll('.bub.u').forEach(x=>x.style.background=UC[k]);};return b;}));
  $('botName').textContent=S[sector].bot;$('channelName').textContent=CH[channel];}
 $('say').onsubmit=e=>{e.preventDefault();const v=$('sayInput').value.trim();if(!v||busy)return;$('sayInput').value='';
@@ -367,7 +450,8 @@ $('say').onsubmit=e=>{e.preventDefault();const v=$('sayInput').value.trim();if(!
  const hit=opts.find(o=>words.some(w=>norm(o.u).includes(w)));
  if(hit){$('opts').replaceChildren();bubble('u',v);typing(()=>{bubble('b',hit.b);step=hit.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
  else{bubble('u',v);typing(()=>{bubble('b','En la versión real te entendería con IA. En esta demo, elige una de las opciones de abajo.');});}};
-start();
+const chatSector=k=>{sector=k;channel='wa';};
+const startChat=()=>start();
 
 /* ---------- Catálogo de automatizaciones ---------- */
 const A={
@@ -382,7 +466,6 @@ function renderAuto(){
  $('autoGrid').replaceChildren(...A[area].map(([h,p])=>{const d=el('div','auto');d.append(el('h3',null,h),el('p',null,p));return d;}));}
 renderAuto();
 
-$('forCta').onclick=()=>{const sel=document.querySelector('#quote select[name=sector]');sel.value=INFO[sector].form;};
 /* ---------- Calculadora ---------- */
 const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);};
 
@@ -394,6 +477,154 @@ $('quote').onsubmit=e=>{e.preventDefault();const f=e.target,msg=$('quoteMsg');
  const body=`Nombre: ${d.get('nombre')}\nEmpresa: ${d.get('empresa')}\nCorreo: ${d.get('correo')}\nTeléfono: ${d.get('telefono')||'—'}\nTipo de negocio: ${d.get('sector')||'—'}\nMensajes al día: ${d.get('volumen')||'—'}\nCanales: ${all('canal')}\nQuiere automatizar: ${all('necesidad')}\n\nDetalle:\n${d.get('detalle')}\n\nAutorizó el tratamiento de datos: Sí`;
  location.href='mailto:grupolysf@gmail.com?subject='+encodeURIComponent('Cotización Glysf – '+d.get('empresa'))+'&body='+encodeURIComponent(body);
  msg.hidden=false;msg.style.color='#067647';msg.textContent='¡Listo! Se abrió tu correo con la solicitud. Dale enviar y te respondemos pronto.';};
+/* ---------- Escenas de fondo por negocio (SVG ilustrado y animado) ---------- */
+const SCENE={
+padel:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#0D4F7A"/><g opacity=".9"><rect x="230" y="120" width="740" height="600" rx="6" fill="#1C6FA8" stroke="#fff" stroke-width="6"/><rect x="230" y="120" width="740" height="600" fill="none" stroke="#8FC3E6" stroke-width="22" opacity=".35"/><line x1="230" y1="420" x2="970" y2="420" stroke="#fff" stroke-width="8"/><g stroke="#fff" stroke-width="1" opacity=".5">${Array.from({length:37},(_,i)=>`<line x1="${230+i*20}" y1="408" x2="${230+i*20}" y2="432"/>`).join('')}</g><line x1="230" y1="250" x2="970" y2="250" stroke="#fff" stroke-width="5"/><line x1="230" y1="590" x2="970" y2="590" stroke="#fff" stroke-width="5"/><line x1="600" y1="250" x2="600" y2="590" stroke="#fff" stroke-width="5"/></g><g class="an-ball"><circle r="14" fill="#E4F25C"/><path d="M-10 -6 Q0 0 -10 6M10 -6 Q0 0 10 6" stroke="#fff" stroke-width="2" fill="none"/></g></svg>`,
+clinica:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="px" width="90" height="90" patternUnits="userSpaceOnUse"><path d="M40 30h10v10h10v10H50v10H40V50H30V40h10z" fill="#CFE7E3"/></pattern></defs><rect width="1200" height="800" fill="#E8F4F2"/><rect width="1200" height="800" fill="url(#px)"/><polyline class="an-beat" points="0,560 300,560 340,560 370,470 400,650 430,520 455,560 700,560 740,560 770,470 800,650 830,520 855,560 1200,560" fill="none" stroke="#0E9384" stroke-width="5" stroke-linejoin="round"/><circle class="an-float" cx="1020" cy="170" r="90" fill="#CFE7E3"/></svg>`,
+gym:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#16181D"/><g fill="#262A33">${[[180,180,-20],[980,240,25],[300,640,15],[900,620,-30],[620,120,5]].map(([x,y,r],i)=>`<g class="an-lift" style="animation-delay:${i*.4}s" transform="translate(${x} ${y}) rotate(${r})"><rect x="-90" y="-8" width="180" height="16" rx="6"/><rect x="-110" y="-40" width="26" height="80" rx="6"/><rect x="84" y="-40" width="26" height="80" rx="6"/><rect x="-82" y="-28" width="16" height="56" rx="5"/><rect x="66" y="-28" width="16" height="56" rx="5"/></g>`).join('')}</g><circle class="an-pulse" cx="600" cy="420" r="160" fill="none" stroke="#FF6B2C" stroke-width="3"/></svg>`,
+pilates:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#F3E8DC"/><circle class="an-float" cx="180" cy="160" r="140" fill="#EBD9C6"/><circle class="an-float" style="animation-delay:1.5s" cx="1060" cy="640" r="180" fill="#EBD9C6"/><g transform="translate(330 470)" fill="none" stroke="#D2B596" stroke-width="10" stroke-linecap="round"><rect x="0" y="40" width="560" height="44" rx="22" fill="#E4CDB4" stroke="none"/><line x1="30" y1="84" x2="30" y2="150"/><line x1="530" y1="84" x2="530" y2="150"/><rect class="an-carriage" x="120" y="10" width="170" height="34" rx="12" fill="#D2B596" stroke="none"/><line x1="540" y1="40" x2="540" y2="-70"/><path d="M540 -70 Q420 -40 290 18"/></g></svg>`,
+resto:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#6B2A1B"/>${[[260,560],[620,600],[960,540]].map(([x,y])=>`<g transform="translate(${x} ${y})"><ellipse rx="150" ry="46" fill="#7E3622"/><ellipse rx="100" ry="30" fill="#8C4029"/>${[-40,0,40].map((dx,j)=>`<path class="an-steam" style="animation-delay:${j*.6}s" d="M${dx} -50 q-18 -30 0 -60 q18 -30 0 -60" stroke="#C9826B" stroke-width="6" fill="none" stroke-linecap="round"/>`).join('')}</g>`).join('')}</svg>`,
+pelu:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#F0E4F6"/><g class="an-snip" transform="translate(930 260)" fill="none" stroke="#D8BEE8" stroke-width="16" stroke-linecap="round"><circle cx="-60" cy="120" r="44"/><circle cx="60" cy="120" r="44"/><line x1="-30" y1="86" x2="80" y2="-140"/><line x1="30" y1="86" x2="-80" y2="-140"/></g>${[[200,200],[420,620],[760,140],[1040,600],[140,520]].map(([x,y],i)=>`<path class="an-twinkle" style="animation-delay:${i*.5}s" transform="translate(${x} ${y})" d="M0 -26 L7 -7 L26 0 L7 7 L0 26 L-7 7 L-26 0 L-7 -7Z" fill="#D8BEE8"/>`).join('')}</svg>`,
+tienda:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#0F4D33"/>${[220,420,620].map((y,r)=>`<rect x="80" y="${y}" width="1040" height="14" rx="4" fill="#1B6B49"/>${[0,1,2,3,4,5].map(c=>`<rect class="an-box" style="animation-delay:${(r*6+c)*.15}s" x="${120+c*165}" y="${y-90}" width="${110-(c%3)*14}" height="${90-(c%2)*20}" rx="8" fill="${['#17633F','#1E7A4E','#145A39'][(c+r)%3]}" transform="translate(0 ${(c%2)*20})"/>`).join('')}`).join('')}</svg>`,
+fabrica:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="bp" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16316B" stroke-width="1.5"/></pattern></defs><rect width="1200" height="800" fill="#0B1F4B"/><rect width="1200" height="800" fill="url(#bp)"/><g stroke="#24458F" stroke-width="8" fill="none"><path d="M900 760V150M940 760V150M900 200L940 240M940 300L900 340M900 400L940 440M900 500L940 540M940 600L900 640"/></g><g class="an-jib" style="transform-origin:920px 150px"><path d="M600 150H1100M640 150L920 90L1100 150" stroke="#24458F" stroke-width="8" fill="none"/><line class="an-hook" x1="700" y1="150" x2="700" y2="380" stroke="#FFC53D" stroke-width="3"/><rect class="an-hook" x="670" y="380" width="60" height="40" fill="#FFC53D" opacity=".7"/></g>${[0,1,2].map(i=>`<rect x="${180+i*130}" y="${560-i*120}" width="120" height="${200+i*120}" fill="#14306A" stroke="#24458F" stroke-width="4"/>`).join('')}</svg>`};
+
+/* ---------- Cada negocio: tema, textos y módulos que se ven en movimiento ---------- */
+const SECT={
+padel:{name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol',bg:'#0D4F7A',dark:1,acc:'#C8F560',
+ title:'Tu club de pádel, en piloto automático',sub:'Reservas, pagos, profesores, nómina e inventario funcionando solos mientras tú juegas.',
+ mods:[{t:'Bot de reservas',k:'chat'},
+  {t:'Agenda de canchas',k:'agenda',d:{cols:['Cancha 1','Cancha 2','Cancha 3'],rows:['5:00 p. m.','6:00 p. m.','7:00 p. m.','8:00 p. m.','9:00 p. m.'],book:[[1,0,'Andrés M.'],[2,1,'Torneo'],[2,2,'Laura P.'],[3,0,'Clase grupal'],[3,1,'Juan D.'],[4,2,'Sofía R.']],toast:'El bot agendó la reserva y envió el link de pago'}},
+  {t:'Pagos',k:'pagos',d:[['Andrés M.','Cancha 1 · 6:00 p. m.',100000,1],['Laura P.','Cancha 3 · 7:00 p. m.',100000,1],['Juan D.','Cancha 2 · 8:00 p. m.',100000,0],['Clase grupal','6 alumnos',240000,1]]},
+  {t:'Profesores y clases',k:'equipo',d:[['Camilo R.','Profesor','Mar y Jue · 7:00 p. m.','6 alumnos'],['Valentina S.','Profesora','Sáb · 9:00 a. m.','4 alumnos'],['Mateo L.','Recepción','Lun a Vie · 3:00 p. m.','Turno tarde']],toast:'Cada profesor recibió su horario por WhatsApp'},
+  {t:'Nómina',k:'nomina',d:[['Camilo R.','Profesor','32 clases',1920000],['Valentina S.','Profesora','12 clases',720000],['Mateo L.','Recepción','30 días',1750000]]},
+  {t:'Inventario',k:'inventario',d:[['Tubos de pelotas',40,8,10,'tubos'],['Raquetas de alquiler',12,9,4,'und'],['Agua y bebidas',96,30,24,'und'],['Grips',30,22,8,'und']]},
+  {t:'Reporte al dueño',k:'reporte',d:['Ocupación de hoy: 82% (23 de 28 turnos)','Ingresos: $2.340.000','Pagos pendientes: 1 (recordatorio enviado)','Inventario: pedido de pelotas enviado al proveedor','Mañana: 19 reservas y 2 clases']}]},
+clinica:{name:'Clínica',your:'tu clínica',form:'Clínica o consultorio',bg:'#E8F4F2',dark:0,acc:'#0E9384',
+ title:'Tu clínica organizada sin llamadas ni papeles',sub:'Citas por especialista, recordatorios, insumos, proveedores y pagos conectados entre sí.',
+ mods:[{t:'Bot de citas',k:'chat'},
+  {t:'Agenda por especialista',k:'agenda',d:{cols:['Dra. Pérez · Odontología','Dr. Gómez · Ortodoncia','Dra. Ruiz · Higiene'],rows:['8:00 a. m.','9:00 a. m.','10:00 a. m.','11:00 a. m.'],book:[[0,0,'Valoración'],[0,2,'Limpieza'],[1,1,'Control'],[2,0,'Resina'],[2,2,'Limpieza'],[3,1,'Valoración']],toast:'Cita confirmada: recordatorio programado 24 h antes'}},
+  {t:'Especialistas y turnos',k:'equipo',d:[['Dra. Pérez','Odontología general','Lun a Vie · 8 a. m. a 12 m.','14 citas'],['Dr. Gómez','Ortodoncia','Mar y Jue · 8 a. m. a 1 p. m.','9 citas'],['Dra. Ruiz','Higiene oral','Lun a Sáb · 8 a. m. a 11 a. m.','11 citas']],toast:'Cada especialista recibió su agenda del día'},
+  {t:'Insumos',k:'inventario',d:[['Guantes de nitrilo',20,4,5,'cajas'],['Anestesia',60,38,15,'cartuchos'],['Resinas',25,6,8,'jeringas'],['Eyectores',500,320,100,'und']]},
+  {t:'Proveedores',k:'pipeline',d:{item:'Pedido #318 · Guantes x 20 cajas y resinas x 15',steps:['Stock bajo detectado','Cotización al proveedor','Orden de compra enviada','Entregado en clínica'],toast:'Insumos recibidos y sumados al inventario'}},
+  {t:'Pagos',k:'pagos',d:[['María L.','Limpieza',120000,1],['Jorge T.','Ortodoncia · cuota 4',250000,1],['Ana C.','Resina',180000,0],['Pedro V.','Valoración',60000,1]]},
+  {t:'Reporte al dueño',k:'reporte',d:['Citas de hoy: 34 atendidas, 2 reprogramadas','Inasistencias: 1 (antes eran 6 por semana)','Ingresos: $3.120.000','Insumos: pedido de guantes en camino','Reseñas nuevas en Google: 3']}]},
+gym:{name:'Gimnasio',your:'tu gimnasio',form:'Gimnasio',bg:'#16181D',dark:1,acc:'#FF6B2C',
+ title:'Tu gimnasio cobra, agenda y vende solo',sub:'Mensualidades, instructores, nómina y tienda de suplementos sin perseguir a nadie.',
+ mods:[{t:'Bot de ventas',k:'chat'},
+  {t:'Mensualidades',k:'pagos',d:[['Daniela R.','Plan mensual',90000,1],['Felipe A.','Plan trimestral',240000,1],['Carlos M.','Plan mensual · vence hoy',90000,0],['Paula G.','Plan anual',850000,1],['Sergio L.','Plan mensual · vencido',90000,0]]},
+  {t:'Instructores y clases',k:'equipo',d:[['Kevin P.','Funcional','Lun, Mié, Vie · 6:00 a. m.','18 inscritos'],['Natalia C.','Spinning','Mar y Jue · 7:00 p. m.','22 inscritos'],['Andrés V.','Pesas','Lun a Vie · 5:00 p. m.','Piso']],toast:'Clases publicadas y cupos abiertos en el bot'},
+  {t:'Nómina',k:'nomina',d:[['Kevin P.','Instructor','48 clases',1680000],['Natalia C.','Instructora','24 clases',960000],['Andrés V.','Entrenador de piso','30 días',1850000],['Diana M.','Recepción','30 días',1750000]]},
+  {t:'Tienda de suplementos',k:'inventario',d:[['Proteína 2 lb',24,5,6,'und'],['Creatina',18,11,5,'und'],['Bebidas',120,48,30,'und'],['Guantes',15,12,4,'pares']]},
+  {t:'Reporte al dueño',k:'reporte',d:['Socios activos: 312','Mensualidades cobradas hoy: $2.150.000','Por vencer esta semana: 18 (recordatorios enviados)','Clases de prueba agendadas: 7','Stock bajo: proteína, pedido enviado']}]},
+pilates:{name:'Pilates y yoga',your:'tu estudio',form:'Pilates o yoga',bg:'#F3E8DC',dark:0,acc:'#B86A4B',
+ title:'Tu estudio con cupos llenos y cero cuadernos',sub:'Reservas por clase, paquetes, instructoras y pagos en orden.',
+ mods:[{t:'Bot de reservas',k:'chat'},
+  {t:'Cupos por clase',k:'agenda',d:{cols:['Lunes','Martes','Miércoles'],rows:['7:00 a. m.','9:00 a. m.','5:30 p. m.','6:30 p. m.'],book:[[0,0,'5/5 lleno'],[0,1,'4/5'],[1,2,'3/5'],[2,0,'5/5 lleno'],[2,1,'5/5 lleno'],[3,2,'2/5']],toast:'Cupo reservado y descontado del paquete'}},
+  {t:'Paquetes y pagos',k:'pagos',d:[['Camila T.','Paquete 12 clases',380000,1],['Juliana P.','Paquete 8 clases',280000,1],['Mariana S.','Clase suelta',45000,0],['Lorena V.','Paquete 12 clases',380000,1]]},
+  {t:'Instructoras',k:'equipo',d:[['Sara M.','Reformer','Lun a Vie · 7:00 a. m.','25 clases/mes'],['Daniela F.','Mat y yoga','Mar y Jue · 6:30 p. m.','9 clases/mes'],['Isabel G.','Reformer','Sáb · 9:00 a. m.','4 clases/mes']],toast:'Horarios enviados a cada instructora'},
+  {t:'Nómina',k:'nomina',d:[['Sara M.','Instructora','25 clases',1250000],['Daniela F.','Instructora','9 clases',450000],['Isabel G.','Instructora','4 clases',200000]]},
+  {t:'Reporte al dueño',k:'reporte',d:['Ocupación de la semana: 91%','Clases con lista de espera: 4','Paquetes por vencer: 6 (recordatorio enviado)','Ingresos de hoy: $1.085.000']}]},
+resto:{name:'Restaurante',your:'tu restaurante',form:'Restaurante',bg:'#6B2A1B',dark:1,acc:'#FFB547',
+ title:'Tu restaurante recibe pedidos sin perder ninguno',sub:'Pedidos directo a cocina, domicilios, inventario, proveedores y turnos del personal.',
+ mods:[{t:'Bot de pedidos',k:'chat'},
+  {t:'Pedido a cocina',k:'pipeline',d:{item:'Pedido #1287 · 2 hamburguesas, 2 limonadas',steps:['Pedido recibido por WhatsApp','En preparación','Domiciliario asignado','Entregado'],toast:'Cliente avisado en cada paso del pedido'}},
+  {t:'Inventario de cocina',k:'inventario',d:[['Carne de res',30,7,8,'kg'],['Pan de hamburguesa',120,46,40,'und'],['Papa',50,31,15,'kg'],['Limones',200,60,50,'und']]},
+  {t:'Proveedores',k:'pipeline',d:{item:'Orden #77 · Carne 25 kg y pan 100 und',steps:['Stock bajo detectado','Pedido al proveedor','Confirmado para mañana 7 a. m.','Recibido en cocina'],toast:'Inventario actualizado al recibir el pedido'}},
+  {t:'Nómina y turnos',k:'nomina',d:[['Luis H.','Chef','26 turnos',2400000],['Marcela O.','Auxiliar de cocina','26 turnos',1600000],['Brayan S.','Mesero','22 turnos',1450000],['Óscar P.','Domiciliario','24 turnos',1500000]]},
+  {t:'Reporte al dueño',k:'reporte',d:['Pedidos de hoy: 86 (41 domicilios)','Ventas: $3.870.000','Plato más vendido: hamburguesa de la casa','Pedido de carne confirmado para mañana']}]},
+pelu:{name:'Peluquería y spa',your:'tu salón',form:'Peluquería o spa',bg:'#F0E4F6',dark:0,acc:'#8E44C2',
+ title:'Tu salón con la agenda llena y sin huecos',sub:'Citas por estilista, anticipos, comisiones y productos en orden.',
+ mods:[{t:'Bot de citas',k:'chat'},
+  {t:'Agenda por estilista',k:'agenda',d:{cols:['Laura · Corte y color','Andrea · Uñas','Felipe · Barbería'],rows:['9:00 a. m.','10:30 a. m.','2:00 p. m.','4:00 p. m.'],book:[[0,0,'Color'],[0,1,'Semipermanente'],[1,2,'Corte y barba'],[2,0,'Cepillado'],[2,1,'Pedicure'],[3,2,'Corte']],toast:'Cita agendada con anticipo y recordatorio'}},
+  {t:'Anticipos y pagos',k:'pagos',d:[['Valeria G.','Color · anticipo',60000,1],['Natalia R.','Uñas semipermanente',45000,1],['Kevin T.','Corte y barba',35000,0],['Mónica A.','Keratina · anticipo',100000,1]]},
+  {t:'Comisiones',k:'nomina',d:[['Laura','Estilista · 40%','$4.200.000 en servicios',1680000],['Andrea','Manicurista · 40%','$2.100.000 en servicios',840000],['Felipe','Barbero · 40%','$2.600.000 en servicios',1040000]]},
+  {t:'Productos',k:'inventario',d:[['Tinte 7.1',18,3,4,'und'],['Esmaltes',60,41,15,'und'],['Shampoo profesional',12,7,3,'und'],['Keratina',8,2,2,'kits']]},
+  {t:'Reporte al dueño',k:'reporte',d:['Citas de hoy: 27','Ingresos: $1.940.000','Huecos libres mañana: 3 (ofrecidos a clientes frecuentes)','Producto por agotarse: tinte 7.1, pedido enviado']}]},
+tienda:{name:'Tienda o ferretería',your:'tu tienda',form:'Tienda o ferretería',bg:'#0F4D33',dark:1,acc:'#C8F560',
+ title:'Tu tienda vende por chat y nunca se queda sin stock',sub:'Pedidos, inventario, proveedores, cartera y nómina conectados.',
+ mods:[{t:'Bot de ventas',k:'chat'},
+  {t:'Inventario',k:'inventario',d:[['Tableros de melamina',60,9,12,'und'],['Bisagras',500,260,100,'und'],['Pintura blanca',40,12,10,'galones'],['Tornillos 1"',3000,800,500,'und']]},
+  {t:'Proveedores',k:'pipeline',d:{item:'Orden #540 · Tableros x 50',steps:['Stock bajo detectado','Orden de compra enviada','Despachado por el proveedor','Recibido en bodega'],toast:'Stock actualizado y vendedores avisados'}},
+  {t:'Cartera',k:'pagos',d:[['Muebles El Roble','Factura 2201',1250000,1],['Obra Calle 80','Factura 2207',3400000,0],['Carpintería JM','Factura 2210',780000,1],['Constructora Lince','Factura 2214',2150000,0]]},
+  {t:'Nómina',k:'nomina',d:[['Ricardo P.','Vendedor','30 días',1900000],['Yuli C.','Caja','30 días',1750000],['Edwin M.','Bodega','30 días',1750000]]},
+  {t:'Reporte al dueño',k:'reporte',d:['Ventas de hoy: $6.420.000','Pedidos por WhatsApp: 38','Cartera vencida: $5.550.000 (recordatorios enviados)','Orden de tableros en camino']}]},
+fabrica:{name:'Constructora o fábrica',your:'tu empresa',form:'Fábrica o constructora',bg:'#0B1F4B',dark:1,acc:'#FFC53D',
+ title:'Tu obra controlada desde el celular',sub:'Cotizaciones, proveedores, materiales, cuadrillas y nómina de obra sin hojas sueltas.',
+ mods:[{t:'Bot de cotizaciones',k:'chat'},
+  {t:'Proveedores y materiales',k:'pipeline',d:{item:'Orden #912 · Cemento x 120 bultos, varilla 1/2" x 80',steps:['Solicitud desde la obra','3 cotizaciones comparadas','Orden al mejor precio','Entregado en obra'],toast:'Material recibido y descontado del presupuesto'}},
+  {t:'Materiales en bodega',k:'inventario',d:[['Cemento',200,35,40,'bultos'],['Varilla 1/2"',300,140,60,'und'],['Ladrillo',8000,2600,1500,'und'],['Arena',30,9,8,'m³']]},
+  {t:'Cuadrillas y obras',k:'equipo',d:[['Cuadrilla A','Obra Calle 80','Estructura · piso 4','8 personas'],['Cuadrilla B','Casa Los Pinos','Mampostería','5 personas'],['Cuadrilla C','Bodega Norte','Acabados','6 personas']],toast:'Cada maestro recibió las tareas del día'},
+  {t:'Nómina de obra',k:'nomina',d:[['Cuadrilla A','8 personas','Quincena',9600000],['Cuadrilla B','5 personas','Quincena',6000000],['Cuadrilla C','6 personas','Quincena',7200000],['Residente de obra','Ingeniero','Quincena',2800000]]},
+  {t:'Anticipos y cartera',k:'pagos',d:[['Familia Ruiz','Anticipo 30%',27000000,1],['Inversiones Sol','Corte de obra 2',45000000,0],['Bodega Norte S.A.S.','Corte de obra 1',38000000,1]]},
+  {t:'Reporte al dueño',k:'reporte',d:['Avance Obra Calle 80: 62%','Material entregado hoy: cemento y varilla','Gasto vs. presupuesto: 48% usado','Cuenta por cobrar: $45.000.000 (recordatorio enviado)']}]}};
+
+/* ---------- Utilidades de animación ---------- */
+const money=n=>'$'+Math.round(n).toLocaleString('es-CO');
+let runId=0;
+const later=(id,ms,fn)=>setTimeout(()=>{if(id===runId)fn();},ms);
+function countUp(node,to,id,ms=1200){const t0=performance.now();const step=t=>{if(id!==runId)return;const k=Math.min(1,(t-t0)/ms);node.textContent=money(to*k);if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+function toast(stage,text,id,ms){later(id,ms,()=>{const t=el('div','toast','✓ '+text);stage.append(t);});}
+function row(cols,cls){const r=el('div','mrow'+(cls?' '+cls:''));cols.forEach(c=>{const x=typeof c==='string'?el('div',null,c):c;r.append(x);});return r;}
+
+/* ---------- Módulos ---------- */
+const MOD={
+agenda(stage,d,id){const g=el('div','agenda');g.style.gridTemplateColumns=`90px repeat(${d.cols.length},minmax(0,1fr))`;
+ g.append(el('div'));d.cols.forEach(c=>g.append(el('div','ahead',c)));
+ const cells={};d.rows.forEach((r,i)=>{g.append(el('div','atime',r));d.cols.forEach((_,j)=>{const c=el('div','acell','Libre');cells[i+'-'+j]=c;g.append(c);});});
+ stage.append(g);d.book.forEach(([i,j,n],k)=>later(id,500+k*550,()=>{const c=cells[i+'-'+j];c.textContent=n;c.classList.add('booked');}));
+ toast(stage,d.toast,id,600+d.book.length*550);},
+pagos(stage,d,id){const tot=el('div','bigsum');tot.innerHTML='<span>Recaudado</span><strong>$0</strong>';stage.append(tot);
+ let sum=0;d.forEach(([n,c,v,ok],k)=>later(id,400+k*600,()=>{const st=el('span','badge '+(ok?'ok':'warn'),ok?'Pagado ✓':'Pendiente');
+  stage.insertBefore(row([el('strong',null,n),c,el('span','num',money(v)),st]),tot);
+  if(ok){sum+=v;countUp(tot.querySelector('strong'),sum,id,500);}else later(id,900,()=>{st.textContent='Recordatorio enviado';st.className='badge info';});}));},
+nomina(stage,d,id){const tot=el('div','bigsum');tot.innerHTML='<span>Total nómina</span><strong>$0</strong>';
+ const rows=d.map(([n,c,b,v])=>{const val=el('span','num','Calculando…');const st=el('span','badge','En cola');const r=row([el('strong',null,n),c,b,val,st]);r._v=v;r._val=val;r._st=st;stage.append(r);return r;});stage.append(tot);
+ let sum=0;rows.forEach((r,k)=>later(id,500+k*700,()=>{r._val.textContent=money(r._v);r._st.textContent='Pagado ✓';r._st.className='badge ok';sum+=r._v;countUp(tot.querySelector('strong'),sum,id,500);}));
+ toast(stage,'Desprendibles de pago enviados a cada persona por WhatsApp',id,700+rows.length*700);},
+inventario(stage,d,id){d.forEach(([n,from,to,min,u],k)=>{const bar=el('div','bar');const fill=el('i');bar.append(fill);const q=el('span','num',from+' '+u);
+  const r=row([el('strong',null,n),bar,q]);r.classList.add('inv');stage.append(r);fill.style.width='100%';
+  later(id,400+k*250,()=>{fill.style.width=Math.max(4,to/from*100)+'%';let t0=performance.now();const tick=t=>{if(id!==runId)return;const kk=Math.min(1,(t-t0)/1600);q.textContent=Math.round(from-(from-to)*kk)+' '+u;if(kk<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);
+   if(to<=min)later(id,1700,()=>{bar.classList.add('low');toast(stage,'Stock bajo de '+n.toLowerCase()+': pedido automático enviado al proveedor',id,200);});});});},
+pipeline(stage,d,id){stage.append(el('p','pitem',d.item));const p=el('div','pipe');const st=d.steps.map((s,i)=>{const x=el('div','pstep');x.append(el('span','pdot',String(i+1)),el('span',null,s));p.append(x);return x;});stage.append(p);
+ st.forEach((x,i)=>later(id,500+i*900,()=>{st.forEach(y=>y.classList.remove('now'));x.classList.add('done','now');}));toast(stage,d.toast,id,600+st.length*900);},
+equipo(stage,d,id){d.forEach(([n,r,h,x],k)=>{const b=el('span','badge','Asignando…');stage.append(row([el('strong',null,n),r,h,x,b]));later(id,500+k*600,()=>{b.textContent='Asignado ✓';b.className='badge ok';});});
+ toast(stage,d.toast||'Horarios enviados a cada persona',id,700+d.length*600);},
+reporte(stage,d,id){const ph=el('div','phone');const hd=el('div','phead');hd.innerHTML='<b>Glysf · Asistente</b><small>Reporte diario · 8:00 p. m.</small>';ph.append(hd);stage.append(ph);
+ const msg=el('div','bub b');msg.style.cssText='max-width:100%;white-space:pre-line';ph.append(msg);msg.textContent='Hola, este es el resumen de hoy:';
+ d.forEach((l,k)=>later(id,600+k*650,()=>{msg.textContent+='\n• '+l;}));}};
+
+/* ---------- Vista de negocio ---------- */
+let cur='padel',modIx=0;
+function openSector(k,ix){cur=k;modIx=ix||0;const s=SECT[k];chatSector(k);
+ $('home').hidden=true;const v=$('sectorView');v.hidden=false;
+ v.style.setProperty('--bg',s.bg);v.style.setProperty('--acc',s.acc);v.classList.toggle('dark',!!s.dark);
+ const sc=$('scene');sc.classList.remove('in');void sc.offsetWidth;sc.innerHTML=SCENE[k];sc.classList.add('in');
+ $('svTabs').replaceChildren(...Object.keys(SECT).map(x=>{const a=el('a','svtab',SECT[x].name);a.href='#/negocio/'+x;if(x===k)a.setAttribute('aria-current','page');return a;}));
+ const hero=$('svHero');hero.classList.remove('rise');void hero.offsetWidth;hero.classList.add('rise');
+ $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;$('svCta').textContent='Cotizar para '+s.your;
+ renderMods();window.scrollTo({top:0});document.title='Glysf para '+s.your.replace('tu ','')+' · Automatización con IA';}
+function renderMods(){const s=SECT[cur];
+ $('modTabs').replaceChildren(...s.mods.map((m,i)=>{const b=el('button','mtab',m.t);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i===modIx);b.onclick=()=>{modIx=i;renderMods();};return b;}));
+ runId++;const id=runId;const m=s.mods[modIx];const stage=$('modStage');stage.classList.remove('rise');void stage.offsetWidth;stage.classList.add('rise');
+ $('modTitle').textContent=m.t;$('chatBox').hidden=m.k!=='chat';$('modBody').hidden=m.k==='chat';
+ if(m.k==='chat'){startChat();}else{const b=$('modBody');b.replaceChildren();MOD[m.k](b,m.d,id);}
+ $('modNext').textContent=modIx<s.mods.length-1?'Siguiente: '+s.mods[modIx+1].t+' →':'Ver otro negocio →';}
+$('modNext').onclick=()=>{const s=SECT[cur];if(modIx<s.mods.length-1){modIx++;renderMods();}else{const ks=Object.keys(SECT);location.hash='#/negocio/'+ks[(ks.indexOf(cur)+1)%ks.length];}};
+$('modReplay').onclick=()=>renderMods();
+$('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{const sel=document.querySelector('#quote select[name=sector]');sel.value=SECT[cur].form;},50);};
+
+/* ---------- Tarjetas de negocios en el inicio ---------- */
+$('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz'+(s.dark?' dark':''));a.href='#/negocio/'+k;
+ const bg=el('div','bizbg');bg.innerHTML=SCENE[k];const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.mods.length+' automatizaciones · ver demo →'));a.append(bg,tx);return a;}));
+$('heroSectors').replaceChildren(...Object.keys(SECT).map(k=>{const a=el('a','pill',SECT[k].name);a.href='#/negocio/'+k;a.style.cssText='border-radius:12px;text-decoration:none;display:flex;align-items:center';return a;}));
+
+/* ---------- Navegación ---------- */
+function route(){const h=location.hash;const m=h.match(/^#\/negocio\/(\w+)/);
+ if(m&&SECT[m[1]]){openSector(m[1]);return;}
+ runId++;$('sectorView').hidden=true;$('home').hidden=false;document.title='Glysf · Automatización con IA para empresas';
+ if(h&&h.length>1){const t=document.getElementById(h.slice(1));if(t)setTimeout(()=>t.scrollIntoView(),0);}}
+window.addEventListener('hashchange',route);route();
+
 </script>
 </body>
 </html>
