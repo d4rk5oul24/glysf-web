@@ -25,15 +25,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/styles.css">
-<script src="/site.js" defer></script>
-<script src="/app.js" defer></script>
+<link rel="stylesheet" href="/styles.css?v=2">
+<script src="/site.js?v=2" defer></script>
+<script src="/app.js?v=2" defer></script>
 <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "ProfessionalService", "@id": "https://glysf.com/#empresa", "name": "Glysf", "url": "https://glysf.com/", "logo": "https://glysf.com/apple-touch-icon.png", "image": "https://glysf.com/og.png", "email": "grupolysf@gmail.com", "description": "Agentes de IA, chatbots para WhatsApp, Instagram y Telegram, automatización de procesos y páginas web para empresas en Colombia.", "areaServed": {"@type": "Country", "name": "Colombia"}, "priceRange": "Cotización a la medida", "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Servicios", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Agentes de IA"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Chatbot de WhatsApp"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Bot de Instagram"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Bot de Telegram"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Páginas web"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Automatización de procesos"}}]}}, {"@context": "https://schema.org", "@type": "WebSite", "name": "Glysf", "url": "https://glysf.com/", "inLanguage": "es-CO", "publisher": {"@id": "https://glysf.com/#empresa"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Cuánto cuesta?", "acceptedAnswer": {"@type": "Answer", "text": "Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto."}}, {"@type": "Question", "name": "¿Usan mi propio número de WhatsApp?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre."}}, {"@type": "Question", "name": "¿Cuánto tarda la implementación?", "acceptedAnswer": {"@type": "Answer", "text": "Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización."}}, {"@type": "Question", "name": "¿Todas las automatizaciones usan IA?", "acceptedAnswer": {"@type": "Answer", "text": "No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita."}}, {"@type": "Question", "name": "¿Mis datos y los de mis clientes están seguros?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Cada automatización corre en un servidor a nombre de tu empresa, con accesos cifrados y solo con los permisos que necesita. Tus datos no se mezclan con los de otros clientes."}}, {"@type": "Question", "name": "¿Puedo agregar funciones después?", "acceptedAnswer": {"@type": "Answer", "text": "Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual."}}]}]</script>
 </head>
-<body>
+<body class="site">
+<a class="skip" href="#inicio" id="skipLink">Saltar al contenido</a>
+<div id="cookieBar" class="cookiebar" role="region" aria-label="Aviso de cookies" hidden>
+<p>Usamos cookies de analítica para saber cómo se usa la página. Solo se activan si las aceptas. <a href="/privacidad.html#cookies">Más información</a></p>
+<div><button type="button" class="btn outline small" data-consent="no">Rechazar</button><button type="button" class="btn dark small" data-consent="si">Aceptar</button></div>
+</div>
 <svg width="0" height="0" class="sr" aria-hidden="true"><symbol id="g" viewBox="164 120 234 380"><circle cx="280" cy="262" r="92" fill="none" stroke="currentColor" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="currentColor" stroke-width="44" stroke-linecap="round"/><circle cx="372" cy="150" r="22" fill="currentColor"/><circle cx="214" cy="462" r="22" fill="currentColor"/></symbol></svg>
 
-<main id="home">
 <header class="top">
 <div class="wrap">
 <a href="#inicio" class="wordmark" aria-label="Glysf, inicio"><svg aria-hidden="true"><use href="#g"/></svg><span>lysf</span></a>
@@ -47,51 +51,53 @@
 </div>
 </header>
 
-<section id="inicio" class="hero">
+<main id="home">
+<section id="inicio" class="hero" aria-labelledby="heroTitle">
 <div class="wrap">
 <div class="hero-copy">
-<h1 class="display">Tu negocio atiende, vende y agenda solo.</h1>
-<p class="lead">Ponemos un equipo de agentes de IA a trabajar en tu empresa: responden por WhatsApp, Instagram y Telegram, llenan tu agenda, cobran y te mandan el reporte del día. Tú te enfocas en crecer.</p>
+<h1 class="display" id="heroTitle" tabindex="-1">Agentes de IA que atienden, venden y agendan por tu negocio.</h1>
+<p class="lead">Responden por WhatsApp, Instagram y Telegram, agendan citas, cobran y te mandan el reporte del día. Funcionan con el número y las cuentas de tu empresa.</p>
 <div class="hero-ctas">
 <a href="#cotizar" class="btn light">Pide tu cotización</a>
-<a href="#negocios" class="textlink">o mira la demo de tu negocio</a>
+<a href="#negocios" class="textlink">Ver la demo de tu negocio</a>
 </div>
-<p class="hero-note">Todo queda a nombre de tu empresa: tu número, tus cuentas y tus datos.</p>
+<p class="hero-note">Más de 30 automatizaciones listas y demos para 8 tipos de negocio.</p>
 </div>
 
-<div class="stagebox">
-<div class="ws" id="ws" role="img" aria-label="Demostración: seis agentes de Glysf atienden un chat, reservan canchas, cobran, controlan inventario y arman el reporte del día de un club de pádel.">
-<div class="ws-bar" aria-hidden="true"><span><i></i><i></i><i></i></span><span class="ws-url">clubpadelnorte · panel</span><span>hoy</span></div>
+<div class="stagebox glow">
+<div class="ws glass" id="ws" role="img" aria-label="Demostración con datos de ejemplo: seis agentes de Glysf atienden un chat, reservan canchas, cobran, controlan el inventario y arman el reporte del día de un club de pádel.">
+<div class="ws-bar" aria-hidden="true"><svg><use href="#g"/></svg><span>Club Pádel Norte<span class="ws-sub"> · panel de Glysf</span></span><span class="ws-tag">Datos de ejemplo</span></div>
 <div class="ws-grid" aria-hidden="true">
-<section class="tile t-chat" id="tChat"><h3>WhatsApp · Club Pádel Norte</h3><div class="hchat" id="hChat"></div></section>
-<section class="tile t-cal" id="tCal"><h3>Agenda de canchas</h3><div class="cal" id="hCal"></div></section>
+<section class="tile t-chat" id="tChat"><h3>WhatsApp</h3><div class="hchat" id="hChat"></div></section>
+<section class="tile t-cal" id="tCal"><h3>Agenda de canchas · hoy</h3><div class="cal" id="hCal"></div></section>
 <section class="tile pay" id="tPay"><h3>Cobros de hoy</h3><strong id="hPay">$0</strong><ul id="hPayList"></ul></section>
 <section class="tile t-inv" id="tInv"><h3>Inventario</h3><div class="inv" id="hInv"></div></section>
 <section class="tile rep t-rep" id="tRep"><h3>Reporte al dueño</h3><ul id="hRep"></ul></section>
 </div>
-<div class="cursors" id="hCursors" aria-hidden="true"></div>
-<div class="status" id="hStatus" aria-hidden="true"></div>
+<div class="ws-foot" aria-hidden="true">
+<div class="log"><div class="log-head"><h3>Registro de agentes</h3><div class="status" id="hStatus"></div></div><ol id="hLog"></ol></div>
 </div>
-<div class="log" aria-hidden="true"><h3>Registro de agentes</h3><ol id="hLog"></ol></div>
+<div class="cursors" id="hCursors" aria-hidden="true"></div>
+</div>
 </div>
 </div>
 </section>
 
-<section id="negocios" class="sec">
+<section id="negocios" class="sec" aria-labelledby="negociosTitle">
 <div class="wrap">
 <div class="sec-head">
-<h2 class="h2">Elige tu negocio y míralo funcionando</h2>
-<p class="lead">Cada negocio tiene su propia demo: el bot, la agenda, los pagos, la nómina, el inventario y los proveedores, todo en movimiento.</p>
+<h2 class="h2" id="negociosTitle">Demos en vivo para 8 tipos de negocio</h2>
+<p class="lead">Toca un negocio y mira el bot, la agenda, los pagos y el reporte del día trabajando con datos de ejemplo.</p>
 </div>
 <div id="bizGrid" class="biz-grid"></div>
 </div>
 </section>
 
-<section id="servicios" class="sec" style="padding-top:0">
-<div class="wrap">
-<div class="sec-head">
-<h2 class="h2">Lo que hacemos</h2>
-<p class="lead">Soluciones a la medida, conectadas a las herramientas que ya usas.</p>
+<section id="servicios" class="sec lift" aria-labelledby="serviciosTitle">
+<div class="wrap split">
+<div class="split-head">
+<h2 class="h2" id="serviciosTitle">Servicios y canales</h2>
+<p class="lead">Se conectan a lo que ya usas: tu WhatsApp Business, Google Calendar, Google Sheets y tu correo.</p>
 </div>
 <div class="svc">
 <div class="svc-row"><h3>Agentes de IA</h3><p>Asistentes que entienden lenguaje natural, conocen tu negocio y responden como lo harías tú.</p></div>
@@ -104,63 +110,71 @@
 </div>
 </section>
 
-<section id="automatizaciones" class="sec" style="padding-top:0">
+<section id="automatizaciones" class="sec" aria-labelledby="autoTitle">
 <div class="wrap">
 <div class="sec-head">
-<h2 class="h2">Más de 30 automatizaciones listas</h2>
-<p class="lead">Elige un área y mira lo que puede pasar solo, sin que nadie lo haga a mano.</p>
+<h2 class="h2" id="autoTitle">Más de 30 automatizaciones listas</h2>
+<p class="lead">Elige un área y mira qué tareas pueden correr solas, sin que nadie las haga a mano.</p>
 </div>
-<div id="autoTabs" class="tabs" role="tablist" aria-label="Áreas"></div>
-<div id="autoGrid" class="auto-grid" role="tabpanel"></div>
+<div class="tabs-scroll"><div id="autoTabs" class="tabs" role="tablist" aria-label="Áreas de automatización"></div></div>
+<div id="autoGrid" class="auto-grid" role="tabpanel" tabindex="0"></div>
 <p class="after">¿No ves la tuya? <a href="#cotizar">Cuéntanos qué haces a mano</a> y te decimos si se puede automatizar.</p>
 </div>
 </section>
 
-<section id="como" class="sec night">
+<section id="como" class="sec lift" aria-labelledby="comoTitle">
 <div class="wrap">
-<div class="sec-head">
-<h2 class="h2">Cómo trabajamos</h2>
-<p class="lead">De la primera conversación a tu negocio funcionando solo.</p>
+<div class="como-head">
+<h2 class="h2" id="comoTitle">Cómo trabajamos</h2>
+<p class="lead">Cuatro pasos, de la primera conversación al soporte mensual.</p>
 </div>
-<ol class="steps" style="list-style:none;margin:0;padding:0">
+<ol class="steps">
 <li class="step"><h3>Nos cuentas qué necesitas</h3><p>Llenas el formulario de cotización o nos escribes.</p></li>
 <li class="step"><h3>Demo a tu medida</h3><p>Te mostramos una demostración funcionando con la información de tu empresa.</p></li>
 <li class="step"><h3>Implementación</h3><p>Lo conectamos a tu número, tus redes y tus herramientas, todo a nombre de tu empresa.</p></li>
 <li class="step"><h3>Soporte y mejoras</h3><p>Mantenimiento mensual, ajustes y nuevas funciones a medida que creces.</p></li>
 </ol>
-
-<div class="calc">
-<div>
-<h2 class="h2">¿Cuánto tiempo te ahorrarías?</h2>
-<label for="msgs">Mensajes que recibes al día: <span id="msgsVal">80</span></label>
-<input id="msgs" type="range" min="10" max="300" step="10" value="80">
-<p class="fine">Estimado con 2 minutos por mensaje respondido a mano, 30 días al mes.</p>
 </div>
-<div class="calc-out" aria-live="polite">
-<span>Horas al mes que tu equipo recupera</span>
-<strong class="big"><span id="hours">80</span> h</strong>
-<span>Unas <span id="days">10</span> jornadas laborales de 8 horas</span>
+</section>
+
+<section id="ahorro" class="sec" aria-labelledby="ahorroTitle">
+<div class="wrap">
+<div class="calc-box glow glow-b">
+<div class="calc glass">
+<div class="calc-in">
+<h2 class="h2" id="ahorroTitle">Horas que tu equipo recupera al mes</h2>
+<p class="lead">Mueve el control según los mensajes que recibes al día.</p>
+<label for="msgs">Mensajes que recibes al día: <output id="msgsVal" for="msgs">80</output></label>
+<input id="msgs" type="range" min="10" max="300" step="10" value="80" aria-describedby="calcNote">
+<p class="fine" id="calcNote">Estimado con 2 minutos por mensaje respondido a mano, 30 días al mes, si el bot responde todos los mensajes.</p>
+</div>
+<div class="calc-out">
+<p class="calc-res" aria-live="polite"><span class="calc-k">Hasta</span><strong class="big"><span id="hours">80</span> h</strong><span class="calc-d">al mes, unas <span id="days">10</span> jornadas laborales de 8 horas</span></p>
+<a href="#cotizar" class="btn light">Pide tu cotización</a>
+</div>
 </div>
 </div>
 </div>
 </section>
 
-<section id="cotizar" class="sec">
-<div class="wrap quote-wrap">
+<section id="cotizar" class="sec lift" aria-labelledby="cotizarTitle" tabindex="-1">
+<div class="wrap split">
 <div class="quote-side">
-<h2 class="h2">Cuéntanos qué necesitas y te cotizamos</h2>
+<h2 class="h2" id="cotizarTitle">Cuéntanos qué necesitas y te cotizamos</h2>
 <p class="lead">Cada negocio es distinto, por eso cotizamos a la medida. Te respondemos con una propuesta y una demo gratis.</p>
 <ul><li>Sin costo ni compromiso</li><li>Respuesta en máximo 2 días hábiles</li><li>Te recomendamos solo lo que tu negocio necesita</li></ul>
 <p class="muted">¿Prefieres escribir? <a href="mailto:grupolysf@gmail.com">grupolysf@gmail.com</a></p>
 </div>
-<form id="quote" class="q" novalidate>
+<div class="glow glow-c">
+<form id="quote" class="q glass" novalidate>
+<p class="fine">Los campos con * son obligatorios.</p>
 <div class="fgrid">
-<label class="f">Nombre *<input class="f" name="nombre" required maxlength="80" autocomplete="name"></label>
-<label class="f">Empresa o negocio *<input class="f" name="empresa" required maxlength="100" autocomplete="organization"></label>
-<label class="f">Correo *<input class="f" name="correo" type="email" required maxlength="120" autocomplete="email"></label>
-<label class="f">WhatsApp o teléfono<input class="f" name="telefono" type="tel" maxlength="20" autocomplete="tel"></label>
-<label class="f">Tipo de negocio<select class="f" name="sector"><option value="">Selecciona…</option><option>Canchas de pádel o fútbol</option><option>Clínica o consultorio</option><option>Gimnasio</option><option>Pilates o yoga</option><option>Restaurante</option><option>Peluquería o spa</option><option>Tienda o ferretería</option><option>Fábrica o constructora</option><option>Otro</option></select></label>
-<label class="f">Mensajes que reciben al día<select class="f" name="volumen"><option value="">Selecciona…</option><option>Menos de 20</option><option>20 a 100</option><option>100 a 300</option><option>Más de 300</option></select></label>
+<div class="field"><label for="f-nombre">Nombre *</label><input class="f" id="f-nombre" name="nombre" required maxlength="80" autocomplete="name"><span class="ferr" id="err-nombre" hidden></span></div>
+<div class="field"><label for="f-empresa">Empresa o negocio *</label><input class="f" id="f-empresa" name="empresa" required maxlength="100" autocomplete="organization"><span class="ferr" id="err-empresa" hidden></span></div>
+<div class="field"><label for="f-correo">Correo *</label><input class="f" id="f-correo" name="correo" type="email" required maxlength="120" autocomplete="email" inputmode="email"><span class="ferr" id="err-correo" hidden></span></div>
+<div class="field"><label for="f-telefono">WhatsApp o teléfono</label><input class="f" id="f-telefono" name="telefono" type="tel" maxlength="20" autocomplete="tel"></div>
+<div class="field"><label for="f-sector">Tipo de negocio</label><select class="f" id="f-sector" name="sector"><option value="">Selecciona…</option><option>Canchas de pádel o fútbol</option><option>Clínica o consultorio</option><option>Gimnasio</option><option>Pilates o yoga</option><option>Restaurante</option><option>Peluquería o spa</option><option>Tienda o ferretería</option><option>Fábrica o constructora</option><option>Otro</option></select></div>
+<div class="field"><label for="f-volumen">Mensajes que reciben al día</label><select class="f" id="f-volumen" name="volumen"><option value="">Selecciona…</option><option>Menos de 20</option><option>20 a 100</option><option>100 a 300</option><option>Más de 300</option></select></div>
 </div>
 <label class="hp" aria-hidden="true">Sitio web<input name="sitio" tabindex="-1" autocomplete="off"></label>
 <fieldset><legend>¿Dónde lo necesitas?</legend>
@@ -183,18 +197,20 @@
 <label class="check"><input type="checkbox" name="necesidad" value="Marketing y redes">Marketing y redes</label>
 <label class="check"><input type="checkbox" name="necesidad" value="Página web">Página web</label>
 </div></fieldset>
-<label class="f">Cuéntanos más *<textarea class="f" name="detalle" rows="4" required maxlength="2000" placeholder="Ej.: recibimos muchas preguntas por WhatsApp sobre precios y horarios, y agendamos las citas a mano en una libreta."></textarea></label>
-<label class="consent"><input type="checkbox" name="acepto" required><span>Autorizo a Glysf a tratar mis datos para responder esta solicitud, según la <a href="/privacidad.html">política de tratamiento de datos</a> y el <a href="/aviso-legal.html">aviso legal</a>. *</span></label>
-<p id="quoteMsg" role="alert" hidden></p>
-<button type="submit" class="btn dark" style="align-self:flex-start">Pide tu cotización</button>
-<p class="fine">Al enviar se abre tu correo con la solicitud lista; solo tienes que darle enviar.</p>
+<div class="field"><label for="f-detalle">Cuéntanos más *</label><textarea class="f" id="f-detalle" name="detalle" rows="4" required maxlength="2000" placeholder="Ej.: recibimos muchas preguntas por WhatsApp sobre precios y horarios, y agendamos las citas a mano en una libreta."></textarea><span class="ferr" id="err-detalle" hidden></span></div>
+<div class="field"><label class="consent"><input type="checkbox" id="f-acepto" name="acepto" required><span>Autorizo a Glysf a tratar mis datos para responder esta solicitud, según la <a href="/privacidad.html">política de tratamiento de datos</a> y el <a href="/aviso-legal.html">aviso legal</a>. *</span></label><span class="ferr" id="err-acepto" hidden></span></div>
+<button type="submit" class="btn light submit">Pide tu cotización</button>
+<p class="fine">Al enviar preparamos un correo con tu solicitud para grupolysf@gmail.com; solo tienes que darle enviar.</p>
+<div id="quoteMsg" class="qmsg" role="status" aria-live="polite" hidden></div>
 </form>
+</div>
 </div>
 </section>
 
-<section id="faq" class="sec" style="padding-top:0">
-<div class="wrap faq">
-<h2 class="h2" style="margin-bottom:40px">Preguntas frecuentes</h2>
+<section id="faq" class="sec" aria-labelledby="faqTitle">
+<div class="wrap split">
+<h2 class="h2" id="faqTitle">Preguntas frecuentes</h2>
+<div class="faq">
 <details><summary>¿Cuánto cuesta?</summary><p>Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto.</p></details>
 <details><summary>¿Usan mi propio número de WhatsApp?</summary><p>Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre.</p></details>
 <details><summary>¿Cuánto tarda la implementación?</summary><p>Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización.</p></details>
@@ -202,41 +218,42 @@
 <details><summary>¿Mis datos y los de mis clientes están seguros?</summary><p>Sí. Cada automatización corre en un servidor a nombre de tu empresa, con accesos cifrados y solo con los permisos que necesita. Tus datos no se mezclan con los de otros clientes.</p></details>
 <details><summary>¿Puedo agregar funciones después?</summary><p>Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual.</p></details>
 </div>
+</div>
 </section>
 
-<section id="contacto" class="sec night closing">
+<section id="contacto" class="sec band closing" aria-labelledby="cierreTitle">
 <div class="wrap row">
-<h2 class="display">Que tu negocio trabaje mientras tú descansas.</h2>
+<h2 class="display" id="cierreTitle">Cuéntanos qué haces a mano y te mostramos la demo con tus datos.</h2>
 <a href="#cotizar" class="btn light">Pide tu cotización</a>
 </div>
 </section>
 </main>
 
-<div id="sectorView" hidden>
+<main id="sectorView" hidden>
 <div id="scene" aria-hidden="true"></div>
 <div class="svinner">
 <div class="wrap svtop">
-<div class="bar1"><a href="#negocios" class="svback">Volver a todos los negocios</a><a href="#inicio" class="wordmark" style="font-size:22px" aria-label="Glysf, inicio"><svg aria-hidden="true" style="width:21px;height:35px"><use href="#g"/></svg><span>lysf</span></a></div>
-<nav id="svTabs" class="svtabs" aria-label="Negocios"></nav>
+<div class="bar1"><a href="#negocios" class="svback">Volver a todos los negocios</a><a href="#inicio" class="wordmark sv-mark" aria-label="Glysf, inicio"><svg aria-hidden="true"><use href="#g"/></svg><span>lysf</span></a></div>
+<nav class="tabs-scroll" aria-label="Negocios"><div id="svTabs" class="svtabs"></div></nav>
 </div>
 <div id="svHero" class="wrap">
-<h1 id="svTitle" class="display"></h1>
+<h1 id="svTitle" class="display" tabindex="-1"></h1>
 <p id="svSub"></p>
-<a id="svCta" href="#cotizar" class="btn svcta"></a>
+<a id="svCta" href="#cotizar" class="btn svcta">Pide tu cotización</a>
 </div>
 <div class="wrap svbody">
-<div id="modTabs" class="mtabs" role="tablist" aria-label="Automatizaciones"></div>
-<div id="modStage" class="stage">
+<div class="tabs-scroll"><div id="modTabs" class="mtabs" role="tablist" aria-label="Automatizaciones de la demo"></div></div>
+<div id="modStage" class="stage" role="tabpanel">
 <div class="stage-head"><h2 id="modTitle"></h2><div><span>Datos de ejemplo</span><button type="button" id="modReplay" class="btn outline small">Repetir</button></div></div>
 <div id="chatBox" class="chatbox">
 <div class="chathead">
-<div class="av"><svg width="16" height="26" aria-hidden="true" style="color:#0B1F4B"><use href="#g"/></svg></div>
-<div style="flex:1;min-width:0"><div id="botName" style="font-weight:500;font-size:15px"></div><small>en línea en <span id="channelName"></span></small></div>
-<div id="channels" style="display:flex;gap:4px" role="group" aria-label="Canal"></div>
+<div class="av"><svg width="16" height="26" aria-hidden="true"><use href="#g"/></svg></div>
+<div class="who"><div id="botName"></div><small>en línea en <span id="channelName"></span></small></div>
+<div id="channels" class="channels" role="group" aria-label="Canal"></div>
 </div>
 <div id="chat" aria-live="polite"></div>
 <div id="tags"></div>
-<div id="opts"></div>
+<div id="opts" tabindex="-1"></div>
 <form id="say">
 <label for="sayInput" class="sr">Escribe un mensaje</label>
 <input id="sayInput" autocomplete="off" maxlength="200" placeholder="Escribe un mensaje…">
@@ -244,15 +261,15 @@
 </form>
 </div>
 <div id="modBody" class="mbody"></div>
-<button type="button" id="modNext" class="btn dark" style="align-self:flex-end"></button>
+<div class="stage-foot"><button type="button" id="modNext" class="btn outline"></button></div>
 </div>
 </div>
 </div>
-</div>
+</main>
 
 <footer>
 <div class="wrap">
-<span class="wordmark" aria-label="Glysf"><svg aria-hidden="true"><use href="#g"/></svg><span>lysf</span></span>
+<span class="wordmark" role="img" aria-label="Glysf"><svg aria-hidden="true"><use href="#g"/></svg><span aria-hidden="true">lysf</span></span>
 <a href="mailto:grupolysf@gmail.com">grupolysf@gmail.com</a>
 <a href="/privacidad.html">Política de tratamiento de datos</a>
 <a href="/aviso-legal.html">Aviso legal</a>
@@ -261,9 +278,5 @@
 </div>
 </footer>
 <a id="waBtn" class="wa" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp" hidden><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.6 14.6 0 0 0 5.6 5c2.1.9 2.9 1 3.9.8a3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg><span>Escríbenos</span></a>
-<div id="cookieBar" class="cookiebar" role="region" aria-label="Aviso de cookies" hidden>
-<p>Usamos cookies de analítica para saber cómo se usa la página. Solo se activan si las aceptas. <a href="/privacidad.html#cookies">Más información</a></p>
-<div><button type="button" class="btn outline small" data-consent="no">Rechazar</button><button type="button" class="btn dark small" data-consent="si">Aceptar</button></div>
-</div>
 </body>
 </html>

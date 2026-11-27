@@ -5,12 +5,15 @@
 - **Página 100 % estática.** No hay base de datos, ni panel de login, ni código en el servidor que se pueda explotar. El formulario abre el correo del cliente; no envía nada a nuestro servidor.
 - **nginx endurecido** (`nginx.conf` y `seguridad-headers.conf`):
   - Límite de 15 peticiones por segundo por IP (ráfagas de hasta 60) y máximo 30 conexiones por IP. Quien abuse recibe un error 429.
+  - **IP real del visitante detrás de Cloudflare:** nginx confía en los rangos publicados de Cloudflare (https://www.cloudflare.com/ips/) y en la red interna de Docker, y con `real_ip_recursive on` toma de `X-Forwarded-For` la primera IP que no es de confianza. Así los límites anteriores se aplican a cada visitante y no a todo un nodo de Cloudflare (todos los visitantes de Bogotá, por ejemplo). Si Cloudflare publica rangos nuevos, agrégalos en `nginx.conf`.
+  - Texto servido como UTF-8 (`charset utf-8`) y compresión gzip con `Vary: Accept-Encoding` para que las cachés no mezclen versiones.
   - Tiempos de espera cortos contra ataques de conexiones lentas (slowloris).
   - Solo se aceptan GET y HEAD; cualquier otro método recibe un 405.
   - No se sirven archivos ocultos (`.git`, `.env`) ni respaldos.
   - No se muestra la versión del servidor.
 - **Cabeceras de seguridad:** CSP estricta (solo se ejecuta nuestro propio `app.js`), HSTS, anti-clickjacking (`X-Frame-Options`), `nosniff`, `Referrer-Policy`, `Permissions-Policy` y aislamiento entre orígenes.
-- **HTTPS forzado:** todo lo que llegue por http se redirige a https, y www.glysf.com a glysf.com.
+- **HTTPS forzado:** todo lo que llegue por http se redirige a https://glysf.com (destino fijo, no el `Host` que manda el cliente), y www.glysf.com a glysf.com en un solo salto.
+- **Versiones de CSS y JS:** las páginas piden `styles.css?v=2`, `app.js?v=2` y `site.js?v=2`. Cada vez que cambies uno de esos archivos (por ejemplo al llenar `WHATSAPP` o `GA_ID` en `site.js`), sube el número en los cuatro HTML para que nadie se quede con la versión vieja en caché.
 - **Formulario:** campo trampa contra bots, bloqueo de envíos hechos en menos de 4 segundos o repetidos en menos de 30, límites de longitud y limpieza de caracteres de control.
 - **Analítica con consentimiento:** Google Analytics solo se carga si el visitante acepta el aviso de cookies.
 - **Contenedor:** archivos de la web en solo lectura y chequeo de salud.
@@ -47,5 +50,8 @@ Con esto Cloudflare absorbe los ataques DDoS antes de que lleguen al VPS y la IP
 - 2FA en GitHub y en grupolysf@gmail.com.
 - El repo es **público**: nunca subas contraseñas, tokens de API ni archivos `.env`.
 
+### 5. Comprobar la IP real (después de activar Cloudflare)
+- Traefik (Easypanel) tiene que reenviar el `X-Forwarded-For` que manda Cloudflare. Si en los registros de nginx (`docker logs` del servicio) sigue apareciendo una IP de Cloudflare (por ejemplo 172.70.x.x o 162.158.x.x) en vez de la del visitante, configura en Traefik `forwardedHeaders.trustedIPs` con los mismos rangos de Cloudflare.
+
 ### Opcional, más adelante
-- Bloquear en el firewall del VPS todo el tráfico 80/443 que no venga de las IPs de Cloudflare, para que nadie pueda saltárselo atacando la IP directamente.
+- Bloquear en el firewall del VPS todo el tráfico 80/443 que no venga de las IPs de Cloudflare, para que nadie pueda saltárselo atacando la IP directamente. Con eso, además, nadie puede falsificar la cabecera `X-Forwarded-For` entrando directo al servidor.

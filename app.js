@@ -1,72 +1,102 @@
-/* ---------- Portada: equipo de agentes trabajando en vivo ---------- */
+/* ---------- Portada: equipo de agentes trabajando en vivo (datos de ejemplo) ---------- */
 var AG=[
- {n:'Recepción',c:'#8FB3FF'},{n:'Agenda',c:'#7EE0C3'},{n:'Cobros',c:'#F5A3C7'},
- {n:'Inventario',c:'#FFD27A'},{n:'Reportes',c:'#B9A2FF'},{n:'Ventas',c:'#7FD4F5'}];
-var H={timers:[],t0:0,done:0,running:false,visible:true,cursors:[]};
+ {n:'Recepción',c:'#8FB3FF',home:'tChat',slot:0},{n:'Agenda',c:'#7EE0C3',home:'tCal',slot:0},{n:'Cobros',c:'#F5A3C7',home:'tPay',slot:0},
+ {n:'Inventario',c:'#FFD27A',home:'tInv',slot:0},{n:'Reportes',c:'#FF9F6B',home:'tRep',slot:0},{n:'Ventas',c:'#7FD4F5',home:'tChat',slot:1}];
+var H={timers:[],t0:0,done:0,running:false,visible:true,first:true,cursors:[]};
 var HROWS=['5:00 p. m.','6:00 p. m.','7:00 p. m.','8:00 p. m.'];
 var HINV=[['Pelotas',40,'tubos',8],['Raquetas',12,'und',9],['Bebidas',96,'und',58]];
+var HLOOP=8000; // un ciclo completo dura 8 s y vuelve a empezar
+var RM=matchMedia('(prefers-reduced-motion: reduce)');
 function hq(id){return document.getElementById(id);}
 function hel(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
 function hMoney(n){return '$'+Math.round(n).toLocaleString('es-CO');}
+// Posición de un elemento dentro del tablero sin depender de transformaciones (la entrada anima el tablero).
+function hPos(node){var ws=hq('ws'),x=0,y=0,n=node;while(n&&n!==ws){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;}return {x:x,y:y,w:node.offsetWidth,h:node.offsetHeight};}
+function hShown(node){return !!(node&&node.offsetParent);}
+function hMove(d,x,y){var w=hq('ws').clientWidth;d.style.transform='translate('+Math.round(Math.max(4,Math.min(x,w-d._lw-22)))+'px,'+Math.round(y)+'px)';}
+// Cada agente descansa en la esquina superior derecha de su propio mosaico: visible y sin encimarse.
+function hHome(i){var a=AG[i],d=H.cursors[i],t=hq(a.home);if(!hShown(t)){d.hidden=true;return;}d.hidden=false;
+ var p=hPos(t),x=p.x+p.w-14-d._lw-12;if(a.slot){var o=H.cursors[AG.findIndex(function(b,j){return b.home===a.home&&j!==i;})];x-=(o?o._lw:70)+24;}
+ hMove(d,x,p.y+3);}
 function hBuild(){
  var cal=hq('hCal');cal.replaceChildren(hel('span'));['Cancha 1','Cancha 2','Cancha 3'].forEach(function(c){cal.append(hel('span','ch',c));});
  HROWS.forEach(function(r,i){cal.append(hel('span','ct',r));for(var j=0;j<3;j++){var s=hel('span','cs');s.id='hs'+i+j;cal.append(s);}});
- hq('hChat').replaceChildren();hq('hPayList').replaceChildren();hq('hRep').replaceChildren();hq('hLog').replaceChildren();
+ hq('hChat').replaceChildren(hel('div','hlist'));hSlots('hPayList',3);hq('hRep').replaceChildren();hSlots('hLog',3);
  hq('hPay').textContent='$0';hq('hPay')._v=0;
  var inv=hq('hInv');inv.replaceChildren();HINV.forEach(function(x,i){var r=hel('div','ir');r.id='hi'+i;var b=hel('div','bar');b.append(hel('i'));r.append(hel('span',null,x[0]),hel('span','q',x[1]+' '+x[2]),b);inv.append(r);});
  inv.append(hel('div','note'));
- var cs=hq('hCursors');cs.replaceChildren();H.cursors=AG.map(function(a,i){var d=hel('div','cur');d.style.setProperty('--c',a.c);
+ hChat('c','¿Hay cancha hoy a las 6?');
+ var cs=hq('hCursors');cs.replaceChildren();H.cursors=AG.map(function(a){var d=hel('div','cur');d.style.setProperty('--c',a.c);
   d.innerHTML='<svg viewBox="0 0 16 18"><path d="M1 1l13 7-6 1.5L5 16z" fill="'+a.c+'" stroke="#06112E" stroke-width="1.2" stroke-linejoin="round"/></svg>';
-  d.append(hel('span',null,a.n));var w=hq('ws');d.style.transform='translate('+(40+i*((w.clientWidth-120)/5))+'px,'+(w.clientHeight-40)+'px)';cs.append(d);return d;});
+  var lb=hel('span',null,a.n);d.append(lb);cs.append(d);return d;});
+ // Se ubican sin transición: al reconstruir el tablero en cada ciclo los agentes no vuelan desde la esquina.
+ cs.classList.add('still');H.cursors.forEach(function(d){d._lw=d.lastChild.offsetWidth||70;});
+ AG.forEach(function(a,i){hHome(i);});void cs.offsetWidth;cs.classList.remove('still');
  hStatus(0);
 }
 function hStatus(n){var s=hq('hStatus');s.classList.toggle('done',n>=HT.length);s.replaceChildren();
  var dots=hel('span','dots');AG.forEach(function(a){var i=hel('i');i.style.setProperty('--c',a.c);dots.append(i);});
- s.append(dots,hel('span',null,AG.length+' agentes'),hel('span',null,n+'/'+HT.length+' tareas'),hel('span','st',n>=HT.length?'día cerrado':'trabajando'));}
-function hLog(a,text){var ms=performance.now()-H.t0;var li=hel('li');var t=hel('time',null,'00:'+String(Math.floor(ms/1000)).padStart(2,'0')+'.'+Math.floor(ms%1000/100));
- var w=hel('span','who',AG[a].n);w.style.setProperty('--c',AG[a].c);li.append(t,w,hel('span',null,text));var l=hq('hLog');l.prepend(li);while(l.children.length>4)l.lastChild.remove();}
-function hChat(cls,text){var c=hq('hChat');c.append(hel('div','hm '+cls,text));while(c.children.length>5)c.firstChild.remove();}
+ s.append(dots,hel('span','ag',AG.length+' agentes'),hel('span','n',n+'/'+HT.length+' tareas'),hel('span','st',n>=HT.length?'día cerrado':'trabajando'));}
+// Listas de filas fijas: lo nuevo entra arriba y el resto baja cambiando solo el contenido, no la geometría (sin CLS).
+function hSlots(id,n){var l=hq(id);l.replaceChildren();for(var i=0;i<n;i++)l.append(hel('li','slot'));}
+function hPush(id,nodes){var r=hq(id).children;for(var i=r.length-1;i>0;i--)r[i].replaceChildren.apply(r[i],[].slice.call(r[i-1].childNodes));
+ r[0].replaceChildren.apply(r[0],nodes);r[0].classList.remove('fresh');void r[0].offsetWidth;r[0].classList.add('fresh');}
+function hLog(a,text,ms){var t=hel('time',null,'00:'+String(Math.floor(ms/1000)).padStart(2,'0')+'.'+Math.floor(ms%1000/100));
+ var w=hel('span','who',AG[a].n);w.style.setProperty('--c',AG[a].c);hPush('hLog',[t,w,hel('span',null,text)]);}
+// El chat crece hacia abajo y se desplaza con transform: los mensajes anteriores nunca cambian de posición en el layout.
+function hChat(cls,text){var c=hq('hChat'),l=c.firstChild;l.append(hel('div','hm '+cls,text));l.style.transform='translateY('+(c.clientHeight-l.offsetHeight)+'px)';}
 function hBook(i,j,a,name){var s=hq('hs'+i+j);s.style.setProperty('--c',AG[a].c);s.textContent=name;s.classList.add('on');}
 function hPay(name,v){var p=hq('hPay');var from=p._v,to=from+v,t0=performance.now();p._v=to;
  (function tick(t){var k=Math.min(1,(t-t0)/700);p.textContent=hMoney(from+(to-from)*k);if(k<1&&H.running)requestAnimationFrame(tick);else p.textContent=hMoney(to);})(t0);
- var li=hel('li');li.append(hel('span',null,name+' · '+hMoney(v)),hel('b',null,'Pagado'));var l=hq('hPayList');l.prepend(li);while(l.children.length>3)l.lastChild.remove();}
+ hPush('hPayList',[hel('span',null,name+' · '+hMoney(v)),hel('b',null,'Pagado')]);}
 function hInv(i,to,low){var r=hq('hi'+i),x=HINV[i];r.querySelector('.bar i').style.width=Math.max(5,to/x[1]*100)+'%';r.querySelector('.q').textContent=to+' '+x[2];if(low){r.classList.add('low');hq('hInv').querySelector('.note').textContent='Pedido de '+x[0].toLowerCase()+' enviado al proveedor';}}
 function hRep(text){hq('hRep').append(hel('li',null,text));}
-// [ms, agente, mosaico, acción, registro]
+function hSay(c,b){hChat('c',c);if(!H.running){hChat('b',b);return;}H.timers.push(setTimeout(function(){hChat('b',b);},350));}
+// [ms, agente, mosaico, acción, registro]. El chat y la agenda cuentan la misma historia (cancha 1, 6 p. m.).
 var HT=[
- [300,0,'tChat',function(){hChat('c','¿Hay cancha mañana a las 6?');setTimeout(function(){hChat('b','Sí: cancha 2 a las 6:00 p. m. ¿Te la reservo?');},350);},'respondió en 3 s'],
- [700,1,'hs10',function(){hBook(1,0,1,'Andrés M.');},'reservó cancha 1, 6 p. m.'],
- [1100,2,'tPay',function(){hPay('Andrés M.',100000);},'cobró la reserva'],
- [1400,3,'hi0',function(){hInv(0,26);},'descontó pelotas'],
- [1900,5,'tChat',function(){hChat('c','¿Cuánto valen las clases?');setTimeout(function(){hChat('b','$40.000 por persona. Martes y jueves, 7 p. m.');},350);},'envió precios'],
- [2200,1,'hs21',function(){hBook(2,1,1,'Clase');},'abrió clase grupal'],
- [2700,0,'tChat',function(){hChat('c','Dale, resérvala');setTimeout(function(){hChat('b','Listo. Te envío el link de pago.');},350);},'cerró una reserva'],
- [2900,1,'hs01',function(){hBook(0,1,1,'Laura P.');},'reservó cancha 2, 5 p. m.'],
- [3300,2,'tPay',function(){hPay('Laura P.',100000);},'cobró la reserva'],
- [3500,3,'hi0',function(){hInv(0,8,true);},'pidió pelotas al proveedor'],
- [4000,5,'hs32',function(){hBook(3,2,5,'Torneo');},'vendió un torneo'],
- [4300,2,'tPay',function(){hPay('Torneo',240000);},'cobró el torneo'],
- [4700,1,'hs20',function(){hBook(2,0,1,'Juan D.');},'reservó cancha 1, 7 p. m.'],
- [5000,3,'hi2',function(){hInv(2,41);},'actualizó bebidas'],
- [5400,4,'tRep',function(){hRep('Ocupación de hoy: 82%');},'calculó la ocupación'],
- [5900,4,'tRep',function(){hRep('Ingresos: $440.000');},'sumó los ingresos'],
- [6400,4,'tRep',function(){hRep('Pelotas: pedido en camino');},'envió el reporte al dueño']];
-function hTarget(id){var w=hq('ws').getBoundingClientRect(),t=hq(id);if(!t||!t.offsetParent)t=hq('tChat');var r=t.getBoundingClientRect();
- return [Math.min(r.left-w.left+r.width*(.35+Math.random()*.3),w.width-100),r.top-w.top+Math.min(r.height*.55,60+Math.random()*30)];}
+ [0,0,'tChat',function(){hChat('b','Sí: cancha 1 a las 6:00 p. m. ¿Te la reservo?');},'respondió en 3 s'],
+ [550,1,'hs10',function(){hBook(1,0,1,'Andrés M.');},'reservó cancha 1, 6 p. m.'],
+ [900,2,'tPay',function(){hPay('Andrés M.',100000);},'cobró la reserva'],
+ [1150,3,'hi0',function(){hInv(0,26);},'descontó pelotas'],
+ [1550,5,'tChat',function(){hSay('¿Cuánto valen las clases?','$40.000 por persona. Martes y jueves, 7 p. m.');},'envió precios'],
+ [1850,1,'hs21',function(){hBook(2,1,1,'Clase');},'abrió clase grupal'],
+ [2250,0,'tChat',function(){hSay('Dale, resérvala','Listo. Te envío el link de pago.');},'cerró una reserva'],
+ [2450,1,'hs01',function(){hBook(0,1,1,'Laura P.');},'reservó cancha 2, 5 p. m.'],
+ [2800,2,'tPay',function(){hPay('Laura P.',100000);},'cobró la reserva'],
+ [3000,3,'hi0',function(){hInv(0,8,true);},'pidió pelotas al proveedor'],
+ [3400,5,'hs32',function(){hBook(3,2,5,'Torneo');},'vendió un torneo'],
+ [3650,2,'tPay',function(){hPay('Torneo',240000);},'cobró el torneo'],
+ [4000,1,'hs20',function(){hBook(2,0,1,'Juan D.');},'reservó cancha 1, 7 p. m.'],
+ [4250,3,'hi2',function(){hInv(2,41);},'actualizó bebidas'],
+ [4600,4,'tRep',function(){hRep('Ocupación de hoy: 82%');},'calculó la ocupación'],
+ [5000,4,'tRep',function(){hRep('Ingresos: $440.000');},'sumó los ingresos'],
+ [5400,4,'tRep',function(){hRep('Pelotas: pedido en camino');},'envió el reporte al dueño']];
+function hTarget(d,id){var t=hq(id);if(!hShown(t))return;var p=hPos(t);
+ var k=H.cursors.indexOf(d)%2;hMove(d,p.x+p.w*((k?.58:.14)+Math.random()*.14),p.y+Math.min(p.h*.55,48+Math.random()*16)+(k?30:0));}
 function hRun(){hClear();H.running=true;hBuild();H.t0=performance.now();H.done=0;
  HT.forEach(function(t){
-  H.timers.push(setTimeout(function(){var p=hTarget(t[2]);H.cursors[t[1]].style.transform='translate('+p[0]+'px,'+p[1]+'px)';},t[0]));
+  H.timers.push(setTimeout(function(){hTarget(H.cursors[t[1]],t[2]);},t[0]));
   H.timers.push(setTimeout(function(){var tile=hq(t[2]);var box=tile&&tile.classList.contains('tile')?tile:tile&&tile.closest('.tile');if(box){box.classList.add('sel');setTimeout(function(){box.classList.remove('sel');},500);}
-   t[3]();hLog(t[1],t[4]);H.done++;hStatus(H.done);},t[0]+780));});
- H.timers.push(setTimeout(function(){if(H.visible)hRun();else H.running=false;},HT[HT.length-1][0]+6000));}
+   t[3]();hLog(t[1],t[4],performance.now()-H.t0);H.done++;hStatus(H.done);},t[0]+780));});
+ // Día cerrado: cada agente vuelve a su mosaico y el ciclo se repite.
+ H.timers.push(setTimeout(function(){AG.forEach(function(a,i){hHome(i);});},HT[HT.length-1][0]+1100));
+ H.timers.push(setTimeout(function(){if(H.visible&&!document.hidden&&!hq('home').hidden)hRun();else H.running=false;},HLOOP));}
 function hClear(){H.timers.forEach(clearTimeout);H.timers=[];}
-function hFinal(){hClear();hBuild();H.t0=performance.now();HT.forEach(function(t){t[3]();});H.done=HT.length;hStatus(H.done);
- var l=hq('hLog');HT.slice(-4).forEach(function(t){hLog(t[1],t[4]);});hq('hCursors').replaceChildren();}
+// Movimiento reducido: el tablero muestra directamente el estado final, con cada agente en su mosaico.
+function hFinal(){hClear();H.running=false;hBuild();HT.forEach(function(t){t[3]();});H.done=HT.length;hStatus(H.done);
+ HT.slice(-3).forEach(function(t){hLog(t[1],t[4],t[0]+780);});H.final=true;}
 function heroStop(){hClear();H.running=false;}
-function heroWake(){if(!hq('ws'))return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){hFinal();return;}if(!H.running&&H.visible)hRun();}
+function heroWake(){if(!hq('ws')||hq('home').hidden)return;
+ if(RM.matches){if(!H.final)hFinal();return;}
+ if(H.running||!H.visible||document.hidden)return;
+ H.running=true;H.final=false;
+ // Primera vez: el tablero aparece con los agentes en su puesto y arranca cuando termina la entrada.
+ if(H.first){H.first=false;hBuild();H.timers.push(setTimeout(hRun,1000));}else hRun();}
 (function(){if(!hq('ws'))return;
- if('IntersectionObserver' in window){new IntersectionObserver(function(e){H.visible=e[0].isIntersecting;if(H.visible&&!H.running&&!hq('home').hidden)heroWake();}).observe(hq('ws'));}
- document.addEventListener('visibilitychange',function(){if(document.hidden)heroStop();else heroWake();});})();
+ if('IntersectionObserver' in window){new IntersectionObserver(function(e){H.visible=e[0].isIntersecting;if(H.visible)heroWake();}).observe(hq('ws'));}
+ document.addEventListener('visibilitychange',function(){if(document.hidden)heroStop();else heroWake();});
+ RM.addEventListener&&RM.addEventListener('change',function(){heroStop();H.final=false;heroWake();});
+ var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){if(H.cursors.length)AG.forEach(function(a,i){hHome(i);});},150);});})();
 
 const $=id=>document.getElementById(id);
 const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
@@ -142,16 +172,23 @@ fabrica:{label:'Fábrica',bot:'Muebles Roble',tags:['Cotización en PDF','Pedido
   {u:'Unos 3 metros',b:'Te envié una cotización estimada en PDF. Agendamos visita para tomar medidas exactas sin costo.',n:null}]}]}
 };
 const CH={wa:'WhatsApp',ig:'Instagram',tg:'Telegram'};
-const UC={wa:'#2F55F5',ig:'#7A4DF5',tg:'#2A8BD8'};
+const UC={wa:'#2F55F5',ig:'#C13584',tg:'#1F6FB8'};
 let sector='clinica',channel='wa',step=0,busy=false,timer=null;
 function bubble(who,text){const b=el('div','bub '+who,text);if(who==='u')b.style.background=UC[channel];$('chat').append(b);$('chat').scrollTop=$('chat').scrollHeight;}
-function typing(cb,ms){busy=true;const t=el('div','bub b','escribiendo…');t.style.cssText='background:#22396E;color:#A9B8DA';$('chat').append(t);$('chat').scrollTop=$('chat').scrollHeight;timer=setTimeout(()=>{t.remove();busy=false;cb();},ms||900);}
-function showOpts(){const o=$('opts');o.replaceChildren();const s=S[sector];if(step===null){$('tags').replaceChildren(...s.tags.map(x=>el('span','tag','✓ '+x)));const again=el('button','opt','Probar de nuevo');again.type='button';again.onclick=start;o.append(again);return;}
- s.steps[step].opts.forEach(op=>{const b=el('button','opt',op.u);b.type='button';b.onclick=()=>choose(op);o.append(b);});}
-function choose(op){if(busy)return;$('opts').replaceChildren();bubble('u',op.u);typing(()=>{bubble('b',op.b);step=op.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
+function typing(cb,ms){busy=true;const t=el('div','bub b typing','escribiendo…');$('chat').append(t);$('chat').scrollTop=$('chat').scrollHeight;timer=setTimeout(()=>{t.remove();busy=false;cb();},ms||900);}
+// Si el foco estaba en las opciones, pasa a #opts mientras el bot escribe y vuelve a la primera opción nueva.
+let optFocus=false;
+function holdOptFocus(){if($('opts').contains(document.activeElement)){optFocus=true;$('opts').focus({preventScroll:true});}}
+function showOpts(){const o=$('opts');o.replaceChildren();const s=S[sector];
+ if(step===null){$('tags').replaceChildren(...s.tags.map(x=>el('span','tag','✓ '+x)));const again=el('button','opt','Probar de nuevo');again.type='button';again.onclick=()=>{holdOptFocus();start();};o.append(again);}
+ else s.steps[step].opts.forEach(op=>{const b=el('button','opt',op.u);b.type='button';b.onclick=()=>choose(op);o.append(b);});
+ if(optFocus&&(document.activeElement===o||document.activeElement===document.body)){o.firstChild.focus({preventScroll:true});}optFocus=false;}
+function choose(op){if(busy)return;holdOptFocus();$('opts').replaceChildren();bubble('u',op.u);typing(()=>{bubble('b',op.b);step=op.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
 function start(){clearTimeout(timer);busy=false;step=0;$('chat').replaceChildren();$('tags').replaceChildren();$('opts').replaceChildren();renderHeader();typing(()=>{bubble('b',S[sector].steps[0].bot);showOpts();},600);}
+// Los botones de canal se crean una vez; al cambiar de canal solo se actualiza su estado (el foco no se pierde).
+$('channels').append(...Object.keys(CH).map(k=>{const b=el('button','chip',CH[k]);b.type='button';b.dataset.ch=k;b.onclick=()=>{channel=k;renderHeader();document.querySelectorAll('.bub.u').forEach(x=>x.style.background=UC[k]);};return b;}));
 function renderHeader(){
- $('channels').replaceChildren(...Object.keys(CH).map(k=>{const b=el('button','chip',CH[k]);b.type='button';b.setAttribute('aria-pressed',k===channel);b.onclick=()=>{channel=k;renderHeader();document.querySelectorAll('.bub.u').forEach(x=>x.style.background=UC[k]);};return b;}));
+ [...$('channels').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.ch===channel));
  $('botName').textContent=S[sector].bot;$('channelName').textContent=CH[channel];}
 $('say').onsubmit=e=>{e.preventDefault();const v=$('sayInput').value.trim();if(!v||busy)return;$('sayInput').value='';
  const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
@@ -170,24 +207,54 @@ const A={
 'Operación y finanzas':[['Cobros y cartera','Recuerda pagos pendientes de forma amable y automática.'],['Lectura de facturas con IA','Extrae los datos de facturas y soportes que te envían.'],['Registro de gastos','Envías la foto del recibo y queda registrado.'],['Inventario y alertas','Avisa cuando un producto se está agotando.'],['Pedidos a proveedores','Genera la orden de compra cuando baja el stock.'],['Reporte diario al dueño','Ventas, citas y pendientes del día en un mensaje.'],['Registro en Google Sheets','Cada cliente, pedido o cita queda guardado solo.']],
 'Marketing y redes':[['Respuesta a comentarios','Contesta comentarios y mensajes de Instagram.'],['Campañas por WhatsApp','Promociones a clientes que aceptaron recibirlas.'],['Publicaciones programadas','Deja listas las publicaciones de la semana.'],['Reseñas en Google','Pide la reseña después de cada compra o visita.'],['Encuestas de satisfacción','Mide qué tan contentos quedan tus clientes.'],['Fechas especiales','Saludos y descuentos en cumpleaños y aniversarios.']],
 'Equipo interno':[['Asistente en Telegram','Tu equipo consulta precios, stock o agenda con un mensaje.'],['Notas de voz a texto','Transcribe audios y los convierte en tareas.'],['Resumen de correos','Te llega lo importante de tu bandeja cada mañana.'],['Ingreso de empleados','Envía documentos, accesos e instrucciones a los nuevos.'],['Tareas y pendientes','Asigna y recuerda tareas al equipo automáticamente.'],['Avisos entre áreas','Ventas avisa a bodega y bodega avisa a despacho, solos.']]};
-let area=Object.keys(A)[0];
-function renderAuto(){
- $('autoTabs').replaceChildren(...Object.keys(A).map(k=>{const b=el('button','tab',k+' ('+A[k].length+')');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',k===area);b.onclick=()=>{area=k;renderAuto();};return b;}));
+// Pestañas accesibles: tabindex móvil, flechas, Inicio y Fin; los botones no se reconstruyen.
+function arrowTabs(list){list.addEventListener('keydown',e=>{const t=[...list.querySelectorAll('[role=tab]')],i=t.indexOf(document.activeElement);if(i<0)return;
+ const k=e.key;let n=k==='ArrowRight'?i+1:k==='ArrowLeft'?i-1:k==='Home'?0:k==='End'?t.length-1:null;if(n===null)return;
+ e.preventDefault();n=(n+t.length)%t.length;t[n].focus();t[n].click();});}
+function selectTab(list,panel,ix){[...list.querySelectorAll('[role=tab]')].forEach((b,i)=>{const on=i===ix;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;if(on)panel.setAttribute('aria-labelledby',b.id);});}
+const AK=Object.keys(A);let area=AK[0];
+$('autoTabs').append(...AK.map((k,i)=>{const b=el('button','tab',k+' ('+A[k].length+')');b.type='button';b.id='atab'+i;b.setAttribute('role','tab');b.setAttribute('aria-controls','autoGrid');b.onclick=()=>{area=k;renderAuto();};return b;}));
+arrowTabs($('autoTabs'));
+function renderAuto(){selectTab($('autoTabs'),$('autoGrid'),AK.indexOf(area));
  $('autoGrid').replaceChildren(...A[area].map(([h,p])=>{const d=el('div','auto');d.append(el('h3',null,h),el('p',null,p));return d;}));}
 renderAuto();
 
 /* ---------- Calculadora ---------- */
-const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);};
+const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);r.style.setProperty('--p',(m-r.min)/(r.max-r.min)*100+'%');};r.oninput();
 
 /* ---------- Formulario de cotización (con protección anti-spam) ---------- */
-const FORM_T0=Date.now();let lastSend=0;
-$('quote').onsubmit=e=>{e.preventDefault();const f=e.target,msg=$('quoteMsg');
- const bad=[...f.querySelectorAll('[required]')].find(x=>x.type==='checkbox'?!x.checked:!x.value.trim()||(x.type==='email'&&!/^\S+@\S+\.\S+$/.test(x.value)));
- if(bad){msg.hidden=false;msg.textContent=bad.type==='checkbox'?'Debes aceptar la política de tratamiento de datos.':'Revisa los campos obligatorios (*).';msg.className='';bad.focus();return;}
- msg.hidden=true;const d=new FormData(f);if(d.get('sitio')||Date.now()-FORM_T0<4000||Date.now()-lastSend<30000){msg.hidden=false;msg.className='';msg.textContent='Espera unos segundos e inténtalo de nuevo.';return;}lastSend=Date.now();if(window.glysfEvent)glysfEvent('cotizacion_enviada',{sector:d.get('sector')||'sin dato'});const clean=v=>String(v||'').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g,'').slice(0,2000);const all=n=>d.getAll(n).join(', ')||'—';
- const body=`Nombre: ${clean(d.get('nombre'))}\nEmpresa: ${clean(d.get('empresa'))}\nCorreo: ${clean(d.get('correo'))}\nTeléfono: ${clean(d.get('telefono'))||'—'}\nTipo de negocio: ${clean(d.get('sector'))||'—'}\nMensajes al día: ${clean(d.get('volumen'))||'—'}\nCanales: ${all('canal')}\nQuiere automatizar: ${all('necesidad')}\n\nDetalle:\n${clean(d.get('detalle'))}\n\nAutorizó el tratamiento de datos: Sí`;
- location.href='mailto:grupolysf@gmail.com?subject='+encodeURIComponent('Cotización Glysf – '+clean(d.get('empresa')))+'&body='+encodeURIComponent(body);
- msg.hidden=false;msg.className='ok';msg.textContent='¡Listo! Se abrió tu correo con la solicitud. Dale enviar y te respondemos pronto.';};
+const FORM_T0=Date.now();let lastSend=0;const MAIL='grupolysf@gmail.com';
+const MSG={nombre:'Escribe tu nombre.',empresa:'Escribe el nombre de tu empresa o negocio.',detalle:'Cuéntanos qué te gustaría automatizar.',acepto:'Para enviar la solicitud debes aceptar la política de tratamiento de datos.'};
+function fieldError(x){if(x.type==='checkbox')return x.checked?'':MSG[x.name];const v=x.value.trim();
+ if(x.name==='correo'){if(!v)return 'Escribe tu correo.';return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'Escribe un correo válido, por ejemplo nombre@empresa.com.';}
+ return v?'':MSG[x.name];}
+function showError(x,m){const s=$('err-'+x.name);if(!s)return;
+ if(m){s.textContent=m;s.hidden=false;x.setAttribute('aria-invalid','true');x.setAttribute('aria-describedby',s.id);}
+ else{s.textContent='';s.hidden=true;x.removeAttribute('aria-invalid');x.removeAttribute('aria-describedby');}}
+const REQ=[...$('quote').querySelectorAll('[required]')];
+REQ.forEach(x=>{
+ // Se valida al salir del campo solo si ya escribieron algo; una vez marcado, se revisa con cada cambio.
+ x.addEventListener('blur',()=>{if(x.type!=='checkbox'&&x.value.trim())showError(x,fieldError(x));});
+ x.addEventListener(x.type==='checkbox'?'change':'input',()=>{if(x.getAttribute('aria-invalid'))showError(x,fieldError(x));});});
+function copyText(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).catch(()=>legacyCopy(t));return legacyCopy(t);}
+function legacyCopy(t){return new Promise((ok,ko)=>{const a=el('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:-9999px';document.body.append(a);a.select();
+ let done=false;try{done=document.execCommand('copy');}catch(e){}a.remove();done?ok():ko();});}
+function quoteNote(cls,text,body){const m=$('quoteMsg');m.className='qmsg '+cls;m.replaceChildren(el('p',null,text));m.hidden=false;
+ if(body){const b=el('button','btn outline small','Copiar solicitud');b.type='button';const st=el('small');
+  b.onclick=()=>copyText(body).then(()=>{st.textContent='Solicitud copiada. Pégala en un correo para '+MAIL+'.';},()=>{st.textContent='No se pudo copiar. Selecciona el texto de tu solicitud y cópialo a mano.';});
+  m.append(b,st);}}
+$('quote').onsubmit=e=>{e.preventDefault();const f=e.target;
+ let first=null;REQ.forEach(x=>{const m=fieldError(x);showError(x,m);if(m&&!first)first=x;});
+ if(first){$('quoteMsg').hidden=true;first.focus();return;}
+ const d=new FormData(f);if(d.get('sitio')||Date.now()-FORM_T0<4000||Date.now()-lastSend<30000){quoteNote('warn','Espera unos segundos e inténtalo de nuevo.');return;}
+ lastSend=Date.now();if(window.glysfEvent)glysfEvent('cotizacion_enviada',{sector:d.get('sector')||'sin dato'});
+ const clean=(v,n)=>String(v||'').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g,'').slice(0,n||2000);const all=n=>d.getAll(n).join(', ')||'—';
+ const body=det=>`Nombre: ${clean(d.get('nombre'))}\nEmpresa: ${clean(d.get('empresa'))}\nCorreo: ${clean(d.get('correo'))}\nTeléfono: ${clean(d.get('telefono'))||'—'}\nTipo de negocio: ${clean(d.get('sector'))||'—'}\nMensajes al día: ${clean(d.get('volumen'))||'—'}\nCanales: ${all('canal')}\nQuiere automatizar: ${all('necesidad')}\n\nDetalle:\n${det}\n\nAutorizó el tratamiento de datos: Sí`;
+ const full=body(clean(d.get('detalle')));
+ // El enlace mailto se recorta para no superar el límite de algunos programas de correo; la copia lleva el texto completo.
+ const short=body(clean(d.get('detalle'),1200));
+ location.href='mailto:'+MAIL+'?subject='+encodeURIComponent('Cotización Glysf – '+clean(d.get('empresa'),100))+'&body='+encodeURIComponent(short);
+ quoteNote('ok','Tu solicitud está lista. Si no se abrió tu correo, copia la solicitud y envíala a '+MAIL+'.','Para: '+MAIL+'\nAsunto: Cotización Glysf – '+clean(d.get('empresa'),100)+'\n\n'+full);};
 /* ---------- Escenas de fondo por negocio (SVG ilustrado y animado) ---------- */
 const SCENE={
 padel:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#0D4F7A"/><g opacity=".9"><rect x="230" y="120" width="740" height="600" rx="6" fill="#1C6FA8" stroke="#fff" stroke-width="6"/><rect x="230" y="120" width="740" height="600" fill="none" stroke="#8FC3E6" stroke-width="22" opacity=".35"/><line x1="230" y1="420" x2="970" y2="420" stroke="#fff" stroke-width="8"/><g stroke="#fff" stroke-width="1" opacity=".5">${Array.from({length:37},(_,i)=>`<line x1="${230+i*20}" y1="408" x2="${230+i*20}" y2="432"/>`).join('')}</g><line x1="230" y1="250" x2="970" y2="250" stroke="#fff" stroke-width="5"/><line x1="230" y1="590" x2="970" y2="590" stroke="#fff" stroke-width="5"/><line x1="600" y1="250" x2="600" y2="590" stroke="#fff" stroke-width="5"/></g><g class="an-ball"><circle r="14" fill="#E4F25C"/><path d="M-10 -6 Q0 0 -10 6M10 -6 Q0 0 10 6" stroke="#fff" stroke-width="2" fill="none"/></g></svg>`,
@@ -201,8 +268,8 @@ fabrica:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-h
 
 /* ---------- Cada negocio: tema, textos y módulos que se ven en movimiento ---------- */
 const SECT={
-padel:{name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol',bg:'#0D4F7A',dark:1,acc:'#C8F560',
- title:'Tu club de pádel, en piloto automático',sub:'Reservas, pagos, profesores, nómina e inventario funcionando solos mientras tú juegas.',
+padel:{seo:'Automatización para clubes de pádel · Glysf',card:'Reservas, pagos y nómina',name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol',bg:'#0D4F7A',dark:1,acc:'#C8F560',
+ title:'Reservas y pagos de tu club de pádel, sin llamadas',sub:'Reservas, pagos, profesores, nómina e inventario funcionando solos mientras tú juegas.',
  mods:[{t:'Bot de reservas',k:'chat'},
   {t:'Agenda de canchas',k:'agenda',d:{cols:['Cancha 1','Cancha 2','Cancha 3'],rows:['5:00 p. m.','6:00 p. m.','7:00 p. m.','8:00 p. m.','9:00 p. m.'],book:[[1,0,'Andrés M.'],[2,1,'Torneo'],[2,2,'Laura P.'],[3,0,'Clase grupal'],[3,1,'Juan D.'],[4,2,'Sofía R.']],toast:'El bot agendó la reserva y envió el link de pago'}},
   {t:'Pagos',k:'pagos',d:[['Andrés M.','Cancha 1 · 6:00 p. m.',100000,1],['Laura P.','Cancha 3 · 7:00 p. m.',100000,1],['Juan D.','Cancha 2 · 8:00 p. m.',100000,0],['Clase grupal','6 alumnos',240000,1]]},
@@ -210,7 +277,7 @@ padel:{name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol
   {t:'Nómina',k:'nomina',d:[['Camilo R.','Profesor','32 clases',1920000],['Valentina S.','Profesora','12 clases',720000],['Mateo L.','Recepción','30 días',1750000]]},
   {t:'Inventario',k:'inventario',d:[['Tubos de pelotas',40,8,10,'tubos'],['Raquetas de alquiler',12,9,4,'und'],['Agua y bebidas',96,30,24,'und'],['Grips',30,22,8,'und']]},
   {t:'Reporte al dueño',k:'reporte',d:['Ocupación de hoy: 82% (23 de 28 turnos)','Ingresos: $2.340.000','Pagos pendientes: 1 (recordatorio enviado)','Inventario: pedido de pelotas enviado al proveedor','Mañana: 19 reservas y 2 clases']}]},
-clinica:{name:'Clínica',your:'tu clínica',form:'Clínica o consultorio',bg:'#E8F4F2',dark:0,acc:'#0E9384',
+clinica:{seo:'Automatización para clínicas y consultorios · Glysf',card:'Citas, insumos y recordatorios',name:'Clínica',your:'tu clínica',form:'Clínica o consultorio',bg:'#E8F4F2',dark:0,acc:'#0E9384',
  title:'Tu clínica organizada sin llamadas ni papeles',sub:'Citas por especialista, recordatorios, insumos, proveedores y pagos conectados entre sí.',
  mods:[{t:'Bot de citas',k:'chat'},
   {t:'Agenda por especialista',k:'agenda',d:{cols:['Dra. Pérez · Odontología','Dr. Gómez · Ortodoncia','Dra. Ruiz · Higiene'],rows:['8:00 a. m.','9:00 a. m.','10:00 a. m.','11:00 a. m.'],book:[[0,0,'Valoración'],[0,2,'Limpieza'],[1,1,'Control'],[2,0,'Resina'],[2,2,'Limpieza'],[3,1,'Valoración']],toast:'Cita confirmada: recordatorio programado 24 h antes'}},
@@ -219,7 +286,7 @@ clinica:{name:'Clínica',your:'tu clínica',form:'Clínica o consultorio',bg:'#E
   {t:'Proveedores',k:'pipeline',d:{item:'Pedido #318 · Guantes x 20 cajas y resinas x 15',steps:['Stock bajo detectado','Cotización al proveedor','Orden de compra enviada','Entregado en clínica'],toast:'Insumos recibidos y sumados al inventario'}},
   {t:'Pagos',k:'pagos',d:[['María L.','Limpieza',120000,1],['Jorge T.','Ortodoncia · cuota 4',250000,1],['Ana C.','Resina',180000,0],['Pedro V.','Valoración',60000,1]]},
   {t:'Reporte al dueño',k:'reporte',d:['Citas de hoy: 34 atendidas, 2 reprogramadas','Inasistencias: 1 (antes eran 6 por semana)','Ingresos: $3.120.000','Insumos: pedido de guantes en camino','Reseñas nuevas en Google: 3']}]},
-gym:{name:'Gimnasio',your:'tu gimnasio',form:'Gimnasio',bg:'#16181D',dark:1,acc:'#FF6B2C',
+gym:{seo:'Automatización para gimnasios · Glysf',card:'Mensualidades y clases',name:'Gimnasio',your:'tu gimnasio',form:'Gimnasio',bg:'#16181D',dark:1,acc:'#FF6B2C',
  title:'Tu gimnasio cobra, agenda y vende solo',sub:'Mensualidades, instructores, nómina y tienda de suplementos sin perseguir a nadie.',
  mods:[{t:'Bot de ventas',k:'chat'},
   {t:'Mensualidades',k:'pagos',d:[['Daniela R.','Plan mensual',90000,1],['Felipe A.','Plan trimestral',240000,1],['Carlos M.','Plan mensual · vence hoy',90000,0],['Paula G.','Plan anual',850000,1],['Sergio L.','Plan mensual · vencido',90000,0]]},
@@ -227,7 +294,7 @@ gym:{name:'Gimnasio',your:'tu gimnasio',form:'Gimnasio',bg:'#16181D',dark:1,acc:
   {t:'Nómina',k:'nomina',d:[['Kevin P.','Instructor','48 clases',1680000],['Natalia C.','Instructora','24 clases',960000],['Andrés V.','Entrenador de piso','30 días',1850000],['Diana M.','Recepción','30 días',1750000]]},
   {t:'Tienda de suplementos',k:'inventario',d:[['Proteína 2 lb',24,5,6,'und'],['Creatina',18,11,5,'und'],['Bebidas',120,48,30,'und'],['Guantes',15,12,4,'pares']]},
   {t:'Reporte al dueño',k:'reporte',d:['Socios activos: 312','Mensualidades cobradas hoy: $2.150.000','Por vencer esta semana: 18 (recordatorios enviados)','Clases de prueba agendadas: 7','Stock bajo: proteína, pedido enviado']}]},
-pilates:{name:'Pilates y yoga',your:'tu estudio',form:'Pilates o yoga',bg:'#F3E8DC',dark:0,acc:'#B86A4B',
+pilates:{seo:'Automatización para estudios de pilates y yoga · Glysf',card:'Cupos, paquetes e instructoras',name:'Pilates y yoga',your:'tu estudio',form:'Pilates o yoga',bg:'#F3E8DC',dark:0,acc:'#B86A4B',
  title:'Tu estudio con cupos llenos y cero cuadernos',sub:'Reservas por clase, paquetes, instructoras y pagos en orden.',
  mods:[{t:'Bot de reservas',k:'chat'},
   {t:'Cupos por clase',k:'agenda',d:{cols:['Lunes','Martes','Miércoles'],rows:['7:00 a. m.','9:00 a. m.','5:30 p. m.','6:30 p. m.'],book:[[0,0,'5/5 lleno'],[0,1,'4/5'],[1,2,'3/5'],[2,0,'5/5 lleno'],[2,1,'5/5 lleno'],[3,2,'2/5']],toast:'Cupo reservado y descontado del paquete'}},
@@ -235,7 +302,7 @@ pilates:{name:'Pilates y yoga',your:'tu estudio',form:'Pilates o yoga',bg:'#F3E8
   {t:'Instructoras',k:'equipo',d:[['Sara M.','Reformer','Lun a Vie · 7:00 a. m.','25 clases/mes'],['Daniela F.','Mat y yoga','Mar y Jue · 6:30 p. m.','9 clases/mes'],['Isabel G.','Reformer','Sáb · 9:00 a. m.','4 clases/mes']],toast:'Horarios enviados a cada instructora'},
   {t:'Nómina',k:'nomina',d:[['Sara M.','Instructora','25 clases',1250000],['Daniela F.','Instructora','9 clases',450000],['Isabel G.','Instructora','4 clases',200000]]},
   {t:'Reporte al dueño',k:'reporte',d:['Ocupación de la semana: 91%','Clases con lista de espera: 4','Paquetes por vencer: 6 (recordatorio enviado)','Ingresos de hoy: $1.085.000']}]},
-resto:{name:'Restaurante',your:'tu restaurante',form:'Restaurante',bg:'#6B2A1B',dark:1,acc:'#FFB547',
+resto:{seo:'Automatización para restaurantes · Glysf',card:'Pedidos, cocina y domicilios',name:'Restaurante',your:'tu restaurante',form:'Restaurante',bg:'#6B2A1B',dark:1,acc:'#FFB547',
  title:'Tu restaurante recibe pedidos sin perder ninguno',sub:'Pedidos directo a cocina, domicilios, inventario, proveedores y turnos del personal.',
  mods:[{t:'Bot de pedidos',k:'chat'},
   {t:'Pedido a cocina',k:'pipeline',d:{item:'Pedido #1287 · 2 hamburguesas, 2 limonadas',steps:['Pedido recibido por WhatsApp','En preparación','Domiciliario asignado','Entregado'],toast:'Cliente avisado en cada paso del pedido'}},
@@ -243,7 +310,7 @@ resto:{name:'Restaurante',your:'tu restaurante',form:'Restaurante',bg:'#6B2A1B',
   {t:'Proveedores',k:'pipeline',d:{item:'Orden #77 · Carne 25 kg y pan 100 und',steps:['Stock bajo detectado','Pedido al proveedor','Confirmado para mañana 7 a. m.','Recibido en cocina'],toast:'Inventario actualizado al recibir el pedido'}},
   {t:'Nómina y turnos',k:'nomina',d:[['Luis H.','Chef','26 turnos',2400000],['Marcela O.','Auxiliar de cocina','26 turnos',1600000],['Brayan S.','Mesero','22 turnos',1450000],['Óscar P.','Domiciliario','24 turnos',1500000]]},
   {t:'Reporte al dueño',k:'reporte',d:['Pedidos de hoy: 86 (41 domicilios)','Ventas: $3.870.000','Plato más vendido: hamburguesa de la casa','Pedido de carne confirmado para mañana']}]},
-pelu:{name:'Peluquería y spa',your:'tu salón',form:'Peluquería o spa',bg:'#F0E4F6',dark:0,acc:'#8E44C2',
+pelu:{seo:'Automatización para peluquerías y spas · Glysf',card:'Citas, anticipos y comisiones',name:'Peluquería y spa',your:'tu salón',form:'Peluquería o spa',bg:'#F0E4F6',dark:0,acc:'#8E44C2',
  title:'Tu salón con la agenda llena y sin huecos',sub:'Citas por estilista, anticipos, comisiones y productos en orden.',
  mods:[{t:'Bot de citas',k:'chat'},
   {t:'Agenda por estilista',k:'agenda',d:{cols:['Laura · Corte y color','Andrea · Uñas','Felipe · Barbería'],rows:['9:00 a. m.','10:30 a. m.','2:00 p. m.','4:00 p. m.'],book:[[0,0,'Color'],[0,1,'Semipermanente'],[1,2,'Corte y barba'],[2,0,'Cepillado'],[2,1,'Pedicure'],[3,2,'Corte']],toast:'Cita agendada con anticipo y recordatorio'}},
@@ -251,7 +318,7 @@ pelu:{name:'Peluquería y spa',your:'tu salón',form:'Peluquería o spa',bg:'#F0
   {t:'Comisiones',k:'nomina',d:[['Laura','Estilista · 40%','$4.200.000 en servicios',1680000],['Andrea','Manicurista · 40%','$2.100.000 en servicios',840000],['Felipe','Barbero · 40%','$2.600.000 en servicios',1040000]]},
   {t:'Productos',k:'inventario',d:[['Tinte 7.1',18,3,4,'und'],['Esmaltes',60,41,15,'und'],['Shampoo profesional',12,7,3,'und'],['Keratina',8,2,2,'kits']]},
   {t:'Reporte al dueño',k:'reporte',d:['Citas de hoy: 27','Ingresos: $1.940.000','Huecos libres mañana: 3 (ofrecidos a clientes frecuentes)','Producto por agotarse: tinte 7.1, pedido enviado']}]},
-tienda:{name:'Tienda o ferretería',your:'tu tienda',form:'Tienda o ferretería',bg:'#0F4D33',dark:1,acc:'#C8F560',
+tienda:{seo:'Automatización para tiendas y ferreterías · Glysf',card:'Pedidos, stock y cartera',name:'Tienda o ferretería',your:'tu tienda',form:'Tienda o ferretería',bg:'#0F4D33',dark:1,acc:'#C8F560',
  title:'Tu tienda vende por chat y nunca se queda sin stock',sub:'Pedidos, inventario, proveedores, cartera y nómina conectados.',
  mods:[{t:'Bot de ventas',k:'chat'},
   {t:'Inventario',k:'inventario',d:[['Tableros de melamina',60,9,12,'und'],['Bisagras',500,260,100,'und'],['Pintura blanca',40,12,10,'galones'],['Tornillos 1"',3000,800,500,'und']]},
@@ -259,7 +326,7 @@ tienda:{name:'Tienda o ferretería',your:'tu tienda',form:'Tienda o ferretería'
   {t:'Cartera',k:'pagos',d:[['Muebles El Roble','Factura 2201',1250000,1],['Obra Calle 80','Factura 2207',3400000,0],['Carpintería JM','Factura 2210',780000,1],['Constructora Lince','Factura 2214',2150000,0]]},
   {t:'Nómina',k:'nomina',d:[['Ricardo P.','Vendedor','30 días',1900000],['Yuli C.','Caja','30 días',1750000],['Edwin M.','Bodega','30 días',1750000]]},
   {t:'Reporte al dueño',k:'reporte',d:['Ventas de hoy: $6.420.000','Pedidos por WhatsApp: 38','Cartera vencida: $5.550.000 (recordatorios enviados)','Orden de tableros en camino']}]},
-fabrica:{name:'Constructora o fábrica',your:'tu empresa',form:'Fábrica o constructora',bg:'#0B1F4B',dark:1,acc:'#FFC53D',
+fabrica:{seo:'Automatización para constructoras y fábricas · Glysf',card:'Materiales, cuadrillas y obra',name:'Constructora o fábrica',your:'tu empresa',form:'Fábrica o constructora',bg:'#0B1F4B',dark:1,acc:'#FFC53D',
  title:'Tu obra controlada desde el celular',sub:'Cotizaciones, proveedores, materiales, cuadrillas y nómina de obra sin hojas sueltas.',
  mods:[{t:'Bot de cotizaciones',k:'chat'},
   {t:'Proveedores y materiales',k:'pipeline',d:{item:'Orden #912 · Cemento x 120 bultos, varilla 1/2" x 80',steps:['Solicitud desde la obra','3 cotizaciones comparadas','Orden al mejor precio','Entregado en obra'],toast:'Material recibido y descontado del presupuesto'}},
@@ -272,14 +339,15 @@ fabrica:{name:'Constructora o fábrica',your:'tu empresa',form:'Fábrica o const
 /* ---------- Utilidades de animación ---------- */
 const money=n=>'$'+Math.round(n).toLocaleString('es-CO');
 let runId=0;
-const later=(id,ms,fn)=>setTimeout(()=>{if(id===runId)fn();},ms);
-function countUp(node,to,id,ms=1200){const t0=performance.now();const step=t=>{if(id!==runId)return;const k=Math.min(1,(t-t0)/ms);node.textContent=money(to*k);if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+// Con movimiento reducido, los módulos muestran su resultado sin esperas ni conteos.
+const later=(id,ms,fn)=>RM.matches?(id===runId&&fn()):setTimeout(()=>{if(id===runId)fn();},ms);
+function countUp(node,to,id,ms=1200){if(RM.matches){node.textContent=money(to);return;}const t0=performance.now();const step=t=>{if(id!==runId)return;const k=Math.min(1,(t-t0)/ms);node.textContent=money(to*k);if(k<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
 function toast(stage,text,id,ms){later(id,ms,()=>{const t=el('div','toast','✓ '+text);stage.append(t);});}
 function row(cols,cls){const r=el('div','mrow'+(cls?' '+cls:''));cols.forEach(c=>{const x=typeof c==='string'?el('div',null,c):c;r.append(x);});return r;}
 
 /* ---------- Módulos ---------- */
 const MOD={
-agenda(stage,d,id){const g=el('div','agenda');g.style.gridTemplateColumns=`90px repeat(${d.cols.length},minmax(0,1fr))`;
+agenda(stage,d,id){const g=el('div','agenda');g.style.gridTemplateColumns=`minmax(52px,auto) repeat(${d.cols.length},minmax(0,1fr))`;
  g.append(el('div'));d.cols.forEach(c=>g.append(el('div','ahead',c)));
  const cells={};d.rows.forEach((r,i)=>{g.append(el('div','atime',r));d.cols.forEach((_,j)=>{const c=el('div','acell','Libre');cells[i+'-'+j]=c;g.append(c);});});
  stage.append(g);d.book.forEach(([i,j,n],k)=>later(id,500+k*550,()=>{const c=cells[i+'-'+j];c.textContent=n;c.classList.add('booked');}));
@@ -305,33 +373,43 @@ reporte(stage,d,id){const ph=el('div','phone');const hd=el('div','phead');hd.inn
  d.forEach((l,k)=>later(id,600+k*650,()=>{msg.textContent+='\n• '+l;}));}};
 
 /* ---------- Vista de negocio ---------- */
+const HOME_TITLE=document.title;
 let cur='padel',modIx=0;
+arrowTabs($('modTabs'));
 function openSector(k,ix){cur=k;modIx=ix||0;const s=SECT[k];chatSector(k);
- $('home').hidden=true;const v=$('sectorView');v.hidden=false;
+ $('home').hidden=true;document.body.classList.add('in-sector');const v=$('sectorView');v.hidden=false;
  v.style.setProperty('--bg',s.bg);v.style.setProperty('--acc',s.acc);v.classList.toggle('dark',!!s.dark);
  const sc=$('scene');sc.classList.remove('in');void sc.offsetWidth;sc.innerHTML=SCENE[k];sc.classList.add('in');
  $('svTabs').replaceChildren(...Object.keys(SECT).map(x=>{const a=el('a','svtab',SECT[x].name);a.href='#/negocio/'+x;if(x===k)a.setAttribute('aria-current','page');return a;}));
  const hero=$('svHero');hero.classList.remove('rise');void hero.offsetWidth;hero.classList.add('rise');
- $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;$('svCta').textContent='Pide tu cotización';
- renderMods();window.scrollTo({top:0});document.title='Glysf para '+s.your.replace('tu ','')+' · Automatización con IA';heroStop();}
-function renderMods(){const s=SECT[cur];
- $('modTabs').replaceChildren(...s.mods.map((m,i)=>{const b=el('button','mtab',m.t);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i===modIx);b.onclick=()=>{modIx=i;renderMods();};return b;}));
+ $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;setTimeout(()=>{const mt=$('modTabs');mt.scrollLeft=0;if(mt.parentElement)mt.parentElement.scrollLeft=0;$('svTabs').scrollLeft=0;},0);
+ // Las pestañas de módulos se crean al abrir el negocio; al cambiar de módulo solo cambia su estado.
+ $('modTabs').replaceChildren(...s.mods.map((m,i)=>{const b=el('button','mtab',m.t);b.type='button';b.id='mtab'+i;b.setAttribute('role','tab');b.setAttribute('aria-controls','modStage');b.onclick=()=>{modIx=i;renderMods();};return b;}));
+ renderMods();window.scrollTo({top:0});document.title=s.seo;heroStop();
+ const at=document.querySelector('.svtab[aria-current]');if(at)at.scrollIntoView({block:'nearest',inline:'center'});
+ $('svTitle').focus({preventScroll:true});}
+function renderMods(){const s=SECT[cur];selectTab($('modTabs'),$('modStage'),modIx);
  runId++;const id=runId;const m=s.mods[modIx];const stage=$('modStage');stage.classList.remove('rise');void stage.offsetWidth;stage.classList.add('rise');
  $('modTitle').textContent=m.t;$('chatBox').hidden=m.k!=='chat';$('modBody').hidden=m.k==='chat';
  if(m.k==='chat'){startChat();}else{const b=$('modBody');b.replaceChildren();MOD[m.k](b,m.d,id);}
  $('modNext').textContent=modIx<s.mods.length-1?'Siguiente: '+s.mods[modIx+1].t:'Ver otro negocio';}
 $('modNext').onclick=()=>{const s=SECT[cur];if(modIx<s.mods.length-1){modIx++;renderMods();}else{const ks=Object.keys(SECT);location.hash='#/negocio/'+ks[(ks.indexOf(cur)+1)%ks.length];}};
 $('modReplay').onclick=()=>renderMods();
-$('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{const sel=document.querySelector('#quote select[name=sector]');sel.value=SECT[cur].form;},50);};
+$('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{$('f-sector').value=SECT[cur].form;},50);};
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
 $('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz'+(s.dark?' dark':''));a.href='#/negocio/'+k;
- const bg=el('div','bizbg');bg.innerHTML=SCENE[k];const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.mods.length+' automatizaciones en la demo'));a.append(bg,tx);return a;}));
+ const bg=el('div','bizbg');bg.innerHTML=SCENE[k];const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}));
 
 /* ---------- Navegación ---------- */
+let inSector=false;
 function route(){const h=location.hash;const m=h.match(/^#\/negocio\/(\w+)/);
- if(m&&SECT[m[1]]){openSector(m[1]);return;}
- runId++;$('sectorView').hidden=true;$('home').hidden=false;document.title='Glysf · Automatización con IA para empresas';heroWake();
- if(h&&h.length>1){const t=document.getElementById(h.slice(1));if(t)setTimeout(()=>t.scrollIntoView(),0);}}
+ if(m&&SECT[m[1]]){inSector=true;openSector(m[1]);return;}
+ const back=inSector;inSector=false;
+ runId++;$('sectorView').hidden=true;$('home').hidden=false;document.body.classList.remove('in-sector');document.title=HOME_TITLE;heroWake();
+ const t=h&&h.length>1?document.getElementById(h.slice(1)):null;
+ if(t)setTimeout(()=>{t.scrollIntoView();if(back){if(!t.hasAttribute('tabindex'))t.setAttribute('tabindex','-1');t.focus({preventScroll:true});}},0);
+ else if(back)$('heroTitle').focus({preventScroll:true});}
 window.addEventListener('hashchange',route);route();
-
+// Saltar al contenido: lleva el foco al título de la vista visible.
+$('skipLink').onclick=e=>{e.preventDefault();const t=$('sectorView').hidden?$('heroTitle'):$('svTitle');t.focus();t.scrollIntoView({block:'center'});};
