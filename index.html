@@ -6,275 +6,394 @@
 <meta name="description" content="Glysf: agentes de IA, chatbots para WhatsApp, Instagram y Telegram, automatización de procesos y páginas web para empresas en Colombia.">
 <title>Glysf · Automatización con IA para empresas</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap">
 <style>
-body{margin:0}
-a{color:#0B1F4B}a:hover{color:#2F55F5}
+:root{--navy:#0B1F4B;--blue:#2F55F5;--ink:#3B4A6B;--line:#E3E8F2;--soft:#F4F7FC}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,sans-serif;color:var(--navy);background:#fff;font-size:16px;line-height:1.55}
+a{color:var(--navy)}a:hover{color:var(--blue)}
 h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0}
 p{margin:0}
-summary{cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.sec{padding:80px 0}
+.soft{background:var(--soft)}
+.h2{font-size:40px;letter-spacing:-1px;line-height:1.1}
+.lead{font-size:18px;color:var(--ink);max-width:680px;margin-top:12px}
+.muted{color:var(--ink)}
+.grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px;border-radius:12px;font:600 16px Inter,sans-serif;text-decoration:none;cursor:pointer;border:1.5px solid var(--navy)}
+.btn.primary{background:var(--navy);color:#fff}.btn.primary:hover{background:#13286B;color:#fff}
+.btn.ghost{background:#fff;color:var(--navy)}
+.pill{min-height:44px;padding:10px 16px;border-radius:999px;font:600 14px Inter,sans-serif;cursor:pointer;border:1.5px solid var(--navy);background:#fff;color:var(--navy)}
+.pill[aria-pressed=true]{background:var(--navy);color:#fff}
+.chip{min-height:32px;padding:4px 10px;border-radius:8px;font:600 12px Inter,sans-serif;cursor:pointer;border:1px solid #3A548C;background:transparent;color:#fff}
+.chip[aria-pressed=true]{background:#fff;color:var(--navy)}
+.bub{max-width:84%;padding:10px 14px;font-size:14px;animation:pop .25s ease}
+.bub.b{align-self:flex-start;background:#fff;color:var(--navy);border-radius:14px 14px 14px 4px}
+.bub.u{align-self:flex-end;color:#fff;border-radius:14px 14px 4px 14px}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.opt{min-height:40px;padding:8px 14px;border-radius:999px;font:600 13px Inter,sans-serif;cursor:pointer;border:1.5px solid #fff;background:transparent;color:#fff}
+.opt:hover{background:#fff;color:var(--navy)}
+.tag{font-size:12px;color:#fff;background:#22396E;padding:5px 10px;border-radius:999px}
+.tab{min-height:44px;padding:10px 16px;border-radius:10px;font:600 15px Inter,sans-serif;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--navy)}
+.tab[aria-selected=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.auto{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:4px}
+.auto h3{font-size:17px}.auto p{font-size:14px;color:var(--ink)}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14px}
+input.f,select.f,textarea.f{font:400 16px Inter,sans-serif;color:var(--navy);border:1.5px solid #C9D3E6;border-radius:10px;padding:12px;background:#fff;width:100%}
+input.f:focus,select.f:focus,textarea.f:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+.check{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border:1.5px solid #C9D3E6;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;background:#fff}
+.check:has(input:checked){border-color:var(--navy);background:#EEF2FB}
+.check input{accent-color:var(--navy);width:18px;height:18px;margin:0}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+legend{font-weight:600;font-size:14px;margin-bottom:10px;padding:0}
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font-weight:600;font-size:18px}
+nav a{text-decoration:none}
+@media (max-width:640px){.h2{font-size:32px}h1{font-size:40px!important}.sec{padding:56px 0}}
 </style>
 </head>
 <body>
-<div style="font-family: Inter, sans-serif; color: #0B1F4B; background: #FFFFFF; font-size: 16px; line-height: 1.55">
 
-<header style="border-bottom: 1px solid #E3E8F2">
-<div style="max-width: 1180px; margin: 0 auto; padding: 18px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
-<a href="#inicio" style="display: flex; align-items: center; gap: 10px; text-decoration: none">
-<svg width="30" height="40" viewBox="170 120 260 380" aria-hidden="true"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"></circle><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"></path><circle cx="372" cy="150" r="22" fill="#0B1F4B"></circle><circle cx="214" cy="462" r="22" fill="#0B1F4B"></circle></svg>
-<span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.5px">glysf</span>
-</a>
-<nav style="display: flex; flex-wrap: wrap; align-items: center; gap: 24px; font-weight: 500; font-size: 15px">
-<a href="#servicios" style="text-decoration: none">Servicios</a>
-<a href="#como" style="text-decoration: none">Cómo funciona</a>
-<a href="#planes" style="text-decoration: none">Planes</a>
-<a href="#faq" style="text-decoration: none">Preguntas</a>
-<a href="#contacto" style="text-decoration: none; background: #0B1F4B; color: #FFFFFF; padding: 11px 18px; border-radius: 10px">Agenda una demo</a>
+<header style="border-bottom:1px solid var(--line)">
+<div class="wrap" style="padding-top:18px;padding-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+<a href="#inicio" style="display:flex;align-items:center;text-decoration:none;padding-bottom:10px" aria-label="Glysf, inicio"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:34px;letter-spacing:-.5px;line-height:1;white-space:nowrap"><svg width="33.1" height="53.8" viewBox="164 120 234 380" aria-hidden="true" style="vertical-align:-17.6px"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/><circle cx="372" cy="150" r="22" fill="#0B1F4B"/><circle cx="214" cy="462" r="22" fill="#0B1F4B"/></svg><span style="margin-left:2px">lysf</span></span></a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:22px;font-weight:500;font-size:15px">
+<a href="#demo">Tu negocio</a>
+<a href="#automatizaciones">Automatizaciones</a>
+<a href="#como">Cómo trabajamos</a>
+<a href="#faq">Preguntas</a>
+<a href="#cotizar" class="btn primary" style="min-height:44px;padding:10px 18px;font-size:15px">Cotizar</a>
 </nav>
 </div>
 </header>
 
-<section id="inicio" style="max-width: 1180px; margin: 0 auto; padding: 72px 24px 80px; display: flex; flex-wrap: wrap; align-items: center; gap: 56px">
-<div style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
-<span style="align-self: flex-start; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; background: #EEF2FB; color: #2F55F5; padding: 6px 12px; border-radius: 999px">Automatización con inteligencia artificial</span>
-<h1 style="font-size: 56px; line-height: 1.05; letter-spacing: -1.5px">Tu negocio atiende, vende y agenda solo. 24/7.</h1>
-<p style="font-size: 19px; color: #3B4A6B; max-width: 560px">Creamos agentes de IA y chatbots para WhatsApp, Instagram y Telegram, automatizamos tus procesos y diseñamos tu página web. Tú te enfocas en crecer; Glysf se encarga de lo repetitivo.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 12px">
-<a href="#contacto" style="background: #0B1F4B; color: #FFFFFF; text-decoration: none; font-weight: 600; padding: 15px 24px; border-radius: 12px">Quiero una demo gratis</a>
-<a href="#servicios" style="border: 1.5px solid #0B1F4B; text-decoration: none; font-weight: 600; padding: 14px 22px; border-radius: 12px">Ver qué automatizamos</a>
+<main>
+<section id="inicio" class="wrap" style="padding-top:72px;padding-bottom:80px;display:flex;flex-wrap:wrap;align-items:center;gap:56px">
+<div style="flex:999 1 460px;min-width:0;display:flex;flex-direction:column;gap:22px">
+<span style="align-self:flex-start;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:#EEF2FB;color:var(--blue);padding:6px 12px;border-radius:999px">Automatización con inteligencia artificial</span>
+<h1 style="font-size:56px;line-height:1.05;letter-spacing:-1.5px">Tu negocio atiende, vende y agenda solo. 24/7.</h1>
+<p style="font-size:19px;color:var(--ink);max-width:560px">Creamos agentes de IA y chatbots para WhatsApp, Instagram y Telegram, automatizamos tus procesos y diseñamos tu página web. Tú te enfocas en crecer; Glysf se encarga de lo repetitivo.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<a href="#cotizar" class="btn primary">Pide tu cotización</a>
+<a href="#demo" class="btn ghost">Ver demo de mi negocio</a>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 22px; font-size: 14px; color: #3B4A6B; padding-top: 6px">
-<span>✓ Respuestas en segundos</span><span>✓ Todo a nombre de tu empresa</span><span>✓ Soporte incluido</span>
+<div style="display:flex;flex-wrap:wrap;gap:22px;font-size:14px;color:var(--ink)"><span>✓ Respuestas en segundos</span><span>✓ Todo a nombre de tu empresa</span><span>✓ Soporte incluido</span></div>
 </div>
+
+<div style="flex:1 1 380px;min-width:0">
+<div class="card" style="padding:28px;gap:14px">
+<h2 style="font-size:24px">¿Qué negocio tienes?</h2>
+<p class="muted">Elige el tuyo y mira cómo lo automatizamos.</p>
+<div id="heroSectors" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px"></div>
+<a href="#cotizar" style="font-size:14px;font-weight:600">Mi negocio es otro →</a>
 </div>
-<div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
-<div style="display: flex; flex-wrap: wrap; gap: 8px" role="group" aria-label="Tipo de negocio">
-<span id="sectors" style="display: contents"></span>
-</div>
-<div style="background: #0B1F4B; border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 12px; min-height: 430px">
-<div style="display: flex; align-items: center; gap: 10px; color: #FFFFFF; padding-bottom: 10px; border-bottom: 1px solid #22396E">
-<div style="width: 38px; height: 38px; border-radius: 50%; background: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="16" height="22" viewBox="170 120 260 380" aria-hidden="true"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"></circle><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"></path></svg></div>
-<div style="flex: 1"><div style="font-weight: 600; font-size: 15px"><span id="botName"></span></div><div style="font-size: 12px; color: #A9B8DA">en línea · <span id="channelName"></span></div></div>
-<div style="display: flex; gap: 4px" role="group" aria-label="Canal">
-<span id="channels" style="display: contents"></span>
-</div>
-</div>
-<div style="flex: 1; display: flex; flex-direction: column; gap: 10px" aria-live="polite">
-<div id="msgsBox" style="display: contents"></div>
-<div id="typing" hidden style="align-self: flex-start; background: #22396E; color: #A9B8DA; padding: 8px 14px; border-radius: 14px; font-size: 13px">escribiendo…</div>
-</div>
-<div id="tags" style="display: flex; flex-wrap: wrap; gap: 8px">
-</div>
-<button type="button" id="replay" style="align-self: flex-start; min-height: 44px; background: transparent; color: #FFFFFF; border: 1px solid #3A548C; border-radius: 10px; padding: 8px 14px; font: 600 14px Inter, sans-serif; cursor: pointer">Repetir demo</button>
-</div>
-<p style="font-size: 13px; color: #3B4A6B">Demo simulada. Elige un tipo de negocio y un canal.</p>
 </div>
 </section>
 
-<section id="servicios" style="background: #F4F7FC; padding: 80px 24px">
-<div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
-<h2 style="font-size: 40px; letter-spacing: -1px; line-height: 1.1">Todo lo que podemos automatizar</h2>
-<p style="font-size: 18px; color: #3B4A6B">Soluciones a la medida de tu negocio, conectadas a las herramientas que ya usas.</p>
+<section id="demo" class="sec soft" style="scroll-margin-top:0">
+<div class="wrap" style="display:flex;flex-direction:column;gap:28px">
+<div><h2 class="h2">Mira lo que haría Glysf en tu negocio</h2><p class="lead">Elige tu tipo de negocio, prueba la conversación y mira todo lo que podemos automatizar.</p></div>
+<div id="sectors" style="display:flex;flex-wrap:wrap;gap:8px" role="group" aria-label="Tipo de negocio"></div>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+<div style="flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:10px">
+<div style="background:var(--navy);border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:10px;color:#fff;padding-bottom:10px;border-bottom:1px solid #22396E">
+<div style="width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none"><svg width="16" height="22" viewBox="170 120 260 380" aria-hidden="true"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/></svg></div>
+<div style="flex:1;min-width:0"><div id="botName" style="font-weight:600;font-size:15px"></div><div style="font-size:12px;color:#A9B8DA">en línea · <span id="channelName"></span></div></div>
+<div id="channels" style="display:flex;gap:4px" role="group" aria-label="Canal"></div>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px">
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px">
-<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="3"></rect><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"></path></svg>
-<h3 style="font-size: 21px">Agentes de IA</h3>
-<p style="color: #3B4A6B">Asistentes que entienden lenguaje natural, conocen tu negocio y responden como lo harías tú: precios, horarios, productos y dudas frecuentes.</p>
+<div id="chat" style="height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-right:4px" aria-live="polite"></div>
+<div id="tags" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<div id="opts" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<form id="say" style="display:flex;gap:8px">
+<label for="sayInput" style="position:absolute;left:-9999px">Escribe un mensaje</label>
+<input id="sayInput" autocomplete="off" placeholder="Escribe un mensaje…" style="flex:1;min-width:0;min-height:44px;border-radius:12px;border:0;padding:10px 14px;font:400 15px Inter,sans-serif">
+<button type="submit" aria-label="Enviar" style="min-width:44px;min-height:44px;border-radius:12px;border:0;background:var(--blue);color:#fff;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+</form>
 </div>
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px">
-<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"></path></svg>
-<h3 style="font-size: 21px">Chatbot de WhatsApp</h3>
-<p style="color: #3B4A6B">Atiende, agenda citas, toma pedidos y envía cotizaciones desde el número oficial de tu empresa, a cualquier hora.</p>
+<p style="font-size:13px;color:var(--ink)">Demo simulada con respuestas de ejemplo. El agente real entiende lo que escribas con IA.</p>
 </div>
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px">
-<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M17.5 6.5h.01"></path></svg>
-<h3 style="font-size: 21px">Bot de Instagram</h3>
-<p style="color: #3B4A6B">Responde mensajes directos y comentarios, comparte tu catálogo y convierte seguidores en clientes sin perder ningún mensaje.</p>
-</div>
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px">
-<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2 2 6 3-4 5 4z"></path><path d="m9 13 8-6"></path></svg>
-<h3 style="font-size: 21px">Bot de Telegram</h3>
-<p style="color: #3B4A6B">Asistentes internos para tu equipo: registrar gastos, recibir reportes, recordatorios y consultar información al instante.</p>
-</div>
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px">
-<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M7 6.5h.01M10 6.5h.01"></path></svg>
-<h3 style="font-size: 21px">Páginas web</h3>
-<p style="color: #3B4A6B">Sitios modernos, rápidos y adaptados al celular, con tu chatbot integrado, formularios y botón directo a WhatsApp.</p>
-</div>
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 10px">
-<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"></circle><circle cx="19" cy="6" r="2"></circle><circle cx="12" cy="18" r="2"></circle><path d="M7 6h10M6 8l5 8M18 8l-5 8"></path></svg>
-<h3 style="font-size: 21px">Automatización de procesos</h3>
-<p style="color: #3B4A6B">Conectamos tus apps para que trabajen solas: Google Calendar, Sheets, correo, inventario, CRM y avisos a tu equipo.</p>
-</div>
-</div>
-<div style="background: #0B1F4B; color: #FFFFFF; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 16px">
-<h3 style="font-size: 22px">Ejemplos de tareas que dejan de ser manuales</h3>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 28px; color: #D5DEF2; font-size: 15px">
-<span>→ Agendar y recordar citas</span><span>→ Tomar pedidos y confirmar pagos</span><span>→ Enviar cotizaciones al instante</span><span>→ Pedir material a proveedores</span><span>→ Registrar clientes en una hoja</span><span>→ Seguimiento a clientes potenciales</span><span>→ Responder preguntas frecuentes</span><span>→ Reportes diarios para el dueño</span>
+<div class="card" style="flex:1 1 340px;min-width:0;padding:28px;gap:16px">
+<h3 id="forTitle" style="font-size:24px"></h3>
+<ul id="forList" style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px"></ul>
+<a id="forCta" href="#cotizar" class="btn primary" style="align-self:flex-start;margin-top:6px"></a>
 </div>
 </div>
 </div>
 </section>
 
-<section id="sectores" style="max-width: 1180px; margin: 0 auto; padding: 80px 24px 0; display: flex; flex-direction: column; gap: 32px">
-<div style="display: flex; flex-direction: column; gap: 12px; max-width: 680px">
-<h2 style="font-size: 40px; letter-spacing: -1px; line-height: 1.1">Para todo tipo de negocio</h2>
-<p style="font-size: 18px; color: #3B4A6B">Si tu negocio recibe mensajes, agenda o vende, lo podemos automatizar.</p>
-</div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px">
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Canchas de pádel y fútbol</h3><p style="font-size: 14px; color: #3B4A6B">Reservas, pagos y recordatorios de turnos.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Clínicas y consultorios</h3><p style="font-size: 14px; color: #3B4A6B">Citas, confirmaciones y datos del paciente.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Gimnasios</h3><p style="font-size: 14px; color: #3B4A6B">Planes, clases de prueba y seguimiento a prospectos.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Pilates y yoga</h3><p style="font-size: 14px; color: #3B4A6B">Cupos por clase, paquetes y recordatorios.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Restaurantes</h3><p style="font-size: 14px; color: #3B4A6B">Menú, domicilios y pedidos directo a cocina.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Peluquerías y spas</h3><p style="font-size: 14px; color: #3B4A6B">Agenda por profesional y servicio.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Tiendas y ferreterías</h3><p style="font-size: 14px; color: #3B4A6B">Catálogo, inventario y pedidos.</p></div>
-<div style="border: 1px solid #E3E8F2; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><h3 style="font-size: 18px">Fábricas y constructoras</h3><p style="font-size: 14px; color: #3B4A6B">Cotizaciones, proveedores y seguimiento de obra.</p></div>
-</div>
-</section>
-
-<section id="como" style="max-width: 1180px; margin: 0 auto; padding: 80px 24px; display: flex; flex-direction: column; gap: 40px">
-<h2 style="font-size: 40px; letter-spacing: -1px; line-height: 1.1">Cómo trabajamos</h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px">
-<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: #2F55F5">01</span><h3 style="font-size: 21px">Diagnóstico</h3><p style="color: #3B4A6B">Conocemos tu negocio y encontramos las tareas que más tiempo te quitan.</p></div>
-<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: #2F55F5">02</span><h3 style="font-size: 21px">Demo a tu medida</h3><p style="color: #3B4A6B">Te mostramos una demostración funcionando con la información de tu empresa.</p></div>
-<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: #2F55F5">03</span><h3 style="font-size: 21px">Implementación</h3><p style="color: #3B4A6B">Lo conectamos a tu número, tus redes y tus herramientas, todo a nombre de tu empresa.</p></div>
-<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 44px; font-weight: 700; color: #2F55F5">04</span><h3 style="font-size: 21px">Soporte y mejoras</h3><p style="color: #3B4A6B">Mantenimiento mensual, ajustes y nuevas funciones a medida que creces.</p></div>
-</div>
-</section>
-
-<section style="padding: 0 24px 80px">
-<div style="max-width: 1180px; margin: 0 auto; border: 1px solid #E3E8F2; border-radius: 24px; padding: 40px 32px; display: flex; flex-wrap: wrap; gap: 40px; align-items: center">
-<div style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
-<h2 style="font-size: 34px; letter-spacing: -1px; line-height: 1.1">¿Cuánto tiempo te ahorrarías?</h2>
-<label for="msgs" style="font-weight: 600">Mensajes que recibes al día: <span id="msgsVal" style="color: #2F55F5">80</span></label>
-<input id="msgs" type="range" min="10" max="300" step="10" value="80" style="width: 100%; accent-color: #0B1F4B; height: 32px">
-<p style="font-size: 13px; color: #3B4A6B">Estimado con 2 minutos por mensaje respondido a mano, 30 días al mes.</p>
-</div>
-<div style="flex: 1 1 260px; background: #0B1F4B; color: #FFFFFF; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 4px">
-<span style="font-size: 14px; color: #A9B8DA">Horas al mes que tu equipo recupera</span>
-<span style="font-family: 'Space Grotesk', sans-serif; font-size: 64px; font-weight: 700; line-height: 1.1"><span id="hours">80</span> h</span>
-<span style="font-size: 14px; color: #D5DEF2">≈ <span id="days">10</span> jornadas laborales de 8 horas</span>
+<section id="servicios" class="sec">
+<div class="wrap" style="display:flex;flex-direction:column;gap:40px">
+<div><h2 class="h2">Lo que hacemos</h2><p class="lead">Soluciones a la medida de tu negocio, conectadas a las herramientas que ya usas.</p></div>
+<div class="grid">
+<div class="card"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg><h3 style="font-size:21px">Agentes de IA</h3><p class="muted">Asistentes que entienden lenguaje natural, conocen tu negocio y responden como lo harías tú.</p></div>
+<div class="card"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.2-4.5A9 9 0 1 1 21 12z"/></svg><h3 style="font-size:21px">Chatbot de WhatsApp</h3><p class="muted">Atiende, agenda, toma pedidos y envía cotizaciones desde el número oficial de tu empresa.</p></div>
+<div class="card"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg><h3 style="font-size:21px">Bot de Instagram</h3><p class="muted">Responde mensajes directos y comentarios, comparte tu catálogo y convierte seguidores en clientes.</p></div>
+<div class="card"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11l6 2 2 6 3-4 5 4z"/><path d="m9 13 8-6"/></svg><h3 style="font-size:21px">Bot de Telegram</h3><p class="muted">Asistentes internos para tu equipo: gastos, reportes, recordatorios y consultas al instante.</p></div>
+<div class="card"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg><h3 style="font-size:21px">Páginas web</h3><p class="muted">Sitios modernos y rápidos, adaptados al celular, con tu chatbot integrado y formularios.</p></div>
+<div class="card"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F55F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/></svg><h3 style="font-size:21px">Automatización de procesos</h3><p class="muted">Conectamos tus apps para que trabajen solas: Calendar, Sheets, correo, inventario, CRM y avisos.</p></div>
 </div>
 </div>
 </section>
 
-<section id="planes" style="background: #F4F7FC; padding: 80px 24px">
-<div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-direction: column; gap: 12px"><h2 style="font-size: 40px; letter-spacing: -1px; line-height: 1.1">Planes</h2><p style="font-size: 18px; color: #3B4A6B">Pago de implementación más una mensualidad de mantenimiento.</p></div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px">
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
-<h3 style="font-size: 22px">Básico</h3><p style="color: #3B4A6B">Automatizaciones sin IA: respuestas por menú, recordatorios y registros.</p>
-<div style="font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700">[PRECIO]<span style="font-size: 15px; font-weight: 500; color: #3B4A6B"> /mes</span></div>
-<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: #3B4A6B"><span>✓ 1 canal (WhatsApp, Instagram o Telegram)</span><span>✓ Conexión a Google Sheets</span><span>✓ Soporte mensual</span></div>
-</div>
-<div style="background: #0B1F4B; color: #FFFFFF; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
-<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px"><h3 style="font-size: 22px">Pro con IA</h3><span style="font-size: 12px; font-weight: 600; background: #2F55F5; padding: 4px 10px; border-radius: 999px">Más elegido</span></div>
-<p style="color: #D5DEF2">Agente de IA que conversa, agenda, cotiza y toma pedidos.</p>
-<div style="font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700">[PRECIO]<span style="font-size: 15px; font-weight: 500; color: #D5DEF2"> /mes</span></div>
-<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: #D5DEF2"><span>✓ Agente de IA entrenado con tu negocio</span><span>✓ Citas, pedidos y cotizaciones</span><span>✓ Avisos al dueño en tiempo real</span><span>✓ Soporte prioritario</span></div>
-</div>
-<div style="background: #FFFFFF; border: 1px solid #E3E8F2; border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
-<h3 style="font-size: 22px">Empresa</h3><p style="color: #3B4A6B">Varios canales, página web y procesos conectados de punta a punta.</p>
-<div style="font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700">A la medida</div>
-<div style="display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: #3B4A6B"><span>✓ WhatsApp, Instagram y Telegram</span><span>✓ Página web con chatbot</span><span>✓ Integraciones con tus sistemas</span></div>
-</div>
-</div>
-<p style="font-size: 14px; color: #3B4A6B">El servidor y el consumo de IA se cotizan aparte según el uso de cada empresa.</p>
+<section id="automatizaciones" class="sec soft">
+<div class="wrap" style="display:flex;flex-direction:column;gap:28px">
+<div><h2 class="h2">Más de 30 automatizaciones listas para tu negocio</h2><p class="lead">Elige un área y mira lo que puede pasar solo, sin que nadie lo haga a mano.</p></div>
+<div id="autoTabs" role="tablist" aria-label="Áreas" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+<div id="autoGrid" role="tabpanel" style="display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))"></div>
+<p class="muted" style="font-size:15px">¿No ves la tuya? <a href="#cotizar">Cuéntanos qué haces a mano</a> y te decimos si se puede automatizar.</p>
 </div>
 </section>
 
-<section id="faq" style="max-width: 860px; margin: 0 auto; padding: 80px 24px; display: flex; flex-direction: column; gap: 24px">
-<h2 style="font-size: 40px; letter-spacing: -1px; line-height: 1.1">Preguntas frecuentes</h2>
-<details style="border-bottom: 1px solid #E3E8F2; padding: 16px 0"><summary style="font-weight: 600; font-size: 18px">¿Usan mi propio número de WhatsApp?</summary><p style="color: #3B4A6B; padding-top: 10px">Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre.</p></details>
-<details style="border-bottom: 1px solid #E3E8F2; padding: 16px 0"><summary style="font-weight: 600; font-size: 18px">¿Cuánto tarda la implementación?</summary><p style="color: #3B4A6B; padding-top: 10px">Depende del proyecto; una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto después del diagnóstico.</p></details>
-<details style="border-bottom: 1px solid #E3E8F2; padding: 16px 0"><summary style="font-weight: 600; font-size: 18px">¿Todas las automatizaciones usan IA?</summary><p style="color: #3B4A6B; padding-top: 10px">No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita.</p></details>
-<details style="border-bottom: 1px solid #E3E8F2; padding: 16px 0"><summary style="font-weight: 600; font-size: 18px">¿Puedo agregar funciones después?</summary><p style="color: #3B4A6B; padding-top: 10px">Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual.</p></details>
-</section>
 
-<section id="contacto" style="padding: 0 24px 80px">
-<div style="max-width: 1180px; margin: 0 auto; background: #0B1F4B; color: #FFFFFF; border-radius: 24px; padding: 56px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
-<h2 style="font-size: 40px; letter-spacing: -1px; line-height: 1.1">¿Listo para automatizar tu negocio?</h2>
-<p style="font-size: 18px; color: #D5DEF2; max-width: 560px">Escríbenos y te mostramos una demo gratis con la información de tu empresa.</p>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; padding-top: 6px">
-<a href="mailto:grupolysf@gmail.com?subject=Quiero%20una%20demo%20de%20Glysf" style="background: #FFFFFF; color: #0B1F4B; text-decoration: none; font-weight: 600; padding: 15px 24px; border-radius: 12px">Escríbenos: grupolysf@gmail.com</a>
+<section id="como" class="sec">
+<div class="wrap" style="display:flex;flex-direction:column;gap:40px">
+<h2 class="h2">Cómo trabajamos</h2>
+<div style="display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;color:var(--blue)">01</span><h3 style="font-size:21px">Nos cuentas qué necesitas</h3><p class="muted">Llenas el formulario de cotización o nos escribes.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;color:var(--blue)">02</span><h3 style="font-size:21px">Demo a tu medida</h3><p class="muted">Te mostramos una demostración funcionando con la información de tu empresa.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;color:var(--blue)">03</span><h3 style="font-size:21px">Implementación</h3><p class="muted">Lo conectamos a tu número, tus redes y tus herramientas, todo a nombre de tu empresa.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;color:var(--blue)">04</span><h3 style="font-size:21px">Soporte y mejoras</h3><p class="muted">Mantenimiento mensual, ajustes y nuevas funciones a medida que creces.</p></div>
 </div>
 </div>
 </section>
 
-<footer style="border-top: 1px solid #E3E8F2">
-<div style="max-width: 1180px; margin: 0 auto; padding: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 14px; color: #3B4A6B">
-<span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #0B1F4B">glysf</span>
-<a href="mailto:grupolysf@gmail.com" style="text-decoration: none">grupolysf@gmail.com</a>
+<section style="padding-bottom:80px">
+<div class="wrap">
+<div style="border:1px solid var(--line);border-radius:24px;padding:40px 32px;display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+<div style="flex:999 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px">
+<h2 style="font-size:34px;letter-spacing:-1px;line-height:1.1">¿Cuánto tiempo te ahorrarías?</h2>
+<label for="msgs" style="font-weight:600">Mensajes que recibes al día: <span id="msgsVal" style="color:var(--blue)">80</span></label>
+<input id="msgs" type="range" min="10" max="300" step="10" value="80" style="width:100%;accent-color:#0B1F4B;height:32px">
+<p style="font-size:13px;color:var(--ink)">Estimado con 2 minutos por mensaje respondido a mano, 30 días al mes.</p>
+</div>
+<div style="flex:1 1 260px;background:var(--navy);color:#fff;border-radius:18px;padding:28px;display:flex;flex-direction:column;gap:4px">
+<span style="font-size:14px;color:#A9B8DA">Horas al mes que tu equipo recupera</span>
+<span style="font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:700;line-height:1.1"><span id="hours">80</span> h</span>
+<span style="font-size:14px;color:#D5DEF2">≈ <span id="days">10</span> jornadas laborales de 8 horas</span>
+</div>
+</div>
+</div>
+</section>
+
+<section id="cotizar" class="sec soft">
+<div class="wrap" style="display:flex;flex-wrap:wrap;gap:48px">
+<div style="flex:1 1 300px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h2">Cuéntanos qué necesitas y te cotizamos</h2>
+<p class="lead" style="margin-top:0">Cada negocio es distinto, por eso cotizamos a la medida. Llena el formulario y te respondemos con una propuesta y una demo gratis.</p>
+<div style="display:flex;flex-direction:column;gap:8px;color:var(--ink);font-size:15px;padding-top:8px">
+<span>✓ Sin costo ni compromiso</span><span>✓ Respuesta en máximo 2 días hábiles</span><span>✓ Te recomendamos solo lo que tu negocio necesita</span>
+</div>
+<p style="font-size:15px;padding-top:8px">¿Prefieres escribir? <a href="mailto:grupolysf@gmail.com">grupolysf@gmail.com</a></p>
+</div>
+<form id="quote" novalidate style="flex:2 1 520px;min-width:0;background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:20px">
+<div style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+<label class="f">Nombre *<input class="f" name="nombre" required autocomplete="name"></label>
+<label class="f">Empresa o negocio *<input class="f" name="empresa" required autocomplete="organization"></label>
+<label class="f">Correo *<input class="f" name="correo" type="email" required autocomplete="email"></label>
+<label class="f">WhatsApp o teléfono<input class="f" name="telefono" type="tel" autocomplete="tel"></label>
+<label class="f">Tipo de negocio<select class="f" name="sector"><option value="">Selecciona…</option><option>Canchas de pádel o fútbol</option><option>Clínica o consultorio</option><option>Gimnasio</option><option>Pilates o yoga</option><option>Restaurante</option><option>Peluquería o spa</option><option>Tienda o ferretería</option><option>Fábrica o constructora</option><option>Otro</option></select></label>
+<label class="f">Mensajes que reciben al día<select class="f" name="volumen"><option value="">Selecciona…</option><option>Menos de 20</option><option>20 a 100</option><option>100 a 300</option><option>Más de 300</option></select></label>
+</div>
+<fieldset><legend>¿Dónde lo necesitas?</legend>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<label class="check"><input type="checkbox" name="canal" value="WhatsApp">WhatsApp</label>
+<label class="check"><input type="checkbox" name="canal" value="Instagram">Instagram</label>
+<label class="check"><input type="checkbox" name="canal" value="Telegram">Telegram</label>
+<label class="check"><input type="checkbox" name="canal" value="Página web">Página web</label>
+<label class="check"><input type="checkbox" name="canal" value="Procesos internos">Procesos internos</label>
+</div></fieldset>
+<fieldset><legend>¿Qué te gustaría automatizar?</legend>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<label class="check"><input type="checkbox" name="necesidad" value="Atención y preguntas frecuentes">Atención 24/7</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Citas y reservas">Citas y reservas</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Pedidos y ventas">Pedidos y ventas</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Cotizaciones">Cotizaciones</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Cobros y cartera">Cobros y cartera</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Inventario y proveedores">Inventario</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Reportes">Reportes</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Marketing y redes">Marketing y redes</label>
+<label class="check"><input type="checkbox" name="necesidad" value="Página web">Página web</label>
+</div></fieldset>
+<label class="f">Cuéntanos más *<textarea class="f" name="detalle" rows="4" required placeholder="Ej.: recibimos muchas preguntas por WhatsApp sobre precios y horarios, y agendamos las citas a mano en una libreta."></textarea></label>
+<label style="display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink);cursor:pointer"><input type="checkbox" name="acepto" required style="accent-color:#0B1F4B;width:20px;height:20px;margin:2px 0 0;flex:none">Autorizo a Glysf a tratar mis datos para responder esta solicitud, según la <a href="/privacidad.html">política de tratamiento de datos</a>. *</label>
+<p id="quoteMsg" role="alert" style="font-size:14px;font-weight:600;color:#B42318" hidden></p>
+<button type="submit" class="btn primary" style="align-self:flex-start">Enviar solicitud de cotización</button>
+<p style="font-size:13px;color:var(--ink)">Al enviar se abre tu correo con la solicitud lista; solo tienes que darle enviar.</p>
+</form>
+</div>
+</section>
+
+<section id="faq" class="sec">
+<div class="wrap" style="max-width:860px;display:flex;flex-direction:column;gap:12px">
+<h2 class="h2" style="margin-bottom:12px">Preguntas frecuentes</h2>
+<details><summary>¿Cuánto cuesta?</summary><p class="muted" style="padding-top:10px">Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto.</p></details>
+<details><summary>¿Usan mi propio número de WhatsApp?</summary><p class="muted" style="padding-top:10px">Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre.</p></details>
+<details><summary>¿Cuánto tarda la implementación?</summary><p class="muted" style="padding-top:10px">Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización.</p></details>
+<details><summary>¿Todas las automatizaciones usan IA?</summary><p class="muted" style="padding-top:10px">No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita.</p></details>
+<details><summary>¿Puedo agregar funciones después?</summary><p class="muted" style="padding-top:10px">Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual.</p></details>
+</div>
+</section>
+
+<section id="contacto" style="padding-bottom:80px">
+<div class="wrap">
+<div style="background:var(--navy);color:#fff;border-radius:24px;padding:56px 32px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+<h2 class="h2">¿Listo para automatizar tu negocio?</h2>
+<p style="font-size:18px;color:#D5DEF2;max-width:560px">Cuéntanos qué necesitas y te mostramos una demo gratis con la información de tu empresa.</p>
+<a href="#cotizar" class="btn" style="background:#fff;color:var(--navy);border-color:#fff">Pide tu cotización</a>
+</div>
+</div>
+</section>
+</main>
+
+<footer style="border-top:1px solid var(--line)">
+<div class="wrap" style="padding-top:24px;padding-bottom:24px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink)">
+<span aria-label="Glysf" style="color:var(--navy)"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.5px;line-height:1;white-space:nowrap"><svg width="21.4" height="34.8" viewBox="164 120 234 380" aria-hidden="true" style="vertical-align:-11.4px"><circle cx="280" cy="262" r="92" fill="none" stroke="#0B1F4B" stroke-width="44"/><path d="M372 168 V 372 Q372 462 280 462 H 236" fill="none" stroke="#0B1F4B" stroke-width="44" stroke-linecap="round"/><circle cx="372" cy="150" r="22" fill="#0B1F4B"/><circle cx="214" cy="462" r="22" fill="#0B1F4B"/></svg><span style="margin-left:2px">lysf</span></span></span>
+<a href="mailto:grupolysf@gmail.com" style="text-decoration:none">grupolysf@gmail.com</a>
 <a href="/privacidad.html">Política de tratamiento de datos</a>
 <span>© 2026 Glysf · Colombia</span>
 </div>
 </footer>
-</div>
+
 <script>
-
-const SECTORS = {
-padel: { label: 'Pádel', bot: 'Club Pádel Norte', tags: ['Cancha reservada', 'Pago confirmado', 'Recordatorio al jugador'], msgs: [
-  ['u', 'Hola, ¿hay cancha hoy a las 7 p. m.?'],
-  ['b', 'A las 7 p. m. está libre la cancha 2. ¿La reservo para 1 hora o 90 minutos?'],
-  ['u', '90 minutos, somos 4'],
-  ['b', 'Reservada: cancha 2, hoy de 7:00 a 8:30 p. m. Te envío el link para pagar y asegurar tu turno.'] ] },
-clinica: { label: 'Clínica', bot: 'Clínica Dental Sonrisa', tags: ['Cita con el especialista', 'Datos del paciente', 'Recordatorio 24 h antes'], msgs: [
-  ['u', 'Buenas, quiero una cita de valoración'],
-  ['b', 'Con gusto. Hay espacio el jueves a las 9:00 a. m. o el viernes a las 4:00 p. m. ¿Cuál prefieres?'],
-  ['u', 'El jueves'],
-  ['b', 'Listo, quedó tu cita el jueves a las 9:00 a. m. Te recordaré un día antes con la dirección.'] ] },
-gym: { label: 'Gimnasio', bot: 'Gym Fuerza', tags: ['Plan enviado', 'Prospecto registrado', 'Seguimiento al asesor'], msgs: [
-  ['u', '¿Cuánto vale la mensualidad?'],
-  ['b', 'Tenemos plan mensual, trimestral y anual, y la primera clase es gratis. ¿Te envío los precios y horarios?'],
-  ['u', 'Sí, y quiero la clase gratis'],
-  ['b', 'Te los envié. Tu clase gratis quedó para mañana a las 6:00 a. m. ¡Te esperamos!'] ] },
-citas: { label: 'Pilates', bot: 'Estudio Pilates', tags: ['Cita en Google Calendar', 'Recordatorio programado', 'Aviso al dueño'], msgs: [
-  ['u', 'Hola, ¿tienen clase de reformer mañana en la tarde?'],
-  ['b', '¡Hola! Mañana hay cupo a las 3:00 p. m. y a las 5:30 p. m. ¿Cuál te sirve?'],
-  ['u', '5:30 porfa'],
-  ['b', 'Listo, quedaste inscrito mañana a las 5:30 p. m. Te envío un recordatorio una hora antes.'] ] },
-resto: { label: 'Restaurante', bot: 'Restaurante La Brasa', tags: ['Pedido a cocina', 'Domicilio asignado', 'Menú enviado'], msgs: [
-  ['u', 'Hola, ¿me envían el menú?'],
-  ['b', 'Claro, aquí está el menú de hoy. ¿Para domicilio o para recoger?'],
-  ['u', 'Domicilio: 2 hamburguesas y 2 limonadas'],
-  ['b', 'Pedido recibido y enviado a cocina. Llega en unos 35 minutos. ¿Pagas en efectivo o transferencia?'] ] },
-pedidos: { label: 'Tienda', bot: 'Ferretería Central', tags: ['Pedido en Google Sheets', 'Stock verificado', 'Aviso a bodega'], msgs: [
-  ['u', 'Buenas, necesito 4 tableros de melamina blanca y 20 bisagras'],
-  ['b', 'Claro. Hay disponibilidad de ambos. ¿Recoges en tienda o te lo enviamos?'],
-  ['u', 'Envío, a la calle 10 # 5-20'],
-  ['b', 'Perfecto. Tu pedido #1043 quedó registrado. Te envío el total y el link de pago en un momento.'] ] },
-cotiza: { label: 'Fábrica', bot: 'Muebles Roble', tags: ['Cotización en PDF', 'Pedido a proveedor', 'Seguimiento en 2 días'], msgs: [
-  ['u', '¿Cuánto vale un closet de 2 metros en madera?'],
-  ['b', 'Con gusto. ¿Lo quieres con puertas corredizas o batientes, y en qué color?'],
-  ['u', 'Corredizas, color roble'],
-  ['b', 'Te acabo de enviar la cotización en PDF. Si la apruebas, pedimos el material hoy mismo.'] ] }
-};
-const CHANNELS = { wa: 'WhatsApp', ig: 'Instagram', tg: 'Telegram' };
-
-let st={sector:'padel',channel:'wa',step:0},t=null;
 const $=id=>document.getElementById(id);
-const pill=on=>'min-height: 44px; padding: 10px 16px; border-radius: 999px; font: 600 14px Inter, sans-serif; cursor: pointer; border: 1.5px solid #0B1F4B; '+(on?'background: #0B1F4B; color: #FFFFFF':'background: #FFFFFF; color: #0B1F4B');
-const chip=on=>'min-height: 32px; padding: 4px 10px; border-radius: 8px; font: 600 12px Inter, sans-serif; cursor: pointer; border: 1px solid #3A548C; '+(on?'background: #FFFFFF; color: #0B1F4B':'background: transparent; color: #FFFFFF');
-function btn(label,style,fn){const b=document.createElement('button');b.type='button';b.textContent=label;b.style.cssText=style;b.onclick=fn;return b;}
-function render(){
-  const sec=SECTORS[st.sector],total=sec.msgs.length;
-  $('sectors').replaceChildren(...Object.keys(SECTORS).map(k=>btn(SECTORS[k].label,pill(k===st.sector),()=>{st.sector=k;play();})));
-  $('channels').replaceChildren(...Object.keys(CHANNELS).map(k=>btn(CHANNELS[k],chip(k===st.channel),()=>{st.channel=k;render();})));
-  $('botName').textContent=sec.bot;$('channelName').textContent=CHANNELS[st.channel];
-  const ub=st.channel==='ig'?'#7A4DF5':st.channel==='tg'?'#2A8BD8':'#2F55F5';
-  $('msgsBox').replaceChildren(...sec.msgs.slice(0,st.step).map(([w,txt])=>{const d=document.createElement('div');d.textContent=txt;d.style.cssText=w==='u'?'align-self: flex-end; max-width: 80%; background: '+ub+'; color: #FFFFFF; padding: 10px 14px; border-radius: 14px 14px 4px 14px; font-size: 14px':'align-self: flex-start; max-width: 84%; background: #FFFFFF; color: #0B1F4B; padding: 10px 14px; border-radius: 14px 14px 14px 4px; font-size: 14px';return d;}));
-  $('typing').hidden=!(st.step>0&&st.step<total&&sec.msgs[st.step][0]==='b');
-  const tg=$('tags');tg.hidden=st.step<total;
-  tg.replaceChildren(...sec.tags.map(x=>{const e=document.createElement('span');e.textContent=x;e.style.cssText='font-size: 12px; color: #FFFFFF; background: #22396E; padding: 5px 10px; border-radius: 999px';return e;}));
-}
-function play(){clearTimeout(t);st.step=0;render();const next=()=>{if(st.step<SECTORS[st.sector].msgs.length){st.step++;render();t=setTimeout(next,1300);}};t=setTimeout(next,600);}
-$('replay').onclick=play;
-const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);};
-play();
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
 
+/* ---------- Demo interactivo ---------- */
+// Cada paso: mensaje del bot + opciones. Cada opción: lo que dice el cliente, la respuesta del bot y el paso siguiente (null = fin).
+const INFO={
+padel:{name:'Canchas de pádel',your:'tus canchas',form:'Canchas de pádel o fútbol',list:[['Reservas 24/7','El cliente reserva por WhatsApp según la disponibilidad real de cada cancha.'],['Cobro anticipado','Envía el link de pago para asegurar el turno y lo registra solo.'],['Recordatorios','Avisa al jugador antes de su partido para que no se olvide.'],['Lista de espera','Si alguien cancela, ofrece la cancha al siguiente interesado.'],['Clases y torneos','Inscribe jugadores a clases y torneos sin hojas a mano.'],['Reporte diario','Ocupación e ingresos del día directo a tu celular.']]},
+clinica:{name:'Clínica',your:'tu clínica',form:'Clínica o consultorio',list:[['Agenda por especialista','Asigna citas según la agenda de cada profesional.'],['Menos inasistencias','Recordatorios 24 horas antes con confirmación del paciente.'],['Reprogramar sin llamar','El paciente cambia su cita por chat y libera el espacio.'],['Datos del paciente','Recoge los datos antes de la cita y los guarda en orden.'],['Preguntas frecuentes','Precios, preparación para exámenes y horarios, a cualquier hora.'],['Reseñas en Google','Pide la reseña después de cada cita.']]},
+gym:{name:'Gimnasio',your:'tu gimnasio',form:'Gimnasio',list:[['Precios y horarios 24/7','Responde al instante a quien pregunta por planes.'],['Clase de prueba','Agenda la clase gratis y avisa al entrenador.'],['Seguimiento a prospectos','Escribe a quien preguntó y no se inscribió.'],['Renovación de mensualidad','Avisa antes del vencimiento y envía el link de pago.'],['Reactivar socios','Contacta a quien dejó de venir con una oferta.'],['Registro de socios','Cada inscripción queda guardada en tu hoja de cálculo.']]},
+pilates:{name:'Pilates y yoga',your:'tu estudio',form:'Pilates o yoga',list:[['Reserva de cupos','Las alumnas reservan su clase y se respeta el cupo de cada horario.'],['Control de paquetes','Descuenta cada clase y avisa cuántas quedan.'],['Recordatorios','Avisa antes de cada clase para no perder cupos.'],['Lista de espera','Ofrece el cupo liberado a quien estaba esperando.'],['Renovación de paquete','Recuerda renovar cuando se acaban las clases.'],['Reporte de ocupación','Qué horarios se llenan y cuáles no, cada semana.']]},
+resto:{name:'Restaurante',your:'tu restaurante',form:'Restaurante',list:[['Menú y pedidos','Envía el menú y toma el pedido completo por chat.'],['Directo a cocina','El pedido llega a cocina sin que nadie lo transcriba.'],['Reservas de mesa','Agenda mesas según la capacidad de cada horario.'],['Pagos registrados','Recibe el comprobante de transferencia y lo registra.'],['Clientes frecuentes','Promociones a quienes ya te compraron y aceptaron recibirlas.'],['Reseñas','Pide la calificación después de cada pedido.']]},
+pelu:{name:'Peluquería y spa',your:'tu salón',form:'Peluquería o spa',list:[['Agenda por profesional','Citas según el estilista y la duración de cada servicio.'],['Lista de servicios','Envía precios y servicios con fotos dentro del chat.'],['Anticipos','Cobra un anticipo para asegurar la cita.'],['Recordatorios','Avisa un día antes para evitar citas perdidas.'],['Que vuelvan','Recuerda el retoque o el próximo corte a las pocas semanas.'],['Reseñas en Google','Pide la reseña después de cada visita.']]},
+tienda:{name:'Tienda o ferretería',your:'tu tienda',form:'Tienda o ferretería',list:[['Catálogo en el chat','Productos con foto y precio dentro de WhatsApp.'],['Pedidos y stock','Toma el pedido y confirma si hay disponibilidad.'],['Alertas de inventario','Te avisa cuando un producto se está agotando.'],['Pedidos a proveedores','Genera la orden de compra cuando baja el stock.'],['Cartera','Recuerda pagos pendientes a clientes con crédito.'],['Reporte de ventas','Lo vendido en el día, directo a tu celular.']]},
+fabrica:{name:'Fábrica o constructora',your:'tu empresa',form:'Fábrica o constructora',list:[['Cotizaciones en PDF','Arma la cotización con tus precios y la envía en segundos.'],['Visitas técnicas','Agenda la toma de medidas o visita de obra.'],['Pedido a proveedores','Pide el material automáticamente cuando aprueban la cotización.'],['Seguimiento de cotizaciones','Vuelve a escribir a quien no ha respondido.'],['Estado del pedido','Informa al cliente en qué va su producción o su obra.'],['Cartera','Recuerda anticipos y saldos pendientes.']]}};
+const S={
+padel:{label:'Pádel',bot:'Club Pádel Norte',tags:['Cancha reservada','Pago confirmado','Recordatorio al jugador'],steps:[
+ {bot:'¡Hola! Soy el asistente del Club Pádel Norte. ¿Qué necesitas?',opts:[
+  {u:'Reservar cancha',b:'¡Claro! Hoy tengo libre a las 6:00 p. m. y a las 8:00 p. m. ¿Cuál prefieres?',n:1},
+  {u:'Ver precios',b:'La hora vale $80.000 de lunes a jueves y $100.000 de viernes a domingo. ¿Quieres reservar?',n:1},
+  {u:'Clases para principiantes',b:'Tenemos clases grupales martes y jueves a las 7:00 p. m. ¿Te agendo la primera?',n:2}]},
+ {bot:null,opts:[
+  {u:'6:00 p. m.',b:'Reservada: cancha 2, hoy de 6:00 a 7:30 p. m. Te envío el link para pagar y te recuerdo una hora antes.',n:null},
+  {u:'8:00 p. m.',b:'Reservada: cancha 1, hoy de 8:00 a 9:30 p. m. Te envío el link para pagar y te recuerdo una hora antes.',n:null}]},
+ {bot:null,opts:[
+  {u:'Sí, el martes',b:'Listo, quedaste inscrito el martes a las 7:00 p. m. Llega 10 minutos antes; nosotros ponemos la raqueta.',n:null},
+  {u:'Mejor el jueves',b:'Listo, quedaste inscrito el jueves a las 7:00 p. m. Te enviaré un recordatorio ese día.',n:null}]}]},
+clinica:{label:'Clínica',bot:'Clínica Dental Sonrisa',tags:['Cita con el especialista','Datos del paciente','Recordatorio 24 h antes'],steps:[
+ {bot:'Hola, bienvenido a Clínica Dental Sonrisa. ¿En qué te ayudo?',opts:[
+  {u:'Agendar valoración',b:'Con gusto. Hay espacio el jueves a las 9:00 a. m. o el viernes a las 4:00 p. m. ¿Cuál te sirve?',n:1},
+  {u:'Precio de limpieza',b:'La limpieza tiene un valor de $120.000 e incluye valoración. ¿Quieres agendarla?',n:1},
+  {u:'Reprogramar mi cita',b:'Claro. Encontré tu cita del lunes a las 10:00 a. m. ¿Para cuándo la movemos?',n:1}]},
+ {bot:null,opts:[
+  {u:'Jueves 9:00 a. m.',b:'Listo, quedó tu cita el jueves a las 9:00 a. m. Te recordaré un día antes con la dirección.',n:null},
+  {u:'Viernes 4:00 p. m.',b:'Listo, quedó tu cita el viernes a las 4:00 p. m. Te recordaré un día antes con la dirección.',n:null}]}]},
+gym:{label:'Gimnasio',bot:'Gym Fuerza',tags:['Plan enviado','Prospecto registrado','Seguimiento al asesor'],steps:[
+ {bot:'¡Hola! Bienvenido a Gym Fuerza. ¿Qué te interesa?',opts:[
+  {u:'Precios',b:'Mensual $90.000, trimestral $240.000 y anual $850.000. Y la primera clase es gratis. ¿La quieres?',n:1},
+  {u:'Horarios',b:'Abrimos de lunes a viernes de 5:00 a. m. a 10:00 p. m. y sábados de 7:00 a. m. a 2:00 p. m. ¿Quieres una clase gratis?',n:1}]},
+ {bot:null,opts:[
+  {u:'Sí, mañana temprano',b:'Tu clase gratis quedó para mañana a las 6:00 a. m. Un asesor te recibe en la entrada. ¡Te esperamos!',n:null},
+  {u:'Ahora no, gracias',b:'¡Sin problema! Te escribo la próxima semana por si te animas. Que tengas buen día.',n:null}]}]},
+pilates:{label:'Pilates',bot:'Estudio Pilates',tags:['Cupo reservado','Paquete descontado','Recordatorio programado'],steps:[
+ {bot:'¡Hola! ¿Quieres reservar una clase de reformer?',opts:[
+  {u:'Sí, mañana',b:'Mañana hay cupo a las 7:00 a. m., 3:00 p. m. y 5:30 p. m. ¿Cuál te sirve?',n:1},
+  {u:'¿Qué paquetes hay?',b:'Clase suelta, paquete de 8 y paquete de 12 clases al mes. ¿Te reservo la primera?',n:1}]},
+ {bot:null,opts:[
+  {u:'5:30 p. m.',b:'Listo, quedaste inscrita mañana a las 5:30 p. m. Te queda 1 cupo menos en tu paquete y te recuerdo una hora antes.',n:null},
+  {u:'7:00 a. m.',b:'Listo, quedaste inscrita mañana a las 7:00 a. m. Te recuerdo la noche anterior.',n:null}]}]},
+resto:{label:'Restaurante',bot:'Restaurante La Brasa',tags:['Pedido a cocina','Domicilio asignado','Pago registrado'],steps:[
+ {bot:'¡Hola! Bienvenido a La Brasa. ¿Pides para domicilio o reservas mesa?',opts:[
+  {u:'Domicilio',b:'Te envío el menú. Hoy recomendamos la hamburguesa de la casa. ¿Qué te mando?',n:1},
+  {u:'Reservar mesa',b:'¿Para cuántas personas y a qué hora? Hoy hay mesas desde las 7:00 p. m.',n:2}]},
+ {bot:null,opts:[
+  {u:'2 hamburguesas y 2 limonadas',b:'Pedido recibido y enviado a cocina: total $78.000. Llega en unos 35 minutos. ¿Pagas en efectivo o transferencia?',n:null},
+  {u:'1 picada para 2',b:'Pedido recibido y enviado a cocina: total $62.000. Llega en unos 40 minutos.',n:null}]},
+ {bot:null,opts:[
+  {u:'4 personas, 8:00 p. m.',b:'Reservada mesa para 4 hoy a las 8:00 p. m. a tu nombre. ¡Te esperamos!',n:null}]}]},
+tienda:{label:'Tienda',bot:'Ferretería Central',tags:['Pedido en Google Sheets','Stock verificado','Aviso a bodega'],steps:[
+ {bot:'¡Buenas! Soy el asistente de Ferretería Central. ¿Qué necesitas?',opts:[
+  {u:'Hacer un pedido',b:'Dime qué productos y cantidades necesitas.',n:1},
+  {u:'¿Tienen disponible…?',b:'Escríbeme el producto y te digo si hay en stock.',n:1}]},
+ {bot:null,opts:[
+  {u:'4 tableros y 20 bisagras',b:'Hay disponibilidad de ambos. Tu pedido #1043 quedó registrado y te envío el total con el link de pago.',n:null},
+  {u:'1 galón de pintura blanca',b:'Sí hay: quedan 12 galones. Pedido #1044 registrado; lo puedes recoger en 1 hora.',n:null}]}]},
+pelu:{label:'Peluquería',bot:'Salón Bella',tags:['Cita con el estilista','Anticipo cobrado','Recordatorio programado'],steps:[
+ {bot:'¡Hola! Bienvenida a Salón Bella. ¿Qué servicio quieres?',opts:[
+  {u:'Corte y cepillado',b:'¡Perfecto! Con Laura hay espacio el sábado a las 10:00 a. m. o a las 2:00 p. m. ¿Cuál te sirve?',n:1},
+  {u:'Uñas',b:'Manicure semipermanente: $45.000. Hay cupo hoy a las 4:00 p. m. o mañana a las 11:00 a. m. ¿Cuál prefieres?',n:1},
+  {u:'Ver precios',b:'Te envío la lista de servicios con precios. ¿Quieres agendar algo?',n:1}]},
+ {bot:null,opts:[
+  {u:'La primera',b:'Listo, quedó tu cita. Te envío el link para el anticipo y te recuerdo un día antes.',n:null},
+  {u:'La segunda',b:'Listo, quedó tu cita. Te envío el link para el anticipo y te recuerdo un día antes.',n:null}]}]},
+fabrica:{label:'Fábrica',bot:'Muebles Roble',tags:['Cotización en PDF','Pedido a proveedor','Seguimiento en 2 días'],steps:[
+ {bot:'Hola, bienvenido a Muebles Roble. ¿Qué mueble estás buscando?',opts:[
+  {u:'Closet',b:'¿Lo quieres con puertas corredizas o batientes?',n:1},
+  {u:'Cocina integral',b:'¿Cuántos metros lineales mide tu cocina, más o menos?',n:2}]},
+ {bot:null,opts:[
+  {u:'Corredizas, color roble',b:'Te acabo de enviar la cotización en PDF. Si la apruebas, pedimos el material hoy mismo.',n:null},
+  {u:'Batientes, blanco',b:'Te envié la cotización en PDF. Un asesor te llama para agendar la toma de medidas.',n:null}]},
+ {bot:null,opts:[
+  {u:'Unos 3 metros',b:'Te envié una cotización estimada en PDF. Agendamos visita para tomar medidas exactas sin costo.',n:null}]}]}
+};
+const CH={wa:'WhatsApp',ig:'Instagram',tg:'Telegram'};
+const UC={wa:'#2F55F5',ig:'#7A4DF5',tg:'#2A8BD8'};
+let sector='clinica',channel='wa',step=0,busy=false,timer=null;
+function bubble(who,text){const b=el('div','bub '+who,text);if(who==='u')b.style.background=UC[channel];$('chat').append(b);$('chat').scrollTop=$('chat').scrollHeight;}
+function typing(cb,ms){busy=true;const t=el('div','bub b','escribiendo…');t.style.cssText='background:#22396E;color:#A9B8DA';$('chat').append(t);$('chat').scrollTop=$('chat').scrollHeight;timer=setTimeout(()=>{t.remove();busy=false;cb();},ms||900);}
+function showOpts(){const o=$('opts');o.replaceChildren();const s=S[sector];if(step===null){$('tags').replaceChildren(...s.tags.map(x=>el('span','tag','✓ '+x)));const again=el('button','opt','Probar de nuevo');again.type='button';again.onclick=start;o.append(again);return;}
+ s.steps[step].opts.forEach(op=>{const b=el('button','opt',op.u);b.type='button';b.onclick=()=>choose(op);o.append(b);});}
+function choose(op){if(busy)return;$('opts').replaceChildren();bubble('u',op.u);typing(()=>{bubble('b',op.b);step=op.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
+function start(){clearTimeout(timer);busy=false;step=0;$('chat').replaceChildren();$('tags').replaceChildren();$('opts').replaceChildren();renderHeader();typing(()=>{bubble('b',S[sector].steps[0].bot);showOpts();},600);}
+function renderPanel(){const i=INFO[sector];$('forTitle').textContent='Lo que automatizamos en '+i.your;
+ $('forList').replaceChildren(...i.list.map(([h,p])=>{const li=el('li');li.style.cssText='display:flex;gap:12px';const ic=el('span',null,'✓');ic.style.cssText='flex:none;width:26px;height:26px;border-radius:50%;background:#EEF2FB;color:#2F55F5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px';const tx=el('div');tx.append(el('strong',null,h),el('p',null,p));tx.lastChild.style.cssText='font-size:14px;color:#3B4A6B';li.append(ic,tx);return li;}));
+ $('forCta').textContent='Cotizar para '+i.your;}
+function pick(k){sector=k;start();}
+function renderHeader(){
+ $('heroSectors').replaceChildren(...Object.keys(INFO).map(k=>{const b=el('button','pill',INFO[k].name);b.type='button';b.style.cssText='border-radius:12px;text-align:left;width:100%';b.onclick=()=>{pick(k);$('demo').scrollIntoView({behavior:'smooth'});};return b;}));
+ renderPanel();
+ $('sectors').replaceChildren(...Object.keys(INFO).map(k=>{const b=el('button','pill',INFO[k].name);b.type='button';b.setAttribute('aria-pressed',k===sector);b.onclick=()=>pick(k);return b;}));
+ $('channels').replaceChildren(...Object.keys(CH).map(k=>{const b=el('button','chip',CH[k]);b.type='button';b.setAttribute('aria-pressed',k===channel);b.onclick=()=>{channel=k;renderHeader();document.querySelectorAll('.bub.u').forEach(x=>x.style.background=UC[k]);};return b;}));
+ $('botName').textContent=S[sector].bot;$('channelName').textContent=CH[channel];}
+$('say').onsubmit=e=>{e.preventDefault();const v=$('sayInput').value.trim();if(!v||busy)return;$('sayInput').value='';
+ const norm=x=>x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+ if(step===null){bubble('u',v);typing(()=>bubble('b','¡Gracias por escribir! Para probar otra conversación toca "Probar de nuevo" o elige otro negocio.'));return;}
+ const opts=S[sector].steps[step].opts;const words=norm(v).split(/\W+/).filter(w=>w.length>2);
+ const hit=opts.find(o=>words.some(w=>norm(o.u).includes(w)));
+ if(hit){$('opts').replaceChildren();bubble('u',v);typing(()=>{bubble('b',hit.b);step=hit.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
+ else{bubble('u',v);typing(()=>{bubble('b','En la versión real te entendería con IA. En esta demo, elige una de las opciones de abajo.');});}};
+start();
+
+/* ---------- Catálogo de automatizaciones ---------- */
+const A={
+'Ventas y atención':[['Atención 24/7','Responde preguntas frecuentes, precios y horarios a cualquier hora.'],['Cotizaciones automáticas','Arma y envía la cotización en PDF en segundos.'],['Pedidos por chat','Toma el pedido, confirma el stock y envía el link de pago.'],['Catálogo en WhatsApp','Muestra productos con foto y precio dentro del chat.'],['Seguimiento a prospectos','Escribe a quien preguntó y no compró, en el momento justo.'],['Clientes potenciales calificados','Identifica quién está listo para comprar y avisa al vendedor.'],['Carritos abandonados','Recuerda la compra a quien dejó productos sin pagar.'],['Paso a un humano','Transfiere la conversación a tu equipo cuando hace falta.']],
+'Agenda y reservas':[['Citas y reservas','Agenda en Google Calendar según tu disponibilidad real.'],['Recordatorios','Avisa un día y una hora antes para reducir inasistencias.'],['Confirmar o reprogramar','El cliente mueve su cita sin llamar.'],['Lista de espera','Ofrece el cupo liberado al siguiente en la lista.'],['Cobro de anticipos','Envía el link de pago para asegurar la reserva.'],['Varias sedes o profesionales','Agenda por persona, servicio o sede.']],
+'Operación y finanzas':[['Cobros y cartera','Recuerda pagos pendientes de forma amable y automática.'],['Lectura de facturas con IA','Extrae los datos de facturas y soportes que te envían.'],['Registro de gastos','Envías la foto del recibo y queda registrado.'],['Inventario y alertas','Avisa cuando un producto se está agotando.'],['Pedidos a proveedores','Genera la orden de compra cuando baja el stock.'],['Reporte diario al dueño','Ventas, citas y pendientes del día en un mensaje.'],['Registro en Google Sheets','Cada cliente, pedido o cita queda guardado solo.']],
+'Marketing y redes':[['Respuesta a comentarios','Contesta comentarios y mensajes de Instagram.'],['Campañas por WhatsApp','Promociones a clientes que aceptaron recibirlas.'],['Publicaciones programadas','Deja listas las publicaciones de la semana.'],['Reseñas en Google','Pide la reseña después de cada compra o visita.'],['Encuestas de satisfacción','Mide qué tan contentos quedan tus clientes.'],['Fechas especiales','Saludos y descuentos en cumpleaños y aniversarios.']],
+'Equipo interno':[['Asistente en Telegram','Tu equipo consulta precios, stock o agenda con un mensaje.'],['Notas de voz a texto','Transcribe audios y los convierte en tareas.'],['Resumen de correos','Te llega lo importante de tu bandeja cada mañana.'],['Ingreso de empleados','Envía documentos, accesos e instrucciones a los nuevos.'],['Tareas y pendientes','Asigna y recuerda tareas al equipo automáticamente.'],['Avisos entre áreas','Ventas avisa a bodega y bodega avisa a despacho, solos.']]};
+let area=Object.keys(A)[0];
+function renderAuto(){
+ $('autoTabs').replaceChildren(...Object.keys(A).map(k=>{const b=el('button','tab',k+' ('+A[k].length+')');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',k===area);b.onclick=()=>{area=k;renderAuto();};return b;}));
+ $('autoGrid').replaceChildren(...A[area].map(([h,p])=>{const d=el('div','auto');d.append(el('h3',null,h),el('p',null,p));return d;}));}
+renderAuto();
+
+$('forCta').onclick=()=>{const sel=document.querySelector('#quote select[name=sector]');sel.value=INFO[sector].form;};
+/* ---------- Calculadora ---------- */
+const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);};
+
+/* ---------- Formulario de cotización ---------- */
+$('quote').onsubmit=e=>{e.preventDefault();const f=e.target,msg=$('quoteMsg');
+ const bad=[...f.querySelectorAll('[required]')].find(x=>x.type==='checkbox'?!x.checked:!x.value.trim()||(x.type==='email'&&!/^\S+@\S+\.\S+$/.test(x.value)));
+ if(bad){msg.hidden=false;msg.textContent=bad.type==='checkbox'?'Debes aceptar la política de tratamiento de datos.':'Revisa los campos obligatorios (*).';bad.focus();return;}
+ msg.hidden=true;const d=new FormData(f);const all=n=>d.getAll(n).join(', ')||'—';
+ const body=`Nombre: ${d.get('nombre')}\nEmpresa: ${d.get('empresa')}\nCorreo: ${d.get('correo')}\nTeléfono: ${d.get('telefono')||'—'}\nTipo de negocio: ${d.get('sector')||'—'}\nMensajes al día: ${d.get('volumen')||'—'}\nCanales: ${all('canal')}\nQuiere automatizar: ${all('necesidad')}\n\nDetalle:\n${d.get('detalle')}\n\nAutorizó el tratamiento de datos: Sí`;
+ location.href='mailto:grupolysf@gmail.com?subject='+encodeURIComponent('Cotización Glysf – '+d.get('empresa'))+'&body='+encodeURIComponent(body);
+ msg.hidden=false;msg.style.color='#067647';msg.textContent='¡Listo! Se abrió tu correo con la solicitud. Dale enviar y te respondemos pronto.';};
 </script>
 </body>
 </html>
