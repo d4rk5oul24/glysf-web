@@ -10,7 +10,9 @@
   - No se sirven archivos ocultos (`.git`, `.env`) ni respaldos.
   - No se muestra la versión del servidor.
 - **Cabeceras de seguridad:** CSP estricta (solo se ejecuta nuestro propio `app.js`), HSTS, anti-clickjacking (`X-Frame-Options`), `nosniff`, `Referrer-Policy`, `Permissions-Policy` y aislamiento entre orígenes.
-- **Formulario:** campo trampa contra bots, límites de longitud y limpieza de caracteres de control.
+- **HTTPS forzado:** todo lo que llegue por http se redirige a https, y www.glysf.com a glysf.com.
+- **Formulario:** campo trampa contra bots, bloqueo de envíos hechos en menos de 4 segundos o repetidos en menos de 30, límites de longitud y limpieza de caracteres de control.
+- **Analítica con consentimiento:** Google Analytics solo se carga si el visitante acepta el aviso de cookies.
 - **Contenedor:** archivos de la web en solo lectura y chequeo de salud.
 
 Puedes comprobar las cabeceras en https://securityheaders.com cuando esté publicada.
@@ -21,7 +23,7 @@ Puedes comprobar las cabeceras en https://securityheaders.com cuando esté publi
 1. Crea una cuenta en cloudflare.com y agrega `glysf.com` (plan Free).
 2. Cloudflare te da dos *nameservers*. En Hostinger cambia los nameservers del dominio por esos dos.
 3. En Cloudflare, en DNS, deja el registro `A` de `glysf.com` (y `www`) apuntando a la IP del VPS, con la **nube naranja activada** (proxy).
-4. SSL/TLS → modo **Full (strict)**. Activa "Always Use HTTPS".
+4. SSL/TLS → modo **Full (strict)**. Activa "Always Use HTTPS". No uses el modo "Flexible": la web ya fuerza HTTPS y con "Flexible" entraría en un bucle de redirecciones.
 5. Security → activa **Bot Fight Mode**. Deja el nivel de seguridad en "Medium".
 6. Security → WAF → crea una regla de límite de peticiones (Rate limiting), por ejemplo 100 peticiones cada 10 s por IP → bloquear.
 7. Si un día los atacan: Security → **"I'm Under Attack Mode"**.

@@ -179,11 +179,12 @@ renderAuto();
 /* ---------- Calculadora ---------- */
 const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);};
 
-/* ---------- Formulario de cotización ---------- */
+/* ---------- Formulario de cotización (con protección anti-spam) ---------- */
+const FORM_T0=Date.now();let lastSend=0;
 $('quote').onsubmit=e=>{e.preventDefault();const f=e.target,msg=$('quoteMsg');
  const bad=[...f.querySelectorAll('[required]')].find(x=>x.type==='checkbox'?!x.checked:!x.value.trim()||(x.type==='email'&&!/^\S+@\S+\.\S+$/.test(x.value)));
  if(bad){msg.hidden=false;msg.textContent=bad.type==='checkbox'?'Debes aceptar la política de tratamiento de datos.':'Revisa los campos obligatorios (*).';msg.className='';bad.focus();return;}
- msg.hidden=true;const d=new FormData(f);if(d.get('sitio'))return;const clean=v=>String(v||'').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g,'').slice(0,2000);const all=n=>d.getAll(n).join(', ')||'—';
+ msg.hidden=true;const d=new FormData(f);if(d.get('sitio')||Date.now()-FORM_T0<4000||Date.now()-lastSend<30000){msg.hidden=false;msg.className='';msg.textContent='Espera unos segundos e inténtalo de nuevo.';return;}lastSend=Date.now();if(window.glysfEvent)glysfEvent('cotizacion_enviada',{sector:d.get('sector')||'sin dato'});const clean=v=>String(v||'').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g,'').slice(0,2000);const all=n=>d.getAll(n).join(', ')||'—';
  const body=`Nombre: ${clean(d.get('nombre'))}\nEmpresa: ${clean(d.get('empresa'))}\nCorreo: ${clean(d.get('correo'))}\nTeléfono: ${clean(d.get('telefono'))||'—'}\nTipo de negocio: ${clean(d.get('sector'))||'—'}\nMensajes al día: ${clean(d.get('volumen'))||'—'}\nCanales: ${all('canal')}\nQuiere automatizar: ${all('necesidad')}\n\nDetalle:\n${clean(d.get('detalle'))}\n\nAutorizó el tratamiento de datos: Sí`;
  location.href='mailto:grupolysf@gmail.com?subject='+encodeURIComponent('Cotización Glysf – '+clean(d.get('empresa')))+'&body='+encodeURIComponent(body);
  msg.hidden=false;msg.className='ok';msg.textContent='¡Listo! Se abrió tu correo con la solicitud. Dale enviar y te respondemos pronto.';};
@@ -311,7 +312,7 @@ function openSector(k,ix){cur=k;modIx=ix||0;const s=SECT[k];chatSector(k);
  const sc=$('scene');sc.classList.remove('in');void sc.offsetWidth;sc.innerHTML=SCENE[k];sc.classList.add('in');
  $('svTabs').replaceChildren(...Object.keys(SECT).map(x=>{const a=el('a','svtab',SECT[x].name);a.href='#/negocio/'+x;if(x===k)a.setAttribute('aria-current','page');return a;}));
  const hero=$('svHero');hero.classList.remove('rise');void hero.offsetWidth;hero.classList.add('rise');
- $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;$('svCta').textContent='Cotizar para '+s.your;
+ $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;$('svCta').textContent='Pide tu cotización';
  renderMods();window.scrollTo({top:0});document.title='Glysf para '+s.your.replace('tu ','')+' · Automatización con IA';heroStop();}
 function renderMods(){const s=SECT[cur];
  $('modTabs').replaceChildren(...s.mods.map((m,i)=>{const b=el('button','mtab',m.t);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i===modIx);b.onclick=()=>{modIx=i;renderMods();};return b;}));
