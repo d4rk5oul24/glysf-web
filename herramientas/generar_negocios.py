@@ -462,7 +462,11 @@ def _plano(t):
 
 def proyecto(n):
     FOTO_TORRE = '1744983672789-86703806e626'
-    PISOS = 10
+    PISOS = 8
+    # Franjas medidas sobre la foto (coordenadas del viewBox 1200x1500)
+    FRANJA_Y = {8: (399, 501), 7: (501, 603), 6: (603, 705), 5: (705, 807), 4: (807, 909), 3: (909, 1011), 2: (1011, 1113)}
+    FRANJA_X = [(0, 396), (396, 703), (703, 1009), (1009, 1200)]
+    hot = []
     estados = 'dvdsddvdvdddsdvddsdvdddvsddvdsdddvdsd'
     pisos_html, aptos, i = [], [], 0
     for piso in range(PISOS, 1, -1):
@@ -476,6 +480,8 @@ def proyecto(n):
             precio = f"${int(precio * 1_000_000):,}".replace(',', '.')
             vista = 'Esquina · vista a los cerros' if u == 4 else ('Esquina · vista al parque' if u == 1 else ('Vista al parque' if u == 2 else 'Vista a los cerros'))
             aptos.append((num, est))
+            (y0, y1), (x0, x1) = FRANJA_Y[piso], FRANJA_X[u - 1]
+            hot.append(f'<rect class="hs {est}" x="{x0 + 6}" y="{y0 + 4}" width="{x1 - x0 - 12}" height="{y1 - y0 - 8}" rx="10" data-apto="{num}" data-piso="{piso}" role="button" tabindex="0" aria-label="Apto {num}, piso {piso}, {est}"><title>Apto {num} · {est}</title></rect>')
             chips.append(f'<button type="button" class="apt {est}" aria-label="Apto {num}, {est}" data-apto="{num}" data-piso="{piso}" data-tipo="{t}" data-area="{area}" data-hab="{hab}" data-banos="{ban}" data-precio="{precio}" data-estado="{est}" data-vista="{vista}"><b>{num}</b><small>{area} m²</small></button>')
         libres = sum(1 for c in chips if 'apt disponible' in c)
         pisos_html.append((piso, libres, ''.join(chips)))
@@ -489,18 +495,17 @@ def proyecto(n):
 <div class="pj-wrap">
 <div class="copy center">
 <h2 id="t-pj" class="h2">Vende tu proyecto <em>antes de terminarlo.</em></h2>
-<p class="sub">Tus clientes recorren la torre piso por piso, eligen su apartamento, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo.</p>
+<p class="sub">Tus clientes pasan el dedo por la fachada, eligen su apartamento, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo.</p>
 </div>
 <div class="pj">
 <div class="pj-stage">
-<svg class="pj-shot" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fotografía de la Torre Roble"><image href="https://images.unsplash.com/photo-{FOTO_TORRE}?auto=format&amp;fit=crop&amp;w=1200&amp;h=1500&amp;q=75" width="1200" height="1500" preserveAspectRatio="xMidYMid slice"/><g class="pj-hot"></g><g class="pj-guia" aria-hidden="true">{guia}</g></svg>
+<svg class="pj-shot" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fotografía de la Torre Roble"><image href="https://images.unsplash.com/photo-{FOTO_TORRE}?auto=format&amp;fit=crop&amp;w=1200&amp;h=1500&amp;q=75" width="1200" height="1500" preserveAspectRatio="xMidYMid slice"/><g class="pj-hot">{"".join(hot)}</g><g class="pj-guia" aria-hidden="true">{guia}</g></svg>
 <div class="pj-shade"></div>
 <div class="pj-top"><b>Torre Roble</b><span>Chapinero Alto · Entrega 2028</span></div>
-<nav class="pj-floors" aria-label="Elige el piso">{torre}</nav>
 <div class="pj-bottom">
 <p class="pj-bl">Apartamentos del <span data-f="pisolbl">piso 8</span></p>
 {filas}
-<ul class="pj-legend"><li class="disponible">{cuenta['disponible']} disponibles</li><li class="separado">{cuenta['separado']} separados</li><li class="vendido">{cuenta['vendido']} vendidos</li></ul>
+<ul class="pj-legend"><li><button type="button" class="pj-toggle" aria-pressed="false">Ver disponibilidad</button></li><li class="disponible">{cuenta['disponible']} disponibles</li><li class="separado">{cuenta['separado']} separados</li><li class="vendido">{cuenta['vendido']} vendidos</li></ul>
 </div>
 </div>
 <div class="pj-card" aria-live="polite">
@@ -581,8 +586,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=11">
-<script src="/negocio.js?v=11" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=12">
+<script src="/negocio.js?v=12" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">

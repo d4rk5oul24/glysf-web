@@ -107,8 +107,10 @@
   const cta = card.querySelector('.pj-cta'), note = card.querySelector('.pj-note');
   const foto = card.querySelector('.pj-photo');
   const ponerFoto = id => { foto.style.backgroundImage = `url('https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1000&q=70')`; };
+  const hs = [...pj.querySelectorAll('.pj-hot .hs')];
   const ver = el => {
     apts.forEach(a => a.classList.toggle('sel', a === el));
+    hs.forEach(h => h.classList.toggle('sel', h.dataset.apto === el.dataset.apto));
     const d = el.dataset;
     f('apto').textContent = d.apto; f('piso').textContent = d.piso; f('vista').textContent = d.vista;
     f('area').textContent = d.area; f('hab').textContent = d.hab; f('banos').textContent = d.banos; f('precio').textContent = d.precio;
@@ -125,6 +127,13 @@
     if (elegir) { const fila = rows.find(r => !r.hidden); ver(fila.querySelector('.apt.disponible') || fila.querySelector('.apt')); }
   };
   floors.forEach(b => b.addEventListener('click', () => piso(b.dataset.floor, true)));
+  const desdeFoto = h => { piso(h.dataset.piso, false); ver(apts.find(a => a.dataset.apto === h.dataset.apto)); };
+  hs.forEach(h => {
+    h.addEventListener('click', () => desdeFoto(h));
+    h.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); desdeFoto(h); } });
+  });
+  const tg = pj.querySelector('.pj-toggle');
+  if (tg) tg.addEventListener('click', () => { const on = tg.getAttribute('aria-pressed') !== 'true'; tg.setAttribute('aria-pressed', String(on)); pj.querySelector('.pj-stage').classList.toggle('estados', on); });
   apts.forEach(a => a.addEventListener('click', () => ver(a)));
   card.querySelectorAll('.pj-tabs [data-pt]').forEach(b => b.addEventListener('click', () => {
     card.querySelectorAll('.pj-tabs [data-pt]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
@@ -137,5 +146,5 @@
   cta.addEventListener('click', () => { note.hidden = false; });
   ponerFoto(card.querySelector('.pj-thumbs [aria-pressed="true"]').dataset.img);
   if (/[?&]gui/.test(location.search)) pj.querySelector('.pj-stage').classList.add('guia');
-  piso(8, true);
+  piso(6, true);
 })();

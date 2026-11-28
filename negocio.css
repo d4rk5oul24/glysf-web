@@ -402,3 +402,20 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 .s-hero .veil{background:linear-gradient(180deg,rgba(5,11,30,.55) 0%,rgba(5,11,30,.12) 38%,rgba(5,11,30,.18) 60%,rgba(5,11,30,.9) 100%)}
 .giant{color:rgba(255,255,255,.94);-webkit-text-stroke:0;text-shadow:0 20px 80px rgba(0,0,0,.35)}
 .hero-line{opacity:clamp(0,calc(.9 + var(--p)*2),1);transform:translateY(calc(var(--p)*-20px))}
+
+/* Apartamentos marcados sobre la foto */
+.pj-top{pointer-events:none}
+.pj-hot .hs{fill:transparent;stroke:transparent;stroke-width:4;cursor:pointer;outline:none;transition:fill .2s,stroke .2s}
+.pj-hot .hs:hover,.pj-hot .hs:focus-visible{stroke:#fff}
+.pj-hot .hs.disponible:hover,.pj-hot .hs.disponible:focus-visible{fill:rgba(114,220,166,.42)}
+.pj-hot .hs.separado:hover,.pj-hot .hs.separado:focus-visible{fill:rgba(242,196,107,.48)}
+.pj-hot .hs.vendido:hover,.pj-hot .hs.vendido:focus-visible{fill:rgba(20,26,44,.55)}
+.pj-stage.estados .pj-hot .hs.disponible{fill:rgba(114,220,166,.36)}
+.pj-stage.estados .pj-hot .hs.separado{fill:rgba(242,196,107,.42)}
+.pj-stage.estados .pj-hot .hs.vendido{fill:rgba(20,26,44,.5)}
+.pj-hot .hs.sel{fill:rgba(255,255,255,.3)!important;stroke:#fff;stroke-width:6}
+.pj-shade{pointer-events:none;background:linear-gradient(180deg,rgba(4,9,22,.6) 0%,rgba(4,9,22,0) 20%,rgba(4,9,22,0) 62%,rgba(4,9,22,.9) 100%)!important}
+.pj-toggle{font:inherit;font-size:13px;color:#fff;background:rgba(6,14,34,.5);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
+.pj-toggle[aria-pressed="true"]{background:#fff;color:#0B1F4B}
+.pj-legend li[class]::before{content:"";width:10px;height:10px;border-radius:3px}
+.pj-bottom{pointer-events:none}.pj-bottom .apt,.pj-bottom .pj-toggle{pointer-events:auto}
