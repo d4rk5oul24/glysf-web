@@ -461,35 +461,81 @@ def _plano(t):
     return f'<svg class="pj-plan" data-plan="{t}" viewBox="-6 -6 252 182" role="img" aria-label="Plano del apartamento tipo {t}"{"" if t == "A" else " hidden"}>{r}</svg>'
 
 def proyecto(n):
-    import math
+    import math, random
+    rnd = random.Random(7)
     A, S, HZ = math.cos(math.pi / 6), 30, 24
     W, D, PISOS = 4, 3, 10
-    ox, oy = 110, 330
-    def P(x, y, z, dx=0, dy=0):
-        return f'{(x - y) * A * S + ox + dx:.1f},{(x + y) * .5 * S - z * HZ + oy + dy:.1f}'
-    def quad(pts): return ' '.join(pts)
-    svg = []
-    # sombra y lote
-    svg.append(f'<polygon class="pj-lot" points="{quad([P(-1.2,-1,0),P(W+1.4,-1,0),P(W+1.4,D+1.4,0),P(-1.2,D+1.4,0)])}"/>')
-    # caras de la torre
-    svg.append(f'<polygon class="pj-face l" points="{quad([P(0,D,0),P(W,D,0),P(W,D,PISOS),P(0,D,PISOS)])}"/>')
-    svg.append(f'<polygon class="pj-face r" points="{quad([P(W,D,0),P(W,0,0),P(W,0,PISOS),P(W,D,PISOS)])}"/>')
-    svg.append(f'<polygon class="pj-face t" points="{quad([P(0,0,PISOS),P(W,0,PISOS),P(W,D,PISOS),P(0,D,PISOS)])}"/>')
-    svg.append(f'<polygon class="pj-roof" points="{quad([P(1.2,.8,PISOS),P(2.8,.8,PISOS),P(2.8,2.2,PISOS),P(1.2,2.2,PISOS)])}"/>')
-    # lobby
-    svg.append(f'<polygon class="pj-lobby" points="{quad([P(.6,D,.1),P(3.4,D,.1),P(3.4,D,.85),P(.6,D,.85)])}"/>')
+    ox, oy = 150, 360
+    def xy(x, y, z): return ((x - y) * A * S + ox, (x + y) * .5 * S - z * HZ + oy)
+    def P(x, y, z): a, b = xy(x, y, z); return f'{a:.1f},{b:.1f}'
+    def poly(pts, cls='', extra=''): return f'<polygon{" class=" + chr(34) + cls + chr(34) if cls else ""} points="{" ".join(pts)}"{extra}/>'
+    def line(p1, p2, cls): return f'<line class="{cls}" x1="{p1[0]:.1f}" y1="{p1[1]:.1f}" x2="{p2[0]:.1f}" y2="{p2[1]:.1f}"/>'
+    defs = '''<defs>
+<linearGradient id="pjSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1838"/><stop offset=".55" stop-color="#2b3f6e"/><stop offset=".82" stop-color="#b9728a"/><stop offset="1" stop-color="#f3b27a"/></linearGradient>
+<linearGradient id="pjCL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9ddd0"/><stop offset="1" stop-color="#cdbfb1"/></linearGradient>
+<linearGradient id="pjCR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8d8f9c"/><stop offset="1" stop-color="#6c6f7e"/></linearGradient>
+<linearGradient id="pjTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1e7dc"/><stop offset="1" stop-color="#c9bdb2"/></linearGradient>
+<linearGradient id="pjGL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fb4d6"/><stop offset=".5" stop-color="#4b6496"/><stop offset="1" stop-color="#22355f"/></linearGradient>
+<linearGradient id="pjGR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d6f97"/><stop offset=".6" stop-color="#2a3a62"/><stop offset="1" stop-color="#172649"/></linearGradient>
+<linearGradient id="pjLit" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe2a8"/><stop offset=".6" stop-color="#f4ae5c"/><stop offset="1" stop-color="#c9773a"/></linearGradient>
+<linearGradient id="pjLitR" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c98a"/><stop offset=".6" stop-color="#d48d4a"/><stop offset="1" stop-color="#9c5a2b"/></linearGradient>
+<linearGradient id="pjRail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".45"/><stop offset="1" stop-color="#ffffff" stop-opacity=".1"/></linearGradient>
+<radialGradient id="pjTree" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#4f7a4a"/><stop offset=".7" stop-color="#25412a"/><stop offset="1" stop-color="#16271b"/></radialGradient>
+<radialGradient id="pjGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffd59a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd59a" stop-opacity="0"/></radialGradient>
+<filter id="pjBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
+<clipPath id="pjFrame"><rect x="-10" y="40" width="330" height="440" rx="18"/></clipPath>
+</defs>'''
+    o = [defs, '<g clip-path="url(#pjFrame)">', '<rect x="-10" y="40" width="330" height="440" fill="url(#pjSky)"/>']
+    # ciudad lejana
+    for i, (x0, w, h) in enumerate([(-10, 26, 60), (14, 18, 90), (30, 30, 48), (58, 16, 74), (230, 22, 66), (250, 30, 104), (278, 18, 58), (294, 30, 82)]):
+        o.append(f'<rect class="pj-city" x="{x0}" y="{318 - h}" width="{w}" height="{h + 160}"/>')
+    # terreno
+    gx0, gx1, gy0, gy1 = -2.6, W + 3.2, -2.6, D + 3.6
+    o.append(poly([P(gx0, gy1, 0), P(gx1, gy1, 0), P(gx1, gy1, -.45), P(gx0, gy1, -.45)], 'pj-soil l'))
+    o.append(poly([P(gx1, gy1, 0), P(gx1, gy0, 0), P(gx1, gy0, -.45), P(gx1, gy1, -.45)], 'pj-soil r'))
+    o.append(poly([P(gx0, gy0, 0), P(gx1, gy0, 0), P(gx1, gy1, 0), P(gx0, gy1, 0)], 'pj-grass'))
+    o.append(poly([P(-1, -1, 0), P(W + 1, -1, 0), P(W + 1, D + 1, 0), P(-1, D + 1, 0)], 'pj-pave'))
+    o.append(poly([P(1.4, D + 1, 0), P(2.6, D + 1, 0), P(2.6, D + 3.6, 0), P(1.4, D + 3.6, 0)], 'pj-pave'))
+    c = xy(W * .6, D * .6, 0)
+    o.append(f'<ellipse cx="{c[0] + 26:.1f}" cy="{c[1] + 8:.1f}" rx="110" ry="40" fill="#000" opacity=".45" filter="url(#pjBlur)"/>')
+    def arbol(x, y, h=1.6, r=13):
+        b, t = xy(x, y, 0), xy(x, y, h)
+        return (f'<ellipse cx="{b[0]:.1f}" cy="{b[1] + 2:.1f}" rx="{r * .9:.1f}" ry="{r * .38:.1f}" fill="#000" opacity=".35"/>'
+                f'<line class="pj-trunk" x1="{b[0]:.1f}" y1="{b[1]:.1f}" x2="{t[0]:.1f}" y2="{t[1]:.1f}"/>'
+                f'<circle cx="{t[0]:.1f}" cy="{t[1] - r * .4:.1f}" r="{r:.1f}" fill="url(#pjTree)"/>'
+                f'<circle cx="{t[0] + r * .55:.1f}" cy="{t[1] + r * .1:.1f}" r="{r * .72:.1f}" fill="url(#pjTree)"/>')
+    def farol(x, y):
+        b, t = xy(x, y, 0), xy(x, y, 1.3)
+        return (f'<circle cx="{t[0]:.1f}" cy="{t[1]:.1f}" r="14" fill="url(#pjGlow)"/>'
+                f'<line class="pj-post" x1="{b[0]:.1f}" y1="{b[1]:.1f}" x2="{t[0]:.1f}" y2="{t[1]:.1f}"/><circle cx="{t[0]:.1f}" cy="{t[1]:.1f}" r="1.6" fill="#ffe9c4"/>')
+    traseros = [arbol(-1.8, -1.8, 1.8, 15), arbol(W + 2.2, -1.6, 1.6, 13), arbol(-1.9, 1.2, 1.5, 12)]
+    o += traseros
+    # torre
+    o.append(poly([P(0, D, 0), P(W, D, 0), P(W, D, PISOS), P(0, D, PISOS)], '', ' fill="url(#pjCL)"'))
+    o.append(poly([P(W, D, 0), P(W, 0, 0), P(W, 0, PISOS), P(W, D, PISOS)], '', ' fill="url(#pjCR)"'))
+    # primer piso: lobby en vidrio con luz
+    o.append(poly([P(.25, D, .08), P(3.75, D, .08), P(3.75, D, .88), P(.25, D, .88)], '', ' fill="url(#pjLit)" opacity=".95"'))
+    for k in range(1, 7): a = .25 + 3.5 * k / 7; o.append(line(xy(a, D, .08), xy(a, D, .88), 'pj-mull'))
+    o.append(poly([P(W, 2.8, .08), P(W, .2, .08), P(W, .2, .88), P(W, 2.8, .88)], '', ' fill="url(#pjLitR)" opacity=".85"'))
+    o.append(poly([P(1.2, D, .95), P(2.8, D, .95), P(2.8, D + .55, .95), P(1.2, D + .55, .95)], 'pj-canopy'))
     estados = 'dvdsddvdvdddsdvddsdvdddvsddvdsdddvdsd'
     aptos, i = [], 0
     for piso in range(2, PISOS + 1):
-        z0, z1 = piso - 1 + .12, piso - .12
-        caras = [('l', 0.15, 1.85), ('l', 2.15, 3.85), ('r', 2.85, 1.65), ('r', 1.35, .15)]
-        for u, (cara, a0, a1) in enumerate(caras, start=1):
+        z0, z1 = piso - 1, piso
+        o.append(line(xy(0, D, z0), xy(W, D, z0), 'pj-slab l'))
+        o.append(line(xy(W, D, z0), xy(W, 0, z0), 'pj-slab r'))
+        for u, (cara, a0, a1) in enumerate([('l', .18, 1.86), ('l', 2.14, 3.82), ('r', 2.84, 1.6), ('r', 1.4, .16)], start=1):
+            lit = rnd.random() < .42
             if cara == 'l':
-                f = [P(a0, D, z0), P(a1, D, z0), P(a1, D, z1), P(a0, D, z1)]
-                g = [P(a0 + .18, D, z0 + .3), P(a1 - .18, D, z0 + .3), P(a1 - .18, D, z1 - .08), P(a0 + .18, D, z1 - .08)]
+                fp = lambda a, z, s=0: P(a, D + s, z)
+                fx = lambda a, z, s=0: xy(a, D + s, z)
             else:
-                f = [P(W, a0, z0), P(W, a1, z0), P(W, a1, z1), P(W, a0, z1)]
-                g = [P(W, a0 - .15, z0 + .3), P(W, a1 + .15, z0 + .3), P(W, a1 + .15, z1 - .08), P(W, a0 - .15, z1 - .08)]
+                fp = lambda a, z, s=0: P(W + s, a, z)
+                fx = lambda a, z, s=0: xy(W + s, a, z)
+            gz0, gz1 = z0 + .16, z1 - .1
+            unit = [fp(a0, z0 + .04), fp(a1, z0 + .04), fp(a1, z1 - .04), fp(a0, z1 - .04)]
+            glass = [fp(a0, gz0), fp(a1, gz0), fp(a1, gz1), fp(a0, gz1)]
+            gfill = ('pjLit' if cara == 'l' else 'pjLitR') if lit else ('pjGL' if cara == 'l' else 'pjGR')
             t = 'A' if u in (1, 4) else 'B'
             est = {'d': 'disponible', 'v': 'vendido', 's': 'separado'}[estados[i % len(estados)]]
             i += 1
@@ -499,8 +545,37 @@ def proyecto(n):
             precio = f"${int(precio * 1_000_000):,}".replace(',', '.')
             vista = 'Esquina · vista a los cerros' if u == 4 else ('Esquina · vista al parque' if u == 1 else ('Vista al parque' if cara == 'l' else 'Vista a los cerros'))
             aptos.append((num, est))
-            svg.append(f'<g class="apt {est}" role="button" tabindex="0" aria-label="Apto {num}, {est}" data-apto="{num}" data-piso="{piso}" data-tipo="{t}" data-area="{area}" data-hab="{hab}" data-banos="{ban}" data-precio="{precio}" data-estado="{est}" data-vista="{vista}">'
-                       f'<polygon class="ap-f {cara}" points="{quad(f)}"/><polygon class="ap-w {cara}" points="{quad(g)}"/></g>')
+            g = [f'<polygon points="{" ".join(glass)}" fill="url(#{gfill})"/>']
+            # reflejo diagonal en el vidrio
+            if not lit:
+                m0, m1 = a0 + (a1 - a0) * .15, a0 + (a1 - a0) * .45
+                g.append(f'<polygon class="pj-refl" points="{fp(m0, gz1)} {fp(m1, gz1)} {fp(m1 - (a1 - a0) * .1, gz0)} {fp(m0 - (a1 - a0) * .25 if cara == "l" else m0 + (a1 - a0) * .0, gz0)}"/>')
+            for k in (1, 2, 3):
+                a = a0 + (a1 - a0) * k / 4
+                g.append(line(fx(a, gz0), fx(a, gz1), 'pj-mull'))
+            g.append(line(fx(a0, (gz0 + gz1) / 2 + .18), fx(a1, (gz0 + gz1) / 2 + .18), 'pj-mull h'))
+            if cara == 'l':  # balcón con baranda de vidrio
+                s = .3
+                g.append(f'<polygon class="pj-bal" points="{fp(a0 + .05, z0 + .02)} {fp(a1 - .05, z0 + .02)} {fp(a1 - .05, z0 + .02, s)} {fp(a0 + .05, z0 + .02, s)}"/>')
+                g.append(f'<polygon class="pj-bal-e" points="{fp(a0 + .05, z0 + .02, s)} {fp(a1 - .05, z0 + .02, s)} {fp(a1 - .05, z0 - .06, s)} {fp(a0 + .05, z0 - .06, s)}"/>')
+                g.append(f'<polygon points="{fp(a0 + .05, z0 + .02, s)} {fp(a1 - .05, z0 + .02, s)} {fp(a1 - .05, z0 + .36, s)} {fp(a0 + .05, z0 + .36, s)}" fill="url(#pjRail)"/>')
+                g.append(line(fx(a0 + .05, z0 + .36, s), fx(a1 - .05, z0 + .36, s), 'pj-railtop'))
+            o.append(f'<g class="apt {est}" role="button" tabindex="0" aria-label="Apto {num}, {est}" data-apto="{num}" data-piso="{piso}" data-tipo="{t}" data-area="{area}" data-hab="{hab}" data-banos="{ban}" data-precio="{precio}" data-estado="{est}" data-vista="{vista}">'
+                     + ''.join(g) + f'<polygon class="ov" points="{" ".join(unit)}"/></g>')
+    # cubierta
+    o.append(poly([P(0, 0, PISOS), P(W, 0, PISOS), P(W, D, PISOS), P(0, D, PISOS)], '', ' fill="url(#pjTop)"'))
+    o.append(poly([P(.12, .12, PISOS), P(W - .12, .12, PISOS), P(W - .12, D - .12, PISOS), P(.12, D - .12, PISOS)], 'pj-roofin'))
+    for a, b2, h in [(1.0, .7, .55)]:
+        o.append(poly([P(a, b2 + 1.2, PISOS), P(a + 1.4, b2 + 1.2, PISOS), P(a + 1.4, b2 + 1.2, PISOS + h), P(a, b2 + 1.2, PISOS + h)], '', ' fill="url(#pjCL)"'))
+        o.append(poly([P(a + 1.4, b2 + 1.2, PISOS), P(a + 1.4, b2, PISOS), P(a + 1.4, b2, PISOS + h), P(a + 1.4, b2 + 1.2, PISOS + h)], '', ' fill="url(#pjCR)"'))
+        o.append(poly([P(a, b2, PISOS + h), P(a + 1.4, b2, PISOS + h), P(a + 1.4, b2 + 1.2, PISOS + h), P(a, b2 + 1.2, PISOS + h)], '', ' fill="url(#pjTop)"'))
+    o.append(line(xy(0, D, PISOS), xy(W, D, PISOS), 'pj-edge'))
+    o.append(line(xy(W, D, PISOS), xy(W, 0, PISOS), 'pj-edge'))
+    o.append(line(xy(W, D, 0), xy(W, D, PISOS), 'pj-corner'))
+    # primer plano
+    o += [arbol(-.6, D + 2.2, 1.7, 15), arbol(W + 1.8, D + .6, 1.5, 13), arbol(W + 2.4, D + 2.6, 1.6, 14), farol(1.1, D + 2.6), farol(2.9, D + 2.6), farol(W + 1.6, 2.2)]
+    o.append('</g>')
+    svg = o
     cuenta = {e: sum(1 for _, x in aptos if x == e) for e in ('disponible', 'separado', 'vendido')}
     thumbs = ''.join(f'<button type="button" data-img="{pid}"' + (' aria-pressed="true"' if j == 0 else ' aria-pressed="false"') + f'>{E(nm)}</button>' for j, (nm, pid) in enumerate(PJ_FOTOS))
     wa = 'Hola, vi el render interactivo de proyectos en glysf.com y quiero uno para mi constructora.'
@@ -508,12 +583,12 @@ def proyecto(n):
 <div class="pj-wrap">
 <div class="copy center">
 <h2 id="t-pj" class="h2">Vende tu proyecto <em>antes de terminarlo.</em></h2>
-<p class="sub">Tus clientes eligen el apartamento en el render, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo. Toca cualquier apartamento.</p>
+<p class="sub">Tus clientes eligen el apartamento en el render, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo. Toca cualquier apartamento del render.</p>
 </div>
 <div class="pj">
 <div class="pj-stage">
-<svg class="pj-svg" viewBox="-45 72 330 415" aria-label="Torre Roble: elige un apartamento">{''.join(svg)}</svg>
-<ul class="pj-legend"><li class="disponible">{cuenta['disponible']} disponibles</li><li class="separado">{cuenta['separado']} separados</li><li class="vendido">{cuenta['vendido']} vendidos</li></ul>
+<svg class="pj-svg" viewBox="-10 40 330 440" aria-label="Render de la Torre Roble: toca un apartamento para verlo">{''.join(svg)}</svg>
+<ul class="pj-legend"><li><button type="button" class="pj-toggle" aria-pressed="false">Ver disponibilidad</button></li><li class="disponible">{cuenta['disponible']} disponibles</li><li class="separado">{cuenta['separado']} separados</li><li class="vendido">{cuenta['vendido']} vendidos</li></ul>
 </div>
 <div class="pj-card" aria-live="polite">
 <h3 class="pj-t">Apto <span data-f="apto">704</span></h3>
@@ -593,8 +668,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=8">
-<script src="/negocio.js?v=7" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=9">
+<script src="/negocio.js?v=8" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">

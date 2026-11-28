@@ -330,26 +330,37 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 .pj-wrap .sub{max-width:640px;margin-inline:auto}.pj-wrap .copy{max-width:980px;margin:0 auto}
 .pj{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(20px,3vw,40px);align-items:center}
 .pj-stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px}
-.pj-svg{width:100%;max-width:520px;height:auto;overflow:visible;filter:drop-shadow(0 40px 60px rgba(0,0,0,.45))}
-.pj-back polygon{fill:#0e1a33;stroke:rgba(169,184,218,.12);stroke-width:.6}.pj-back .r{fill:#0b1529}.pj-back .t{fill:#16264a}
-.pj-lot{fill:rgba(169,184,218,.06);stroke:rgba(169,184,218,.14);stroke-width:.8;stroke-dasharray:3 4}
-.pj-face{stroke:rgba(169,184,218,.2);stroke-width:.8}.pj-face.l{fill:#15254a}.pj-face.r{fill:#0f1c3a}.pj-face.t{fill:#2a3d68}
-.pj-roof{fill:#36507f;stroke:rgba(255,255,255,.18);stroke-width:.6}
-.pj-lobby{fill:rgba(255,197,61,.35);stroke:rgba(255,197,61,.6);stroke-width:.6}
+.pj-svg{width:100%;max-width:560px;height:auto;filter:drop-shadow(0 40px 60px rgba(0,0,0,.45))}
+.pj-svg{border-radius:22px}
+.pj-city{fill:#1a2547;opacity:.75}
+.pj-grass{fill:#22402a}.pj-soil.l{fill:#3a2c22}.pj-soil.r{fill:#2a1f18}
+.pj-pave{fill:#a59d95;opacity:.55}
+.pj-canopy{fill:#e9ddd0;stroke:#fff;stroke-width:.4}
+.pj-trunk{stroke:#3b2a1d;stroke-width:2.2}
+.pj-post{stroke:#262a33;stroke-width:1.3}
+.pj-slab{stroke-width:2.2;stroke-linecap:round}.pj-slab.l{stroke:#f6eee6}.pj-slab.r{stroke:#9fa2ae}
+.pj-mull{stroke:rgba(20,26,40,.55);stroke-width:.7}.pj-mull.h{stroke-width:.5}
+.pj-refl{fill:#fff;opacity:.14}
+.pj-bal{fill:#d9cfc4}.pj-bal-e{fill:#f4ece3}
+.pj-railtop{stroke:#e8eef5;stroke-width:.8;opacity:.8}
+.pj-roofin{fill:#b9ada1;opacity:.55}
+.pj-edge{stroke:#fbf6f0;stroke-width:1.6}
+.pj-corner{stroke:rgba(255,255,255,.25);stroke-width:.8}
 .apt{cursor:pointer;outline:none}
-.apt .ap-f{fill:rgba(255,255,255,.04);stroke:rgba(169,184,218,.18);stroke-width:.6;transition:fill .25s,stroke .25s}
-.apt .ap-w{transition:fill .25s,opacity .25s}
-.apt.disponible .ap-w{fill:rgba(114,220,166,.55)}
-.apt.separado .ap-w{fill:rgba(242,196,107,.6)}
-.apt.vendido .ap-w{fill:rgba(169,184,218,.16)}
-.apt .ap-w.r{opacity:.82}
-.apt:hover .ap-f,.apt:focus-visible .ap-f{fill:rgba(255,255,255,.14);stroke:#fff}
-.apt:hover .ap-w,.apt:focus-visible .ap-w{opacity:1}
-.apt.sel .ap-f{fill:rgba(255,255,255,.22);stroke:#fff;stroke-width:1.4}
-.apt.sel .ap-w{fill:#fff;opacity:1}
+.apt .ov{fill:transparent;stroke:transparent;stroke-width:1.2;transition:fill .25s,stroke .25s}
+.apt:hover .ov,.apt:focus-visible .ov{stroke:#fff}
+.apt.disponible:hover .ov,.apt.disponible:focus-visible .ov{fill:rgba(114,220,166,.45)}
+.apt.separado:hover .ov,.apt.separado:focus-visible .ov{fill:rgba(242,196,107,.5)}
+.apt.vendido:hover .ov,.apt.vendido:focus-visible .ov{fill:rgba(40,46,64,.55)}
+.pj-svg.estados .apt.disponible .ov{fill:rgba(114,220,166,.42)}
+.pj-svg.estados .apt.separado .ov{fill:rgba(242,196,107,.48)}
+.pj-svg.estados .apt.vendido .ov{fill:rgba(20,26,44,.6)}
+.apt.sel .ov{fill:rgba(255,255,255,.28)!important;stroke:#fff;stroke-width:2}
+.pj-toggle{font:inherit;font-size:13px;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(169,184,218,.3);border-radius:999px;padding:6px 14px;cursor:pointer}
+.pj-toggle[aria-pressed="true"]{background:#fff;color:#0B1F4B}
 .pj-legend{display:flex;gap:18px;list-style:none;margin:0;padding:0;font-size:13px;color:var(--mist);flex-wrap:wrap;justify-content:center}
 .pj-legend li{display:flex;align-items:center;gap:7px}
-.pj-legend li::before{content:"";width:10px;height:10px;border-radius:3px}
+.pj-legend li[class]::before{content:"";width:10px;height:10px;border-radius:3px}
 .pj-legend .disponible::before{background:#72dca6}.pj-legend .separado::before{background:#f2c46b}.pj-legend .vendido::before{background:rgba(169,184,218,.35)}
 .pj-card{border-radius:24px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(169,184,218,.18);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);display:flex;flex-direction:column;gap:14px;text-align:left}
 .pj-t{font:400 clamp(30px,3.4vw,42px)/1 var(--serif);color:#fff;margin:0}
@@ -379,4 +390,4 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 .pj-own:hover{color:#fff}
 @media (max-width:960px){.pj{grid-template-columns:1fr}.pj-svg{max-width:360px}}
 @media (max-width:520px){.pj-card{padding:18px}}
-@media (prefers-reduced-motion:reduce){.apt .ap-f,.apt .ap-w,.pj-cta{transition:none}}
+@media (prefers-reduced-motion:reduce){}

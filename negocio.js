@@ -130,5 +130,7 @@
     ponerFoto(b.dataset.img);
   }));
   cta.addEventListener('click', () => { note.hidden = false; });
+  const tg = pj.querySelector('.pj-toggle'), svg = pj.querySelector('.pj-svg');
+  if (tg) tg.addEventListener('click', () => { const on = tg.getAttribute('aria-pressed') !== 'true'; tg.setAttribute('aria-pressed', String(on)); svg.classList.toggle('estados', on); });
   ver([...apts].sort((a, b) => b.dataset.piso - a.dataset.piso).find(a => a.dataset.estado === 'disponible' && a.dataset.piso <= 8) || apts[0]);
 })();
