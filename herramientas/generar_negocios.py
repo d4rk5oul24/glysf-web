@@ -48,6 +48,7 @@ OBJ = {
  'balanza': _ic('<path d="M100 44v112M64 158h72M40 66h120M40 66 22 112h36zM160 66l-18 46h36z"/>', [(100,40,13)]),
  'camion': _ic('<path d="M22 64h96v72H22zM118 90h34l24 26v20h-58"/><circle cx="54" cy="146" r="16"/><circle cx="148" cy="146" r="16"/>', [(176,116,11)]),
  'engranaje': _ic('<circle cx="100" cy="100" r="46"/><path d="M100 40v-8M100 160v8M40 100h-8M160 100h8M57 57l-6-6M143 143l6 6M143 57l6-6M57 143l-6 6" stroke-width="24"/>', [(100,100,16)]),
+ 'navegador': _ic('<rect x="26" y="40" width="148" height="120" rx="16"/><path d="M26 72h148M58 104h60M58 128h36"/><path d="M44 56h.1M58 56h.1" stroke-width="10"/>', [(140,128,13)]),
  'bolsa': _ic('<path d="M44 72h112l-10 100H54zM74 72V60a26 26 0 0 1 52 0v12"/><path d="M78 104c8 14 36 14 44 0"/>', [(122,104,10)]),
 }
 
@@ -288,6 +289,23 @@ NEGOCIOS = {
        ('inv','Inventario',[('Buzo negro · M',12,'4 und','Alerta de reposición enviada'),('Tenis blancos',58,'31 und','')])],
   reporte=['Ventas de hoy: $5.230.000 (63 pedidos)','Carritos recuperados: 9','Guías generadas: 18','Buzo negro M por agotarse, reposición pedida'],
   final=('Más ventas cerradas,','ningún mensaje sin respuesta.')),
+'web': dict(nombre='Páginas web', archivo='paginas-web', palabra='WEB', obj='navegador', acc='#8FB3FF', su='tu empresa',
+  foto='1680016661694-1cd3faf31c3a',
+  seo='Diseño de páginas web con chatbot y automatización', desc='Páginas web a la medida con chatbot, reservas, pedidos y pagos en línea, conectadas a tu CRM y a tus procesos.',
+  kicker='', hero=('Tu página web', 'trabaja mientras duermes.'),
+  bot_t=('Tu web atiende', 'aunque nadie esté conectado.'), bot_sub='El chatbot de tu página responde, agenda o vende, y cada contacto llega a tu equipo con todos sus datos.', bot_nombre='Tu empresa',
+  chat=[('u','Hola, ¿hacen envíos a Medellín?'),('b','¡Sí! Enviamos a todo el país. ¿Qué producto te interesa?'),('u','El plan empresarial'),('b','Te dejo los detalles del plan. ¿Quieres que un asesor te llame hoy?'),('pay','Contacto nuevo|En tu CRM'),('b','Listo, un asesor te contactará esta tarde.')],
+  cards_t=('Cada página,', 'hecha a tu medida.'), cards_num='',
+  cards=[('Página corporativa','Tu empresa en línea',[('Diseño',1),('Contenido',1),('Desarrollo',1),('En línea',1)],'Con chatbot','center 40%'),
+         ('Reservas y citas','Agenda en tu web',[('Diseño',1),('Calendario',1),('Pagos',1),('En línea',0)],'Con anticipos','left 50%'),
+         ('Tienda online','Catálogo y pagos',[('Diseño',1),('Catálogo',1),('Pagos',0),('En línea',0)],'Con envíos','right 50%')],
+  meter=(100,'% adaptada al celular ·',24,'horas al día atendiendo'),
+  ops_t=('Formularios, pagos y contactos','conectados a tus procesos.'),
+  ops=[('Contactos de hoy',[('Formulario · Plan empresarial','Nuevo','warn','Asignado a ventas'),('Chatbot · Envíos','Respondido','ok',''),('WhatsApp · Cotización','Enviada','ok','')]),
+       ('Lo que incluye',[('Dominio y certificado de seguridad','Configurando…','ok','Listo'),('Hosting a tu nombre','Configurando…','ok','Listo'),('Posicionamiento básico en Google','Configurando…','ok','Listo')]),
+       ('inv','Visitas del mes',[('Desde Google',62,'1.840 visitas',''),('Desde redes sociales',38,'1.120 visitas','Reporte enviado')])],
+  reporte=['Visitas de hoy: 214','Contactos nuevos: 9, todos en tu CRM','Reservas o pedidos en línea: 6','Página más vista: Servicios'],
+  final=('Una página que vende,','no solo una que se ve bien.')),
 }
 
 E = lambda s: html.escape(str(s), quote=True)
@@ -295,7 +313,7 @@ import unicodedata
 dominio = lambda t: re.sub(r'[^a-z0-9]', '', unicodedata.normalize('NFD', t.lower().replace('&', 'y')).encode('ascii', 'ignore').decode())
 
 # Botón principal de la página web de ejemplo, según el negocio
-WEB_CTA = {'padel':('Reserva tu cancha','Reservar cancha'),'clinica':('Tu sonrisa, en buenas manos','Agendar cita'),'gym':('Entrena sin excusas','Clase gratis'),
+WEB_CTA = {'web':('Tu empresa en línea','Contáctanos'),'padel':('Reserva tu cancha','Reservar cancha'),'clinica':('Tu sonrisa, en buenas manos','Agendar cita'),'gym':('Entrena sin excusas','Clase gratis'),
  'pilates':('Muévete con calma','Reservar clase'),'resto':('Del fuego a tu mesa','Pedir a domicilio'),'pelu':('Tu mejor versión','Agendar cita'),
  'tienda':('Todo para tu obra','Ver catálogo'),'fabrica':('Construimos lo que imaginas','Cotizar obra'),'contable':('Tus cuentas, claras','Enviar soportes'),
  'abogados':('Defendemos lo tuyo','Agendar consulta'),'logistica':('Tu carga, a tiempo','Rastrear pedido'),'manufactura':('Producción a tu medida','Solicitar cotización'),
@@ -503,5 +521,8 @@ def pagina(k, n):
 
 if __name__ == '__main__':
     for k, n in NEGOCIOS.items():
-        (RAIZ / f"{n['archivo']}.html").write_text(pagina(k, n), encoding='utf-8')
+        out = pagina(k, n)
+        if k == 'web':  # la página de páginas web no repite '¿Necesitas página web?'
+            out = re.sub(r'\n<section class="scene s-web flow".*?</section>\n', '\n', out, flags=re.S)
+        (RAIZ / f"{n['archivo']}.html").write_text(out, encoding='utf-8')
         print('ok', n['archivo'] + '.html')

@@ -368,9 +368,9 @@ $('modReplay').onclick=()=>renderMods();
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
 // Tarjeta final: para el negocio que no está en la lista
-function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué tareas quieres automatizar y preparamos una demo con tus datos.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de demos de Glysf. Quiero contarles qué me gustaría automatizar." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="#cotizar">Pide tu cotización</a></div>';return d;}
+function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué tareas quieres automatizar y preparamos una demo con tus datos.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de demos de Glysf. Quiero contarles qué me gustaría automatizar." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="mailto:grupolysf@gmail.com?subject=Mi%20negocio%20no%20est%C3%A1%20en%20la%20lista">Escríbenos un correo</a></div>';return d;}
 // Negocios que solo tienen página inmersiva (sin demo en pestañas)
-const EXTRA=[['/contable.html','Firmas contables','Soportes, conciliaciones y cierre','1772588627474-ae6acc69ac42'],['/abogados.html','Firmas de abogados','Consultas, expedientes y términos','1752697589029-0fd0ce96a395'],['/logistica.html','Logística','Pedidos, rutas y novedades','1645736315000-6f788915923b'],['/manufactura.html','Manufactura','Producción y relevos de turno','1787422429941-b1966d776195'],['/ecommerce.html','eCommerce','Catálogo, pedidos y envíos','1781899710894-f9ecfea088f3']];
+const EXTRA=[['/paginas-web.html','Páginas web','Sitios con chatbot, reservas y pagos','1680016661694-1cd3faf31c3a'],['/contable.html','Firmas contables','Soportes, conciliaciones y cierre','1772588627474-ae6acc69ac42'],['/abogados.html','Firmas de abogados','Consultas, expedientes y términos','1752697589029-0fd0ce96a395'],['/logistica.html','Logística','Pedidos, rutas y novedades','1645736315000-6f788915923b'],['/manufactura.html','Manufactura','Producción y relevos de turno','1787422429941-b1966d776195'],['/ecommerce.html','eCommerce','Catálogo, pedidos y envíos','1781899710894-f9ecfea088f3']];
 $('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href=PAGINA[k]||'#/negocio/'+k;
  const bg=el('div','bizbg');bg.innerHTML=photoBg(k,800);const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}),...EXTRA.map(([href,name,card,photo])=>{const a=el('a','biz dark');a.href=href;const bg=el('div','bizbg');bg.innerHTML=`<div class="pwrap"><div class="photo" style="background-image:url('https://images.unsplash.com/photo-${photo}?auto=format&fit=crop&w=800&q=70')"></div></div><div class="shade"></div>`;const tx=el('div','biztx');tx.append(el('strong',null,name),el('span',null,card));a.append(bg,tx);return a;}),otro());
 
@@ -392,6 +392,17 @@ window.addEventListener('hashchange',route);route();
   v.style.setProperty('--dim',Math.min(1,y/700).toFixed(3));});},{passive:true});})();
 // Saltar al contenido: lleva el foco al título de la vista visible.
 $('skipLink').onclick=e=>{e.preventDefault();const t=$('sectorView').hidden?$('heroTitle'):$('svTitle');t.focus();t.scrollIntoView({block:'center'});};
+
+/* ---------- Procesos: cada área muestra su flujo de principio a fin ---------- */
+(()=>{const flow=document.getElementById('pf'),data=document.getElementById('procData');if(!flow||!data)return;
+ const tabs=[...document.querySelectorAll('.proc-tabs [role=tab]')];let cur=-1;
+ function show(n,focus){n=(n+tabs.length)%tabs.length;if(n===cur&&!focus)return;cur=n;
+  tabs.forEach((t,k)=>{t.setAttribute('aria-selected',k===n);t.tabIndex=k===n?0:-1;});flow.setAttribute('aria-labelledby',tabs[n].id);
+  const src=data.querySelector(`[data-area="${n}"]`).cloneNode(true);src.removeAttribute('data-area');src.className='pf-list';
+  [...src.children].forEach((li,k)=>{const num=document.createElement('span');num.className='pf-n';num.textContent=k+1;li.prepend(num);li.style.setProperty('--d',(k*0.35)+'s');});
+  flow.replaceChildren(src);if(focus)tabs[n].focus();}
+ tabs.forEach((t,k)=>{t.addEventListener('click',()=>show(k));t.addEventListener('keydown',e=>{const d={ArrowRight:1,ArrowLeft:-1}[e.key];if(d){e.preventDefault();show(cur+d,true);}});});
+ show(0);})();
 
 /* ---------- Cómo trabajamos: los pasos avanzan solos mientras la sección está en pantalla, o con un toque ---------- */
 (()=>{const box=document.getElementById('howto'),rail=document.getElementById('howRail');if(!box)return;
