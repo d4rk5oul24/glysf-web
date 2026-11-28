@@ -270,6 +270,16 @@ NEGOCIOS = {
 }
 
 E = lambda s: html.escape(str(s), quote=True)
+import unicodedata
+dominio = lambda t: re.sub(r'[^a-z0-9]', '', unicodedata.normalize('NFD', t.lower().replace('&', 'y')).encode('ascii', 'ignore').decode())
+
+# Botón principal de la página web de ejemplo, según el negocio
+WEB_CTA = {'padel':('Reserva tu cancha','Reservar cancha'),'clinica':('Tu sonrisa, en buenas manos','Agendar cita'),'gym':('Entrena sin excusas','Clase gratis'),
+ 'pilates':('Muévete con calma','Reservar clase'),'resto':('Del fuego a tu mesa','Pedir a domicilio'),'pelu':('Tu mejor versión','Agendar cita'),
+ 'tienda':('Todo para tu obra','Ver catálogo'),'fabrica':('Construimos lo que imaginas','Cotizar obra'),'contable':('Tus cuentas, claras','Enviar soportes'),
+ 'abogados':('Defendemos lo tuyo','Agendar consulta'),'logistica':('Tu carga, a tiempo','Rastrear pedido'),'manufactura':('Producción a tu medida','Solicitar cotización'),
+ 'ecommerce':('Nueva colección','Comprar ahora')}
+
 
 def contacto(n, extra=''):
     wa_txt = f"Hola, vi la demo de {n['nombre'].lower()} en glysf.com y quiero información."
@@ -331,8 +341,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=2">
-<script src="/negocio.js?v=2" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=3">
+<script src="/negocio.js?v=3" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">
@@ -414,6 +424,35 @@ def pagina(k, n):
 <div class="msg-card">
 <p class="mc-h"><b>Glysf · Asistente</b><small>Hoy, 10:00 p. m.</small></p>
 <ul>{rep}</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section class="scene s-web" data-scene aria-labelledby="t-web">
+<div class="sticky">
+<div class="bg dark-solid"></div>
+<div class="web-wrap">
+<div class="copy">
+<h2 id="t-web" class="h2">¿Necesitas página web? <em>También la creamos.</em></h2>
+<ul class="web-list">
+<li data-at=".2">Diseño a la medida de {E(n['su'])}</li>
+<li data-at=".3">Se ve perfecta en el celular</li>
+<li data-at=".4">Tu chatbot y el botón de WhatsApp integrados</li>
+<li data-at=".5">Reservas, pedidos o pagos en línea</li>
+<li data-at=".6">Dominio, hosting y certificado de seguridad</li>
+</ul>
+</div>
+<div class="browser" role="img" aria-label="Ejemplo de página web para {E(n['bot_nombre'])} con botón de {E(WEB_CTA[k][1].lower())} y chat integrado.">
+<div class="br-bar"><i></i><i></i><i></i><span>{dominio(n['bot_nombre'])}.com</span></div>
+<div class="br-page">
+<div class="br-hero" data-src="{foto}">
+<div class="br-nav"><b>{E(n['bot_nombre'])}</b><span>Inicio</span><span>Servicios</span><span>Contacto</span></div>
+<div class="br-copy"><p class="br-h" data-at=".15">{E(WEB_CTA[k][0])}</p><span class="br-btn" data-at=".3">{E(WEB_CTA[k][1])}</span></div>
+</div>
+<div class="br-row"><span data-at=".4"></span><span data-at=".48"></span><span data-at=".56"></span></div>
+<div class="br-chat" data-at=".65"><b>Asistente</b><p>¡Hola! ¿En qué te ayudo?</p></div>
+</div>
 </div>
 </div>
 </div>
