@@ -196,7 +196,7 @@ $('say').onsubmit=e=>{e.preventDefault();const v=$('sayInput').value.trim();if(!
  const opts=S[sector].steps[step].opts;const words=norm(v).split(/\W+/).filter(w=>w.length>2);
  const hit=opts.find(o=>words.some(w=>norm(o.u).includes(w)));
  if(hit){$('opts').replaceChildren();bubble('u',v);typing(()=>{bubble('b',hit.b);step=hit.n;const nx=step!==null?S[sector].steps[step]:null;if(nx&&nx.bot){typing(()=>{bubble('b',nx.bot);showOpts();},700);}else showOpts();});}
- else{bubble('u',v);typing(()=>{bubble('b','En la versión real te entendería con IA. En esta demo, elige una de las opciones de abajo.');});}};
+ else{bubble('u',v);typing(()=>{bubble('b','En la versión real te entendería con IA. En este ejemplo, elige una de las opciones de abajo.');});}};
 const chatSector=k=>{sector=k;channel='wa';};
 const startChat=()=>start();
 
@@ -368,7 +368,7 @@ $('modReplay').onclick=()=>renderMods();
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
 // Tarjeta final: para el negocio que no está en la lista
-function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué tareas quieres automatizar y preparamos una demo con tus datos.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de demos de Glysf. Quiero contarles qué me gustaría automatizar." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="mailto:grupolysf@gmail.com?subject=Mi%20negocio%20no%20est%C3%A1%20en%20la%20lista">Escríbenos un correo</a></div>';return d;}
+function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué tareas quieres automatizar y te enviamos una cotización.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de ejemplos de Glysf. Quiero contarles qué me gustaría automatizar." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="mailto:grupolysf@gmail.com?subject=Mi%20negocio%20no%20est%C3%A1%20en%20la%20lista">Escríbenos un correo</a></div>';return d;}
 // Negocios que solo tienen página inmersiva (sin demo en pestañas)
 const EXTRA=[['/paginas-web.html','Páginas web','Sitios con chatbot, reservas y pagos','1680016661694-1cd3faf31c3a'],['/contable.html','Firmas contables','Soportes, conciliaciones y cierre','1772588627474-ae6acc69ac42'],['/abogados.html','Firmas de abogados','Consultas, expedientes y términos','1752697589029-0fd0ce96a395'],['/logistica.html','Logística','Pedidos, rutas y novedades','1645736315000-6f788915923b'],['/manufactura.html','Manufactura','Producción y relevos de turno','1787422429941-b1966d776195'],['/ecommerce.html','eCommerce','Catálogo, pedidos y envíos','1781899710894-f9ecfea088f3']];
 $('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href=PAGINA[k]||'#/negocio/'+k;

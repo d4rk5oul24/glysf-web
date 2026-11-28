@@ -321,7 +321,7 @@ WEB_CTA = {'web':('Tu empresa en línea','Contáctanos'),'padel':('Reserva tu ca
 
 
 def contacto(n, extra=''):
-    wa_txt = f"Hola, vi la demo de {n['nombre'].lower()} en glysf.com y quiero información."
+    wa_txt = f"Hola, vi el ejemplo de {n['nombre'].lower()} en glysf.com y quiero cotizar."
     return f'''<div class="contact-row{extra}">
 <a class="pill-btn wa big" data-wa="{E(wa_txt)}" href="https://wa.me/573103102908?text={E(wa_txt)}" target="_blank" rel="noopener">{WA_SVG}Escríbenos por WhatsApp</a>
 <a class="pill-btn ghost big" href="mailto:grupolysf@gmail.com?subject={E('Cotización Glysf – ' + n['nombre'])}">{MAIL_SVG}Escríbenos un correo</a>
@@ -359,6 +359,13 @@ def pagina(k, n):
         t0 += .22
     rep = ''.join(f'<li data-at="{.15 + i * .15:.2f}">{E(l)}</li>' for i, l in enumerate(n['reporte']))
     m = n['meter']
+    agenda = n['cards_num'].split('· ')[-1] if n['cards_num'] else 'Hoy'
+    def kpi(v, lab, at):
+        lab = lab.strip().rstrip('·').strip(); u = ''
+        if lab.startswith('%'): u, lab = '%', lab[1:].strip()
+        return f'<div class="kpi" data-at="{at}"><b><span data-count="{v}">0</span>{u}</b><small>{E(lab)}</small></div>'
+    kpis = kpi(m[0], m[1], '.05') + kpi(m[2], m[3], '.12') + '<div class="kpi" data-at=".19"><b>24/7</b><small>atención por WhatsApp</small></div>'
+    side = ''.join(f'<span' + (' class="cur"' if i == 0 else '') + f'>{E(t)}</span>' for i, t in enumerate(['Resumen', agenda] + [o[1] if o[0] == 'inv' else o[0] for o in n['ops']] + ['Reportes']))
     tabs = ''.join(f'<a href="/{v["archivo"]}.html"' + (' aria-current="page"' if kk == k else '') + f'>{E(v["nombre"])}</a>' for kk, v in NEGOCIOS.items())
     obj_cls = 'ball obj'
     return f'''<!doctype html>
@@ -380,8 +387,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=4">
-<script src="/negocio.js?v=4" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=6">
+<script src="/negocio.js?v=5" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">
@@ -426,43 +433,36 @@ def pagina(k, n):
 </div>
 </section>
 
-<section class="scene s-courts flow" data-scene aria-labelledby="t-courts">
-<div class="sticky">
-<div class="bg dark-solid"></div>
-<div class="courts-wrap">
-<div class="copy center">
-<h2 id="t-courts" class="h2">{E(n['cards_t'][0])} <em>{E(n['cards_t'][1])}</em></h2>
-</div>
-<div class="courts">
-{chr(10).join(cards)}
-</div>
-<p class="meter"><span data-count="{m[0]}">0</span>{E(m[1])} <span data-count="{m[2]}">0</span> {E(m[3])}</p>
-</div>
-</div>
-</section>
-
-<section class="scene s-ops flow" data-scene aria-labelledby="t-ops">
+<section class="scene s-panel flow" data-scene aria-labelledby="t-panel">
 <div class="sticky">
 <div class="bg"><div class="photo" data-src="{foto3}" style="background-position:70% 50%"></div><div class="veil strong"></div></div>
-<div class="ops">
-<div class="copy">
-<h2 id="t-ops" class="h2">{E(n['ops_t'][0])} <em>{E(n['ops_t'][1])}</em></h2>
+<div class="panel-wrap">
+<div class="copy center">
+<h2 id="t-panel" class="h2">{E(n['cards_t'][0])} <em>{E(n['cards_t'][1])}</em></h2>
+<p class="sub">{E(n['ops_t'][0])} {E(n['ops_t'][1])} Todo {E(n['su'])} en un solo panel que se actualiza solo.</p>
 </div>
-<div class="cards">
+<div class="dash">
+<div class="dash-bar"><i></i><i></i><i></i><span>Panel · {E(n['bot_nombre'])}</span><b class="live">En vivo</b></div>
+<div class="dash-body">
+<nav class="dash-side" aria-hidden="true"><svg><use href="#g"/></svg>{side}</nav>
+<div class="dash-main">
+<div class="kpis">{kpis}</div>
+<div class="dash-grid">
+<div class="dash-col"><p class="dash-h">{E(agenda)}</p>
+{chr(10).join(cards)}
+</div>
+<div class="dash-col"><p class="dash-h">Operación</p>
 {chr(10).join(ops)}
 </div>
-</div>
-</div>
-</section>
-
-<section class="scene s-report flow" data-scene aria-labelledby="t-report">
-<div class="sticky">
-<div class="bg"><div class="photo" data-src="{foto2}" style="background-position:50% 30%"></div><div class="veil strong"></div></div>
-<div class="report">
-<h2 id="t-report" class="h2 center">Cada noche, <em>{E(n['su'])} en un mensaje.</em></h2>
-<div class="msg-card">
+<div class="dash-col"><p class="dash-h">Reporte del día</p>
+<div class="msg-card" data-at=".1">
 <p class="mc-h"><b>Glysf · Asistente</b><small>Hoy, 10:00 p. m.</small></p>
 <ul>{rep}</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -501,7 +501,7 @@ def pagina(k, n):
 <div class="bg"><div class="photo still" data-src="{foto}"></div><div class="veil strong"></div></div>
 <div class="final-in">
 <h2 id="t-final" class="giant-2"><em>{E(n['final'][0])}</em> {E(n['final'][1])}</h2>
-<p class="sub">Te mostramos esta demo funcionando con los datos de {E(n['su'])}. Sin costo.</p>
+<p class="sub">Guíate por este ejemplo: dinos qué parte quieres para {E(n['su'])} y te enviamos la cotización.</p>
 {contacto(n)}
 <p class="note">Datos de ejemplo. Fotos: <a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
 </div>
