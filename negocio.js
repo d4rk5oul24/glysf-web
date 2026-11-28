@@ -46,11 +46,21 @@
   function tick() {
     const vh = innerHeight;
     for (const sc of scenes) {
+      if (sc.el.classList.contains('flow')) continue;
       const r = sc.el.getBoundingClientRect();
       const total = r.height - vh;
       const p = Math.min(1, Math.max(0, -r.top / (total || 1)));
       if (Math.abs(p - sc.p) > 0.001) { sc.p = p; paint(sc, p); }
     }
+  }
+
+  // Escenas "flow": sin scroll fijo; cuando aparecen, su historia se reproduce sola en ~2,5 s
+  const flows = scenes.filter(sc => sc.el.classList.contains('flow'));
+  const play = sc => { if (sc.played) return; sc.played = true; const t0 = performance.now();
+    const f = t => { const k = Math.min(1, (t - t0) / 2500); sc.p = k; paint(sc, k); if (k < 1) requestAnimationFrame(f); }; requestAnimationFrame(f); };
+  if ('IntersectionObserver' in window && !red) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const sc = flows.find(x => x.el === e.target); if (sc) { play(sc); io.unobserve(e.target); } } }), { threshold: .25 });
+    flows.forEach(sc => io.observe(sc.el));
   }
 
   if (red) {

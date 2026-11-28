@@ -368,7 +368,7 @@ $('modReplay').onclick=()=>renderMods();
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
 // Tarjeta final: para el negocio que no está en la lista
-function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué haces a mano y armamos la demo con tus datos.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de demos de Glysf. Quiero contarles qué hago a mano." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="#cotizar">Pide tu cotización</a></div>';return d;}
+function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué tareas quieres automatizar y preparamos una demo con tus datos.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de demos de Glysf. Quiero contarles qué me gustaría automatizar." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="#cotizar">Pide tu cotización</a></div>';return d;}
 // Negocios que solo tienen página inmersiva (sin demo en pestañas)
 const EXTRA=[['/contable.html','Firmas contables','Soportes, conciliaciones y cierre','1772588627474-ae6acc69ac42'],['/abogados.html','Firmas de abogados','Consultas, expedientes y términos','1752697589029-0fd0ce96a395'],['/logistica.html','Logística','Pedidos, rutas y novedades','1645736315000-6f788915923b'],['/manufactura.html','Manufactura','Producción y relevos de turno','1787422429941-b1966d776195'],['/ecommerce.html','eCommerce','Catálogo, pedidos y envíos','1781899710894-f9ecfea088f3']];
 $('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href=PAGINA[k]||'#/negocio/'+k;
@@ -393,23 +393,22 @@ window.addEventListener('hashchange',route);route();
 // Saltar al contenido: lleva el foco al título de la vista visible.
 $('skipLink').onclick=e=>{e.preventDefault();const t=$('sectorView').hidden?$('heroTitle'):$('svTitle');t.focus();t.scrollIntoView({block:'center'});};
 
-/* ---------- Cómo trabajamos: en computador los pasos avanzan con el scroll; en celular, con un toque ---------- */
-(()=>{const box=document.getElementById('howto'),track=document.getElementById('howTrack'),rail=document.getElementById('howRail');if(!box||!track)return;
+/* ---------- Cómo trabajamos: los pasos avanzan solos mientras la sección está en pantalla, o con un toque ---------- */
+(()=>{const box=document.getElementById('howto'),rail=document.getElementById('howRail');if(!box)return;
  const tabs=[...box.querySelectorAll('[role=tab]')],panes=tabs.map(t=>document.getElementById(t.getAttribute('aria-controls')));
- const wide=matchMedia('(min-width: 861px)');let i=-1;
- function show(n,focus){n=Math.max(0,Math.min(tabs.length-1,n));if(n===i){if(focus)tabs[n].focus();return;}i=n;
+ const red=matchMedia('(prefers-reduced-motion: reduce)').matches,DUR=6000;let i=-1,timer=0,visible=false,paused=false;
+ function show(n,focus){n=(n+tabs.length)%tabs.length;if(n!==i){i=n;
   tabs.forEach((t,k)=>{t.setAttribute('aria-selected',k===i);t.tabIndex=k===i?0:-1;});
   panes.forEach((p,k)=>{if(k===i){const c=p.cloneNode(true);c.hidden=false;p.replaceWith(c);panes[k]=c;}else p.hidden=true;});
-  if(focus)tabs[i].focus();}
- function prog(){const r=track.getBoundingClientRect(),tot=r.height-innerHeight;return Math.min(1,Math.max(0,-r.top/(tot||1)));}
- function go(n){if(wide.matches){const r=track.getBoundingClientRect(),tot=r.height-innerHeight;scrollTo({top:scrollY+r.top+tot*((n+.5)/tabs.length),behavior:'smooth'});}else show(n);}
- tabs.forEach((t,k)=>{t.addEventListener('click',()=>go(k));
-  t.addEventListener('keydown',e=>{const d={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1}[e.key];if(d){e.preventDefault();show(i+d,true);go(i);}});});
- let raf=0;function tick(){raf=0;if(!wide.matches){if(rail)rail.style.setProperty('--hp','0%');return;}const p=prog();
-  box.style.setProperty('--hp',(p*100).toFixed(1)+'%');if(rail)rail.parentElement.style.setProperty('--hp',(p*100).toFixed(1)+'%');
-  show(Math.min(tabs.length-1,Math.floor(p*tabs.length)));}
- addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(tick);},{passive:true});addEventListener('resize',tick);
- show(0);tick();})();
+  box.style.setProperty('--hp',((i+1)/tabs.length*100).toFixed(1)+'%');}
+  if(focus)tabs[i].focus();arm();}
+ function arm(){clearTimeout(timer);if(!red&&visible&&!paused)timer=setTimeout(()=>show(i+1),DUR);}
+ tabs.forEach((t,k)=>{t.addEventListener('click',()=>show(k));
+  t.addEventListener('keydown',e=>{const d={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1}[e.key];if(d){e.preventDefault();show(i+d,true);}});});
+ box.addEventListener('mouseenter',()=>{paused=true;arm();});box.addEventListener('mouseleave',()=>{paused=false;arm();});
+ box.addEventListener('focusin',()=>{paused=true;arm();});box.addEventListener('focusout',()=>{paused=false;arm();});
+ new IntersectionObserver(es=>{visible=es[0].isIntersecting;arm();},{threshold:.4}).observe(box);
+ show(0);})();
 
 /* ---------- Preguntas frecuentes: cada pregunta se responde como en un chat ---------- */
 (()=>{const chat=document.getElementById('faqChat'),data=document.getElementById('faqData');if(!chat||!data)return;

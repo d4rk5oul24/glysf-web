@@ -30,6 +30,27 @@ OBJ.update({'calculadora': '''<svg viewBox="0 0 200 200"><defs><linearGradient i
 'bolsa': '''<svg viewBox="0 0 200 200"><defs><linearGradient id="o13" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFC6E4"/><stop offset="1" stop-color="#C24C8C"/></linearGradient></defs><path d="M70 66V52a30 30 0 0 1 60 0v14" fill="none" stroke="#F7D9EA" stroke-width="10" stroke-linecap="round"/><path d="M34 66h132l-10 112H44z" fill="url(#o13)"/><path d="M62 96c8 22 68 22 76 0" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".85"/></svg>'''
 })
 
+
+# ---------- Iconos de marca: mismo trazo redondeado de la "g" y un nodo de color (var(--acc)) ----------
+def _ic(paths, nodes):
+    dots = ''.join(f'<circle cx="{x}" cy="{y}" r="{r}" fill="var(--acc)"/>' for x, y, r in nodes)
+    return (f'<svg viewBox="0 0 200 200"><g fill="none" stroke="#fff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">{paths}</g>{dots}</svg>')
+OBJ = {
+ 'pelota': _ic('<g transform="rotate(-35 92 84)"><ellipse cx="92" cy="74" rx="46" ry="54"/><path d="M92 128v44"/><path d="M76 52h.1M92 52h.1M108 52h.1M68 72h.1M84 72h.1M100 72h.1M116 72h.1M76 92h.1M92 92h.1M108 92h.1" stroke-width="9"/></g>', [(160,52,15)]),
+ 'diente': _ic('<path d="M100 54c-12-10-38-14-52 2-14 16-8 44 0 60 7 13 9 33 14 50 4 12 15 12 18 0 5-18 7-32 20-32s15 14 20 32c3 12 14 12 18 0 5-17 7-37 14-50 8-16 14-44 0-60-14-16-40-12-52-2z"/>', [(156,46,13)]),
+ 'pesa': _ic('<path d="M66 100h68M44 64v72M64 76v48M136 76v48M156 64v72"/>', [(180,100,12),(20,100,12)]),
+ 'aro': _ic('<circle cx="100" cy="104" r="58"/><path d="M30 92v24M170 92v24"/>', [(100,46,13)]),
+ 'campana': _ic('<path d="M38 140a62 62 0 0 1 124 0M24 140h152M100 78v-6"/>', [(100,58,13)]),
+ 'tijeras': _ic('<circle cx="66" cy="148" r="22"/><circle cx="134" cy="148" r="22"/><path d="M80 131 152 40M120 131 48 40"/>', [(100,98,12)]),
+ 'caja': _ic('<path d="M100 32 164 64v72l-64 32-64-32V64z"/><path d="M36 64l64 32 64-32M100 96v72"/>', [(164,64,13)]),
+ 'casco': _ic('<path d="M42 134a58 58 0 0 1 116 0M28 134h144M100 76V58"/><path d="M76 92c4-8 10-13 16-15" stroke-width="7" opacity=".55"/>', [(100,46,13)]),
+ 'calculadora': _ic('<rect x="54" y="26" width="92" height="148" rx="18"/><path d="M76 60h48"/><path d="M78 98h.1M100 98h.1M122 98h.1M78 122h.1M100 122h.1M122 122h.1M78 146h.1M100 146h.1" stroke-width="15"/>', [(122,146,10)]),
+ 'balanza': _ic('<path d="M100 44v112M64 158h72M40 66h120M40 66 22 112h36zM160 66l-18 46h36z"/>', [(100,40,13)]),
+ 'camion': _ic('<path d="M22 64h96v72H22zM118 90h34l24 26v20h-58"/><circle cx="54" cy="146" r="16"/><circle cx="148" cy="146" r="16"/>', [(176,116,11)]),
+ 'engranaje': _ic('<circle cx="100" cy="100" r="46"/><path d="M100 40v-8M100 160v8M40 100h-8M160 100h8M57 57l-6-6M143 143l6 6M143 57l6-6M57 143l-6 6" stroke-width="24"/>', [(100,100,16)]),
+ 'bolsa': _ic('<path d="M44 72h112l-10 100H54zM74 72V60a26 26 0 0 1 52 0v12"/><path d="M78 104c8 14 36 14 44 0"/>', [(122,104,10)]),
+}
+
 # ---------- Contenido por negocio ----------
 # chat: (quién, texto) con quién = u (cliente), b (bot) o pay (aviso de pago "Texto|Valor")
 # cards: (etiqueta, título, [(hora, ocupado)], precio, posición de la foto)
@@ -87,7 +108,7 @@ NEGOCIOS = {
        ('Nómina',[('Kevin P. · 48 clases','Calculando…','ok','Pagado'),('Natalia C. · 24 clases','Calculando…','ok','Pagado'),('Desprendibles','En cola','ok','Enviados por WhatsApp')]),
        ('inv','Tienda de suplementos',[('Proteína 2 lb',20,'24 und','Pedido enviado al proveedor'),('Creatina',60,'18 und','')])],
   reporte=['Socios activos: 312','Mensualidades cobradas hoy: $2.150.000','Por vencer esta semana: 18, recordatorios enviados','Clases de prueba agendadas: 7','Stock bajo: proteína, pedido enviado'],
-  final=('Más socios entrenando,','menos cobros a mano.')),
+  final=('Más socios entrenando,','cobros automáticos.')),
 
 'pilates': dict(nombre='Pilates y yoga', archivo='pilates', palabra='PILATES', obj='aro', acc='#F2C6A0', su='tu estudio',
   foto='1717500252709-05a73fc4f1da',
@@ -248,12 +269,12 @@ NEGOCIOS = {
        ('Mantenimiento',[('Inyectora 1 · Preventivo','Jue 6 a. m.','ok','Programado'),('Compresor · Ruido','Reportado','warn','Orden de trabajo creada'),('Banda línea 3','Al día','ok','')]),
        ('inv','Materias primas',[('Resina PP',16,'1.200 kg','Pedido automático al proveedor'),('Cajas de empaque',64,'3.400 und','')])],
   reporte=['Producción de hoy: 4.720 unidades (91% de eficiencia)','Defectuosas: 0,9%','Paros: 2, con causa registrada','Resina PP: pedido enviado al proveedor'],
-  final=('Más producción medida,','menos reportes a mano.')),
+  final=('Más producción medida,','reportes automáticos.')),
 
 'ecommerce': dict(nombre='eCommerce', archivo='ecommerce', palabra='CARRITO', obj='bolsa', acc='#FF9FD0', su='tu tienda online',
   foto='1781899710894-f9ecfea088f3',
   seo='Automatización para tiendas online (eCommerce)', desc='Catálogo, pedidos, pagos, carritos abandonados, guías de envío y respuestas a clientes de tu tienda online.',
-  kicker='', hero=('Vende de día y de noche,', 'sin responder a mano.'),
+  kicker='', hero=('Vende de día y de noche,', 'con respuestas automáticas.'),
   bot_t=('El bot vende', 'mientras tú empacas.'), bot_sub='Responde por WhatsApp e Instagram, muestra el catálogo, cobra y genera la guía de envío.', bot_nombre='Tienda Nube',
   chat=[('u','Hola, ¿tienen el buzo negro en talla M?'),('b','Sí, quedan 4 en talla M. Precio $89.000 con envío gratis a Bogotá. ¿Te lo separo?'),('u','Sí, de una'),('b','Listo. Te envío el link de pago; apenas pagues genero tu guía.'),('pay','Pago aprobado|$89.000'),('b','Guía 7781 creada. Te aviso cuando la transportadora lo recoja.')],
   cards_t=('Cada pedido,', 'del carrito a la puerta.'), cards_num='',
@@ -321,7 +342,7 @@ def pagina(k, n):
     rep = ''.join(f'<li data-at="{.15 + i * .15:.2f}">{E(l)}</li>' for i, l in enumerate(n['reporte']))
     m = n['meter']
     tabs = ''.join(f'<a href="/{v["archivo"]}.html"' + (' aria-current="page"' if kk == k else '') + f'>{E(v["nombre"])}</a>' for kk, v in NEGOCIOS.items())
-    obj_cls = 'ball' if n['obj'] == 'pelota' else 'ball obj'
+    obj_cls = 'ball obj'
     return f'''<!doctype html>
 <html lang="es-CO">
 <head>
@@ -341,8 +362,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=3">
-<script src="/negocio.js?v=3" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=4">
+<script src="/negocio.js?v=4" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">
@@ -387,7 +408,7 @@ def pagina(k, n):
 </div>
 </section>
 
-<section class="scene s-courts" data-scene aria-labelledby="t-courts">
+<section class="scene s-courts flow" data-scene aria-labelledby="t-courts">
 <div class="sticky">
 <div class="bg dark-solid"></div>
 <div class="courts-wrap">
@@ -402,7 +423,7 @@ def pagina(k, n):
 </div>
 </section>
 
-<section class="scene s-ops" data-scene aria-labelledby="t-ops">
+<section class="scene s-ops flow" data-scene aria-labelledby="t-ops">
 <div class="sticky">
 <div class="bg"><div class="photo" data-src="{foto3}" style="background-position:70% 50%"></div><div class="veil strong"></div></div>
 <div class="ops">
@@ -416,7 +437,7 @@ def pagina(k, n):
 </div>
 </section>
 
-<section class="scene s-report" data-scene aria-labelledby="t-report">
+<section class="scene s-report flow" data-scene aria-labelledby="t-report">
 <div class="sticky">
 <div class="bg"><div class="photo" data-src="{foto2}" style="background-position:50% 30%"></div><div class="veil strong"></div></div>
 <div class="report">
@@ -429,7 +450,7 @@ def pagina(k, n):
 </div>
 </section>
 
-<section class="scene s-web" data-scene aria-labelledby="t-web">
+<section class="scene s-web flow" data-scene aria-labelledby="t-web">
 <div class="sticky">
 <div class="bg dark-solid"></div>
 <div class="web-wrap">

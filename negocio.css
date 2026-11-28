@@ -206,3 +206,14 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 .br-chat.on{opacity:1;transform:none}
 @media (max-width:860px){.web-wrap{grid-template-columns:1fr;gap:22px}.web-list{margin-top:14px;gap:8px}.web-list li{font-size:15px}.s-web .h2{font-size:30px}.br-row span{height:34px}.br-nav span{display:none}}
 @media (prefers-reduced-motion:reduce){.browser{transform:none}}
+
+/* Escenas "flow": no fijan el scroll; al aparecer en pantalla se animan solas */
+.s-hero{height:200vh}.s-bot{height:280vh}
+.scene.flow{height:auto}
+.scene.flow>.sticky{position:relative;height:auto;min-height:100vh;min-height:100svh;padding:120px 0 100px}
+@media (max-width:860px){.scene.flow>.sticky{padding:90px 0 70px}}
+/* Iconos de marca en la portada: trazo blanco y nodo de color, giro sutil */
+.ball.obj{width:clamp(150px,17vw,240px);filter:drop-shadow(0 30px 50px rgba(0,0,0,.5));transform:translate(calc(var(--p)*30vw),calc(var(--p)*-26vh)) scale(calc(1 + var(--p)*.6)) rotate(calc(var(--p)*-18deg))}
+.ball.obj circle[fill]{transform-box:fill-box;transform-origin:center;animation:node 2.4s ease-in-out infinite}
+@keyframes node{50%{transform:scale(1.25)}}
+@media (prefers-reduced-motion:reduce){.ball.obj circle[fill]{animation:none}}

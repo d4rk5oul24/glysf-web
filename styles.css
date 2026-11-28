@@ -592,8 +592,6 @@ body.sub main{flex:1}
 .how-rail i{position:absolute;inset:0 0 auto;height:var(--hp,0%);background:linear-gradient(var(--a1),var(--a2));border-radius:2px;transition:height .25s linear}
 .how-stage{transition:box-shadow .4s}
 @media (min-width:861px){
-  .how-track{height:520vh}
-  .how-sticky{position:sticky;top:0;min-height:100vh;display:flex;align-items:center}
   .how-sticky>.wrap{width:100%}
 }
 @media (max-width:860px){.how-rail{display:none}.how-steps{padding-left:0}.how-steps button:not([aria-selected=true]){opacity:1}}
@@ -692,3 +690,9 @@ body.sub main{flex:1}
 .hw-launch li.live i{border-color:#25D366}.hw-launch li.live i::after{background:#25D366}
 @media (max-width:860px){.hw-demo{grid-template-columns:1fr}.how-stage{min-height:0}.hp-flow .ins{flex-direction:row;flex-wrap:wrap}}
 @media (prefers-reduced-motion:reduce){.hw-get b,.hw-checks li,.hw-launch li{animation:none;opacity:1}}
+
+/* Cómo trabajamos sin scroll fijo: el riel muestra el paso actual */
+.how-rail i{height:var(--hp,16.7%);transition:height .6s var(--ease)}
+.como-cta{text-align:center}
+.como-cta-t{margin-top:40px;font:400 clamp(24px,2.4vw,32px)/1.25 var(--serif);color:#fff}
+.como-cta .contact-btns.center{margin-top:20px}
