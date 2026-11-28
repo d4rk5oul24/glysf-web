@@ -327,6 +327,89 @@ def contacto(n, extra=''):
 <a class="pill-btn ghost big" href="mailto:grupolysf@gmail.com?subject={E('Cotización Glysf – ' + n['nombre'])}">{MAIL_SVG}Escríbenos un correo</a>
 </div>'''
 
+# ---------- Panel de muestra (mismo estilo que el panel de Cuore) ----------
+_IC = {
+ 'inicio':'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+ 'agenda':'<rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M7.5 13.5h3M7.5 17h6"/>',
+ 'dinero':'<rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/>',
+ 'personas':'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18.5 14.8c1.7.8 2.7 2.5 3 5.2"/>',
+ 'caja':'<path d="M12 2.8 20.5 7.5v9L12 21.2 3.5 16.5v-9z"/><path d="M3.8 7.6 12 12.2l8.2-4.6M12 12.2v8.8"/>',
+ 'camion':'<path d="M2.5 6.5h11v10h-11zM13.5 10h4l3 3.2v3.3h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>',
+ 'reloj':'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+ 'lista':'<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 6 1.2 1.2L7 5M3.5 12l1.2 1.2L7 11M3.5 18l1.2 1.2L7 17"/>',
+ 'reporte':'<path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 12h6M9 15.5h6M9 19h3"/>',
+ 'chat':'<path d="M20.5 12a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.1-4.2A8.5 8.5 0 1 1 20.5 12z"/><path d="M8.5 10.5h7M8.5 14h4.5"/>',
+ 'mas':'<path d="M12 5v14M5 12h14"/>',
+}
+def ic(k): return f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{_IC[k]}</svg>'
+def ic_op(t):
+    t = t.lower()
+    for ws, k in ((('pago','cobro','mensualidad','anticipo','cartera','honorario','paquete','comisi'),'dinero'),
+                  (('profesor','instructor','nómina','turno','cuadrilla','flota','relevo','equipo'),'personas'),
+                  (('inventario','insumo','tienda','producto','materia','material','bodega','suplement'),'caja'),
+                  (('proveedor','envío','envio','novedad'),'camion'),
+                  (('vencimiento','término','termino','mantenimiento'),'reloj')):
+        if any(w in t for w in ws): return k
+    return 'lista'
+
+def panel(k, n):
+    m = n['meter']
+    agenda = n['cards_num'].split('· ')[-1] if n['cards_num'] else 'Hoy'
+    def lab(x):
+        x = x.strip().rstrip('·').strip()
+        return ('%', x[1:].strip()) if x.startswith('%') else ('', x)
+    u1, l1 = lab(m[1]); u2, l2 = lab(m[3])
+    sigla = ''.join(w[0] for w in re.findall(r'[A-ZÁÉÍÓÚÑ]\S*', n['bot_nombre']))[:3] or n['bot_nombre'][:2]
+    mods = [('ag', agenda, 'agenda', f"{n['cards_t'][0]} {n['cards_t'][1]}", f'{m[0]}{u1} {l1}', f'{m[2]} {l2}', '')]
+    vistas = []
+    cards = []
+    for tag, tit, slots, precio, img in n['cards']:
+        sl = ''.join(f'<span class="{"on" if ok else ""}">{E(h)}</span>' for h, ok in slots)
+        ocup = sum(1 for _, ok in slots if ok)
+        cards.append(f'<div class="cp-slotcard"><p class="cp-sc-h"><b>{ocup}/{len(slots)}</b><span>{E(tag)}</span></p><p class="cp-sc-t">{E(tit)}</p><div class="cp-slots">{sl}</div><p class="cp-sc-f">{E(precio)}</p></div>')
+    vistas.append(('ag', agenda,
+        f'<div class="cp-kpis rev"><div><b class="acc">{m[0]}{u1}</b><small>{E(l1)}</small></div><div><b>{m[2]}{u2}</b><small>{E(l2)}</small></div><div><b>24/7</b><small>atención por WhatsApp</small></div></div>'
+        f'<div class="cp-slotgrid">{"".join(cards)}</div>'))
+    for j, o in enumerate(n['ops']):
+        vid = f'o{j}'
+        if o[0] == 'inv':
+            tit, items = o[1], o[2]
+            bajos = sum(1 for it in items if it[1] <= 25)
+            mods.append((vid, tit, ic_op(tit), 'Existencias, avance y alertas', f'{len(items)} en seguimiento', f'{bajos} por reponer' if bajos else 'Todo en orden', 'warn' if bajos else ''))
+            filas = ''.join(
+                f'<tr><td><b>{E(a)}</b></td><td class="cp-bar-td"><i class="cp-bar"><i style="width:{pct}%"' + (' class="low"' if pct <= 25 else '') + f'></i></i></td><td class="cp-num">{E(tx)}</td>'
+                f'<td><span class="cp-pill {"warn" if pct <= 25 else "ok"}">{E(sw) if sw else ("Por reponer" if pct <= 25 else "En orden")}</span></td></tr>'
+                for a, pct, tx, sw in items)
+            body = (f'<div class="cp-kpis"><div><small>En seguimiento</small><b>{len(items)}</b></div><div><small>Alertas</small><b class="{"warn" if bajos else "ok"}">{bajos}</b></div><div><small>Pedidos automáticos</small><b class="ok">Activos</b></div></div>'
+                    f'<div class="cp-table"><table><thead><tr><th>Elemento</th><th>Nivel</th><th class="cp-num">Cantidad</th><th>Estado</th></tr></thead><tbody>{filas}</tbody></table></div>')
+        else:
+            tit, rows = o
+            okn = sum(1 for r in rows if r[2] == 'ok'); wn = len(rows) - okn
+            mods.append((vid, tit, ic_op(tit), 'Se registra y se avisa solo', f'{okn} de {len(rows)} al día', (f'{wn} pendiente' + ('s' if wn > 1 else '') + ', aviso enviado') if wn else 'Todo al día', 'warn' if wn else ''))
+            filas = ''.join(f'<tr><td><b>{E(a)}</b></td><td><span class="cp-pill {cl}">{E(st)}</span></td><td class="cp-muted">{E(sw) if sw else "—"}</td></tr>' for a, st, cl, sw in rows)
+            body = (f'<div class="cp-kpis"><div><small>Registros de hoy</small><b>{len(rows)}</b></div><div><small>Al día</small><b class="ok">{okn}</b></div><div><small>Pendientes</small><b class="{"warn" if wn else "ok"}">{wn}</b></div></div>'
+                    f'<div class="cp-table"><table><thead><tr><th>Detalle</th><th>Estado</th><th>Lo que hizo el asistente</th></tr></thead><tbody>{filas}</tbody></table></div>')
+        vistas.append((vid, tit, body))
+    rep = ''.join(f'<li>{E(l)}</li>' for l in n['reporte'])
+    mods.append(('rp', 'Reportes', 'reporte', 'Resumen automático del día', f"{len(n['reporte'])} datos clave", 'Cada noche por WhatsApp', ''))
+    vistas.append(('rp', 'Reportes', f'<div class="cp-report"><div class="cp-msg"><p class="cp-msg-h"><b>Glysf · Asistente</b><small>Hoy, 10:00 p. m.</small></p><ul>{rep}</ul></div><p class="cp-muted">El asistente lee la agenda, los pagos y el inventario y te envía este resumen cada noche, sin que nadie lo arme.</p></div>'))
+    nav = ''.join(f'<button type="button" data-v="{v}" aria-pressed="{"true" if v == "in" else "false"}">{ic(i)}<span>{E(t)}</span></button>'
+                  for v, t, i in [('in', 'Inicio', 'inicio')] + [(md[0], md[1], md[2]) for md in mods])
+    tiles = ''.join(f'<button type="button" class="cp-tile" data-v="{v}" data-at="{.08 + i * .06:.2f}"><span class="cp-ic">{ic(icn)}</span><span class="cp-tt">{E(t)}</span><span class="cp-td">{E(d)}</span><span class="cp-tv">{E(val)}</span><span class="cp-ts {cls}">{E(det)}</span></button>'
+                    for i, (v, t, icn, d, val, det, cls) in enumerate(mods))
+    wa = f'Hola, vi el panel de ejemplo de {n["nombre"].lower()} en glysf.com y quiero cotizar uno para mi negocio.'
+    tiles += (f'<a class="cp-tile hl" data-at="{.08 + len(mods) * .06:.2f}" href="https://wa.me/573103102908" data-wa="{E(wa)}" target="_blank" rel="noopener">'
+              f'<span class="cp-ic">{ic("chat")}</span><span class="cp-tt">Asistente</span><span class="cp-td">Atiende WhatsApp y llena este panel</span><span class="cp-tv">En línea 24/7</span></a>')
+    hoy = ''.join(f'<li>{E(l)}</li>' for l in n['reporte'][:3])
+    inicio = (f'<div class="cp-greet"><p class="cp-g1">Buenas tardes</p><p class="cp-muted">¿Qué quieres revisar hoy?</p></div><div class="cp-tiles">{tiles}</div>'
+              f'<div class="cp-today" data-at=".6"><p class="cp-today-h"><b>Hoy en {E(n["su"])}</b><button type="button" data-v="rp">Ver reporte</button></p><ul>{hoy}</ul></div>')
+    views = f'<div class="cp-view" data-view="in" data-title="Inicio">{inicio}</div>' + ''.join(f'<div class="cp-view" data-view="{v}" data-title="{E(t)}" hidden>{b}</div>' for v, t, b in vistas)
+    return (f'<div class="cp" role="region" aria-label="Panel de ejemplo de {E(n["bot_nombre"])}">'
+            f'<aside class="cp-side"><div class="cp-logo"><span>{E(sigla)}</span></div><nav class="cp-nav" aria-label="Secciones del panel de ejemplo">{nav}</nav>'
+            f'<p class="cp-user"><span>{E(n["bot_nombre"])}</span><small>Datos de ejemplo</small></p></aside>'
+            f'<div class="cp-main"><div class="cp-top"><div><p class="cp-h" aria-live="polite">Inicio</p><p class="cp-muted">Hoy · actualizado hace 1 min</p></div>'
+            f'<span class="cp-btn">{ic("mas")}Registrar</span><i class="cp-dot" title="En línea"></i></div>{views}</div></div>')
+
 def pagina(k, n):
     at = lambda i, base, step: f'{base + i * step:.2f}'
     foto = n['foto']; foto2 = n.get('foto2', foto); foto3 = n.get('foto3', foto)
@@ -387,8 +470,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=6">
-<script src="/negocio.js?v=5" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=7">
+<script src="/negocio.js?v=6" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">
@@ -439,31 +522,9 @@ def pagina(k, n):
 <div class="panel-wrap">
 <div class="copy center">
 <h2 id="t-panel" class="h2">{E(n['cards_t'][0])} <em>{E(n['cards_t'][1])}</em></h2>
-<p class="sub">{E(n['ops_t'][0])} {E(n['ops_t'][1])} Todo {E(n['su'])} en un solo panel que se actualiza solo.</p>
+<p class="sub">{E(n['ops_t'][0])} {E(n['ops_t'][1])} Todo {E(n['su'])} en un panel que se actualiza solo. Toca cada sección para explorarlo.</p>
 </div>
-<div class="dash">
-<div class="dash-bar"><i></i><i></i><i></i><span>Panel · {E(n['bot_nombre'])}</span><b class="live">En vivo</b></div>
-<div class="dash-body">
-<nav class="dash-side" aria-hidden="true"><svg><use href="#g"/></svg>{side}</nav>
-<div class="dash-main">
-<div class="kpis">{kpis}</div>
-<div class="dash-grid">
-<div class="dash-col"><p class="dash-h">{E(agenda)}</p>
-{chr(10).join(cards)}
-</div>
-<div class="dash-col"><p class="dash-h">Operación</p>
-{chr(10).join(ops)}
-</div>
-<div class="dash-col"><p class="dash-h">Reporte del día</p>
-<div class="msg-card" data-at=".1">
-<p class="mc-h"><b>Glysf · Asistente</b><small>Hoy, 10:00 p. m.</small></p>
-<ul>{rep}</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+{panel(k, n)}
 </div>
 </div>
 </section>

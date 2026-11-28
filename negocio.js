@@ -73,3 +73,24 @@
   addEventListener('resize', tick);
   tick();
 })();
+
+// Panel de muestra: el menú lateral y las tarjetas cambian de sección, como en el panel real.
+(() => {
+  document.querySelectorAll('.cp').forEach(cp => {
+    const views = [...cp.querySelectorAll('.cp-view')];
+    const navs = [...cp.querySelectorAll('.cp-nav [data-v]')];
+    const h = cp.querySelector('.cp-h');
+    const show = (v, foco) => {
+      views.forEach(x => { x.hidden = x.dataset.view !== v; if (!x.hidden) h.textContent = x.dataset.title; });
+      navs.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+      const nb = navs.find(b => b.dataset.v === v);
+      if (nb && matchMedia('(max-width:860px)').matches) nb.scrollIntoView({ inline: 'center', block: 'nearest' });
+      if (foco) h.focus?.();
+    };
+    // Misma altura en todas las secciones, para que la página no salte al cambiar.
+    const main = cp.querySelector('.cp-main');
+    const fija = () => { main.style.minHeight = ''; main.style.minHeight = main.offsetHeight + 'px'; };
+    if (!views[0].hidden) fija(); addEventListener('resize', () => { if (!views[0].hidden) fija(); });
+    cp.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (b) show(b.dataset.v); });
+  });
+})();
