@@ -353,7 +353,7 @@ def pagina(k, n):
 <a href="/" class="wordmark" aria-label="Glysf, inicio"><svg aria-hidden="true"><use href="#g"/></svg><span aria-hidden="true">lysf</span></a>
 <nav aria-label="Principal">
 <a href="/#negocios" class="navlink">Otros negocios</a>
-<a href="/#cotizar" class="pill-btn">Cotizar para {E(n['su'])}</a>
+<a href="https://wa.me/573103102908" data-wa="Hola, quiero cotizar automatizaciones para {E(n['su'])} ({E(n['nombre'].lower())})." target="_blank" rel="noopener" class="pill-btn">Cotizar por WhatsApp</a>
 </nav>
 </header>
 <nav class="biztabs" aria-label="Tipos de negocio">{tabs}</nav>
@@ -464,7 +464,6 @@ def pagina(k, n):
 <h2 id="t-final" class="giant-2"><em>{E(n['final'][0])}</em> {E(n['final'][1])}</h2>
 <p class="sub">Te mostramos esta demo funcionando con los datos de {E(n['su'])}. Sin costo.</p>
 {contacto(n)}
-<a href="/#cotizar" class="navlink">O llena el formulario de cotización →</a>
 <p class="note">Datos de ejemplo. Fotos: <a href="https://unsplash.com" rel="noopener">Unsplash</a>.</p>
 </div>
 </section>

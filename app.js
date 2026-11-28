@@ -219,39 +219,6 @@ function selectTab(list,panel,ix){[...list.querySelectorAll('[role=tab]')].forEa
  if(!('IntersectionObserver' in window))return run();
  const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();run();}},{threshold:.3});io.observe(box);})();
 
-/* ---------- Formulario de cotización (con protección anti-spam) ---------- */
-const FORM_T0=Date.now();let lastSend=0;const MAIL='grupolysf@gmail.com';
-const MSG={nombre:'Escribe tu nombre.',empresa:'Escribe el nombre de tu empresa o negocio.',detalle:'Cuéntanos qué te gustaría automatizar.',acepto:'Para enviar la solicitud debes aceptar la política de tratamiento de datos.'};
-function fieldError(x){if(x.type==='checkbox')return x.checked?'':MSG[x.name];const v=x.value.trim();
- if(x.name==='correo'){if(!v)return 'Escribe tu correo.';return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)?'':'Escribe un correo válido, por ejemplo nombre@empresa.com.';}
- return v?'':MSG[x.name];}
-function showError(x,m){const s=$('err-'+x.name);if(!s)return;
- if(m){s.textContent=m;s.hidden=false;x.setAttribute('aria-invalid','true');x.setAttribute('aria-describedby',s.id);}
- else{s.textContent='';s.hidden=true;x.removeAttribute('aria-invalid');x.removeAttribute('aria-describedby');}}
-const REQ=[...$('quote').querySelectorAll('[required]')];
-REQ.forEach(x=>{
- // Se valida al salir del campo solo si ya escribieron algo; una vez marcado, se revisa con cada cambio.
- x.addEventListener('blur',()=>{if(x.type!=='checkbox'&&x.value.trim())showError(x,fieldError(x));});
- x.addEventListener(x.type==='checkbox'?'change':'input',()=>{if(x.getAttribute('aria-invalid'))showError(x,fieldError(x));});});
-function copyText(t){if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).catch(()=>legacyCopy(t));return legacyCopy(t);}
-function legacyCopy(t){return new Promise((ok,ko)=>{const a=el('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:-9999px';document.body.append(a);a.select();
- let done=false;try{done=document.execCommand('copy');}catch(e){}a.remove();done?ok():ko();});}
-function quoteNote(cls,text,body){const m=$('quoteMsg');m.className='qmsg '+cls;m.replaceChildren(el('p',null,text));m.hidden=false;
- if(body){const b=el('button','btn outline small','Copiar solicitud');b.type='button';const st=el('small');
-  b.onclick=()=>copyText(body).then(()=>{st.textContent='Solicitud copiada. Pégala en un correo para '+MAIL+'.';},()=>{st.textContent='No se pudo copiar. Selecciona el texto de tu solicitud y cópialo a mano.';});
-  m.append(b,st);}}
-$('quote').onsubmit=e=>{e.preventDefault();const f=e.target;
- let first=null;REQ.forEach(x=>{const m=fieldError(x);showError(x,m);if(m&&!first)first=x;});
- if(first){$('quoteMsg').hidden=true;first.focus();return;}
- const d=new FormData(f);if(d.get('sitio')||Date.now()-FORM_T0<4000||Date.now()-lastSend<30000){quoteNote('warn','Espera unos segundos e inténtalo de nuevo.');return;}
- lastSend=Date.now();if(window.glysfEvent)glysfEvent('cotizacion_enviada',{sector:d.get('sector')||'sin dato'});
- const clean=(v,n)=>String(v||'').replace(/[\u0000-\u0008\u000B-\u001F\u007F]/g,'').slice(0,n||2000);const all=n=>d.getAll(n).join(', ')||'—';
- const body=det=>`Nombre: ${clean(d.get('nombre'))}\nEmpresa: ${clean(d.get('empresa'))}\nCorreo: ${clean(d.get('correo'))}\nTeléfono: ${clean(d.get('telefono'))||'—'}\nTipo de negocio: ${clean(d.get('sector'))||'—'}\nMensajes al día: ${clean(d.get('volumen'))||'—'}\nCanales: ${all('canal')}\nQuiere automatizar: ${all('necesidad')}\n\nDetalle:\n${det}\n\nAutorizó el tratamiento de datos: Sí`;
- const full=body(clean(d.get('detalle')));
- // El enlace mailto se recorta para no superar el límite de algunos programas de correo; la copia lleva el texto completo.
- const short=body(clean(d.get('detalle'),1200));
- location.href='mailto:'+MAIL+'?subject='+encodeURIComponent('Cotización Glysf – '+clean(d.get('empresa'),100))+'&body='+encodeURIComponent(short);
- quoteNote('ok','Tu solicitud está lista. Si no se abrió tu correo, copia la solicitud y envíala a '+MAIL+'.','Para: '+MAIL+'\nAsunto: Cotización Glysf – '+clean(d.get('empresa'),100)+'\n\n'+full);};
 /* ---------- Escenas de fondo por negocio (SVG ilustrado y animado) ---------- */
 const SCENE={
 padel:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="1200" height="800" fill="#0D4F7A"/><g opacity=".9"><rect x="230" y="120" width="740" height="600" rx="6" fill="#1C6FA8" stroke="#fff" stroke-width="6"/><rect x="230" y="120" width="740" height="600" fill="none" stroke="#8FC3E6" stroke-width="22" opacity=".35"/><line x1="230" y1="420" x2="970" y2="420" stroke="#fff" stroke-width="8"/><g stroke="#fff" stroke-width="1" opacity=".5">${Array.from({length:37},(_,i)=>`<line x1="${230+i*20}" y1="408" x2="${230+i*20}" y2="432"/>`).join('')}</g><line x1="230" y1="250" x2="970" y2="250" stroke="#fff" stroke-width="5"/><line x1="230" y1="590" x2="970" y2="590" stroke="#fff" stroke-width="5"/><line x1="600" y1="250" x2="600" y2="590" stroke="#fff" stroke-width="5"/></g><g class="an-ball"><circle r="14" fill="#E4F25C"/><path d="M-10 -6 Q0 0 -10 6M10 -6 Q0 0 10 6" stroke="#fff" stroke-width="2" fill="none"/></g></svg>`,
@@ -397,7 +364,7 @@ function renderMods(){const s=SECT[cur];selectTab($('modTabs'),$('modStage'),mod
  $('modNext').textContent=modIx<s.mods.length-1?'Siguiente: '+s.mods[modIx+1].t:'Ver otro negocio';}
 $('modNext').onclick=()=>{const s=SECT[cur];if(modIx<s.mods.length-1){modIx++;renderMods();}else{const ks=Object.keys(SECT);location.hash='#/negocio/'+ks[(ks.indexOf(cur)+1)%ks.length];}};
 $('modReplay').onclick=()=>renderMods();
-$('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{$('f-sector').value=SECT[cur].form;},50);};
+
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
 // Tarjeta final: para el negocio que no está en la lista
