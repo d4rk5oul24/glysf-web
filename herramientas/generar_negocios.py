@@ -56,6 +56,9 @@ OBJ = {
 # chat: (quién, texto) con quién = u (cliente), b (bot) o pay (aviso de pago "Texto|Valor")
 # cards: (etiqueta, título, [(hora, ocupado)], precio, posición de la foto)
 # ops: tarjetas (título, [(texto, estado, clase, cambia_a)]) o ('inv', título, [(nombre, porcentaje, texto, cambia_a)])
+OBJ['balon'] = _ic('<circle cx="100" cy="100" r="62"/><path d="M100 76l23 17-9 27H86l-9-27z"/><path d="M100 76V40M123 93l32-12M114 120l20 28M86 120l-20 28M77 93l-32-12"/>', [(160,42,13)])
+OBJ['voleibol'] = _ic('<circle cx="100" cy="100" r="62"/><path d="M100 38c-22 32-22 78 0 124"/><path d="M42 84c38 4 76 28 100 70"/><path d="M58 146c18-34 52-58 100-64"/>', [(164,40,13)])
+
 NEGOCIOS = {
 'padel': dict(nombre='Canchas de pádel', archivo='padel', palabra='PÁDEL', obj='pelota', acc='#D9EE2C', su='tu club',
   foto='1709587825135-80b00570c355', foto2='1673266893352-6de89e258064', foto3='1612534847738-b3af9bc31f0c',
@@ -74,6 +77,42 @@ NEGOCIOS = {
        ('inv','Inventario',[('Tubos de pelotas',20,'40 tubos','Pedido enviado al proveedor'),('Grips',70,'22 und','')])],
   reporte=['Ocupación: 82% (23 de 28 turnos)','Ingresos: $2.340.000','Pagos pendientes: 1, recordatorio enviado','Pedido de pelotas enviado al proveedor','Mañana: 19 reservas y 2 clases'],
   final=('Cada gran noche','empieza con un buen golpe.')),
+
+'futbol': dict(nombre='Canchas de fútbol', archivo='futbol', palabra='FÚTBOL', obj='balon', acc='#5BE37D', su='tu complejo',
+  foto='1487466365202-1afdb86c764e',
+  seo='Automatización para canchas sintéticas de fútbol', desc='Reservas de fútbol 5 y 8 por WhatsApp 24/7, anticipos, recordatorios, torneos, árbitros e inventario de tu complejo deportivo.',
+  kicker='Glysf para canchas de fútbol', hero=('Canchas sintéticas reservadas,', 'sin contestar el celular.'),
+  bot_t=('El bot arma el partido', 'mientras tú atiendes.'), bot_sub='Muestra la cancha libre, cobra el anticipo y le recuerda al equipo antes del partido.', bot_nombre='Complejo La Sintética',
+  chat=[('u','Buenas, ¿hay cancha de fútbol 5 el jueves a las 8?'),('b','¡Hola! El jueves a las 8:00 p. m. está libre la cancha 3 (fútbol 5). ¿Te la aparto?'),('u','Sí, somos 10'),('b','Listo: cancha 3, jueves de 8:00 a 9:00 p. m. Te envío el link del anticipo para dejarla separada.'),('pay','Anticipo recibido|$60.000'),('b','Anticipo confirmado. Le recuerdo al equipo el jueves a las 6 p. m.')],
+  cards_t=('Tus canchas,', 'llenas toda la semana.'), cards_num='02 · Agenda',
+  cards=[('Cancha 1 · Fútbol 8','Grama sintética',[('6 p. m.',1),('7 p. m.',1),('8 p. m.',1),('9 p. m.',1)],'$180.000','center 40%'),
+         ('Cancha 2 · Fútbol 5','Cubierta',[('6 p. m.',1),('7 p. m.',1),('8 p. m.',0),('9 p. m.',1)],'$120.000','left 50%'),
+         ('Cancha 3 · Fútbol 5','Torneo nocturno',[('6 p. m.',0),('7 p. m.',1),('8 p. m.',1),('9 p. m.',1)],'$120.000','right 50%')],
+  meter=(88,'% de ocupación hoy ·',14,'de 16 turnos'),
+  ops_t=('Anticipos, torneos y árbitros','en orden.'),
+  ops=[('Anticipos de hoy',[('Los Parceros · Cancha 1','Pagado','ok',''),('Oficina Andina · Cancha 2','Pagado','ok',''),('Deportivo 10 · Cancha 3','Pendiente','warn','Link de pago reenviado')]),
+       ('Torneo nocturno',[('Fecha 4 · 8 equipos','Programada','ok',''),('Árbitro del jueves','Asignado','ok',''),('Inscripción Real Barrio','Pendiente','warn','Recordatorio enviado')]),
+       ('inv','Inventario',[('Balones',20,'6 und','Pedido enviado al proveedor'),('Petos',70,'40 und','')])],
+  reporte=['Ocupación: 88% (14 de 16 turnos)','Ingresos: $1.860.000','Anticipos pendientes: 1, link reenviado','Torneo: fecha 4 programada con árbitro','Mañana: 15 reservas'],
+  final=('Cada partido,','agendado sin una llamada.')),
+
+'voley': dict(nombre='Canchas de vóley', archivo='voley', palabra='VÓLEY', obj='voleibol', acc='#FF9F5A', su='tu club',
+  foto='1547347298-4074fc3086f0',
+  seo='Automatización para canchas y escuelas de vóley', desc='Reservas de cancha, inscripciones a la escuela, mensualidades, entrenadores y torneos de vóley, funcionando solos.',
+  kicker='Glysf para canchas de vóley', hero=('Tu cancha de vóley organizada,', 'sin perseguir a nadie.'),
+  bot_t=('El bot inscribe', 'mientras tú entrenas.'), bot_sub='Reserva la cancha, inscribe en la escuela y cobra la mensualidad por WhatsApp.', bot_nombre='Club Vóley Altamira',
+  chat=[('u','Hola, ¿tienen escuela de vóley para mi hija de 12?'),('b','¡Hola! Sí: categoría infantil, martes y jueves de 4:00 a 5:30 p. m. Quedan 3 cupos.'),('u','¿Cuánto vale el mes?'),('b','$150.000 al mes. Te envío el link para inscribirla y apartar el cupo.'),('pay','Mensualidad recibida|$150.000'),('b','¡Listo, quedó inscrita! Te recuerdo la primera clase el martes.')],
+  cards_t=('Cancha y escuela,', 'sin cruces de horario.'), cards_num='02 · Horarios',
+  cards=[('Cancha principal','Duela · cubierta',[('4 p. m.',1),('5 p. m.',1),('6 p. m.',1),('7 p. m.',0)],'$90.000','center 40%'),
+         ('Escuela infantil','Martes y jueves',[('Cupo 1',1),('Cupo 2',1),('Cupo 3',0),('Cupo 4',0)],'$150.000/mes','left 50%'),
+         ('Vóley playa','Arena',[('8 a. m.',1),('9 a. m.',0),('10 a. m.',1),('11 a. m.',1)],'$70.000','right 50%')],
+  meter=(76,'% de ocupación hoy ·',42,'alumnos inscritos'),
+  ops_t=('Mensualidades, entrenadores y torneos','en orden.'),
+  ops=[('Mensualidades',[('Sofía R. · Infantil','Pagado','ok',''),('Mateo G. · Juvenil','Pagado','ok',''),('Valeria P. · Infantil','Vence hoy','warn','Link de pago enviado')]),
+       ('Entrenadores',[('Carolina M. · Infantil','Asignada','ok',''),('Andrés V. · Juvenil','Asignado','ok',''),('Nómina del mes','Calculando…','ok','Pagada')]),
+       ('inv','Inventario',[('Balones',20,'8 und','Pedido enviado al proveedor'),('Mallas',80,'3 und','')])],
+  reporte=['Ocupación de cancha: 76%','Alumnos activos: 42','Mensualidades pendientes: 1, link enviado','Torneo intercolegial: 6 equipos inscritos'],
+  final=('Cada punto,','organizado desde antes.')),
 
 'clinica': dict(nombre='Clínica o consultorio', archivo='clinica', palabra='CLÍNICA', obj='diente', acc='#7EE0C3', su='tu clínica',
   foto='1629909613654-28e377c37b09',
@@ -185,7 +224,7 @@ NEGOCIOS = {
 
 'fabrica': dict(nombre='Construcción', archivo='constructora', palabra='OBRA', obj='casco', acc='#FFC53D', su='tu empresa',
   foto='1684497404598-6e844dff9cde',
-  seo='Automatización para constructoras y fábricas', desc='Cotizaciones, proveedores, materiales, cuadrillas, nómina de obra y cartera de tu constructora o fábrica.',
+  seo='Automatización para constructoras y fábricas', desc='Venta de proyectos con render interactivo, alquiler de maquinaria, proveedores, materiales, cuadrillas, nómina de obra y cartera de tu constructora.',
   kicker='Glysf para constructoras y fábricas', hero=('Tu obra controlada', 'desde el celular.'),
   bot_t=('El bot cotiza', 'mientras tú construyes.'), bot_sub='Arma la cotización con tus precios, la envía en PDF y le hace seguimiento.', bot_nombre='Constructora Roble',
   chat=[('u','Buenas, ¿cuánto vale un closet de 2 metros en madera?'),('b','Con gusto. ¿Puertas corredizas o batientes, y en qué color?'),('u','Corredizas, color roble'),('b','Te acabo de enviar la cotización en PDF. Si la apruebas, pedimos el material hoy.'),('pay','Cotización enviada|PDF'),('b','Te escribo en 2 días por si tienes dudas.')],
@@ -195,10 +234,11 @@ NEGOCIOS = {
          ('Bodega Norte','Acabados',[('Cimientos',1),('Estructura',1),('Mampostería',1),('Acabados',1)],'95%','right 50%')],
   meter=(3,' obras activas ·',19,'personas en cuadrillas'),
   ops_t=('Materiales, cuadrillas y nómina','en orden.'),
-  ops=[('Proveedores',[('Orden #912 · Cemento x 120','3 cotizaciones','warn','Orden al mejor precio'),('Varilla 1/2" x 80','Confirmado','ok',''),('Entrega en obra','Programada','ok','Recibido')]),
+  ops=[('Alquiler de maquinaria',[('Retroexcavadora · Obra Calle 40','Alquilada','ok','Devuelve el viernes'),('Mezcladora de 1 bulto','Disponible','ok',''),('Andamio x 20 · Torre B','Vence hoy','warn','Cobro enviado al cliente')]),
+       ('Proveedores',[('Orden #912 · Cemento x 120','3 cotizaciones','warn','Orden al mejor precio'),('Varilla 1/2" x 80','Confirmado','ok',''),('Entrega en obra','Programada','ok','Recibido')]),
        ('Nómina de obra',[('Cuadrilla A · 8 personas','Calculando…','ok','Pagada'),('Cuadrilla B · 5 personas','Calculando…','ok','Pagada'),('Residente de obra','Calculando…','ok','Pagada')]),
        ('inv','Materiales en bodega',[('Cemento',18,'200 bultos','Pedido automático al proveedor'),('Ladrillo',45,'8.000 und','')])],
-  reporte=['Avance Obra Calle 80: 62%','Material entregado hoy: cemento y varilla','Gasto vs. presupuesto: 48% usado','Cuenta por cobrar: $45.000.000, recordatorio enviado'],
+  reporte=['Avance Obra Calle 80: 62%','Maquinaria: 1 alquiler vence hoy, cobro enviado','Torre Roble: 3 aptos separados esta semana','Material entregado hoy: cemento y varilla','Gasto vs. presupuesto: 48% usado','Cuenta por cobrar: $45.000.000, recordatorio enviado'],
   final=('Más obra avanzando,','menos hojas sueltas.')),
 'contable': dict(nombre='Firmas contables', archivo='contable', palabra='CIERRE', obj='calculadora', acc='#9BE7C4', su='tu firma',
   foto='1772588627474-ae6acc69ac42',
@@ -313,7 +353,7 @@ import unicodedata
 dominio = lambda t: re.sub(r'[^a-z0-9]', '', unicodedata.normalize('NFD', t.lower().replace('&', 'y')).encode('ascii', 'ignore').decode())
 
 # Botón principal de la página web de ejemplo, según el negocio
-WEB_CTA = {'web':('Tu empresa en línea','Contáctanos'),'padel':('Reserva tu cancha','Reservar cancha'),'clinica':('Tu sonrisa, en buenas manos','Agendar cita'),'gym':('Entrena sin excusas','Clase gratis'),
+WEB_CTA = {'web':('Tu empresa en línea','Contáctanos'),'futbol':('Arma tu partido','Reservar cancha'),'voley':('Juega, entrena, compite','Reservar cancha'),'padel':('Reserva tu cancha','Reservar cancha'),'clinica':('Tu sonrisa, en buenas manos','Agendar cita'),'gym':('Entrena sin excusas','Clase gratis'),
  'pilates':('Muévete con calma','Reservar clase'),'resto':('Del fuego a tu mesa','Pedir a domicilio'),'pelu':('Tu mejor versión','Agendar cita'),
  'tienda':('Todo para tu obra','Ver catálogo'),'fabrica':('Construimos lo que imaginas','Cotizar obra'),'contable':('Tus cuentas, claras','Enviar soportes'),
  'abogados':('Defendemos lo tuyo','Agendar consulta'),'logistica':('Tu carga, a tiempo','Rastrear pedido'),'manufactura':('Producción a tu medida','Solicitar cotización'),
@@ -410,6 +450,89 @@ def panel(k, n):
             f'<div class="cp-main"><div class="cp-top"><div><p class="cp-h" aria-live="polite">Inicio</p><p class="cp-muted">Hoy · actualizado hace 1 min</p></div>'
             f'<span class="cp-btn">{ic("mas")}Registrar</span><i class="cp-dot" title="En línea"></i></div>{views}</div></div>')
 
+# ---------- Construcción: render interactivo del proyecto (elige el apto y míralo por dentro) ----------
+PJ_FOTOS = [('Sala', '1751945965597-71171ec7a458'), ('Cocina', '1737898415581-7dea57a1905b'), ('Habitación', '1784653548504-c0928cd4737e')]
+PJ_PLANOS = {
+ 'A': [('Sala-comedor',0,0,130,100),('Cocina',130,0,60,55),('Baño',190,0,50,55),('Hab. 3',130,55,110,45),('Balcón',0,100,50,70),('Hab. principal',50,100,110,70),('Hab. 2',160,100,80,70)],
+ 'B': [('Sala-comedor',0,0,140,100),('Cocina',140,0,100,50),('Baño',140,50,100,50),('Balcón',0,100,50,70),('Hab. principal',50,100,110,70),('Hab. 2',160,100,80,70)],
+}
+def _plano(t):
+    r = ''.join(f'<rect x="{x}" y="{y}" width="{w}" height="{h}"/><text x="{x + w / 2}" y="{y + h / 2 + 4}">{E(n)}</text>' for n, x, y, w, h in PJ_PLANOS[t])
+    return f'<svg class="pj-plan" data-plan="{t}" viewBox="-6 -6 252 182" role="img" aria-label="Plano del apartamento tipo {t}"{"" if t == "A" else " hidden"}>{r}</svg>'
+
+def proyecto(n):
+    import math
+    A, S, HZ = math.cos(math.pi / 6), 30, 24
+    W, D, PISOS = 4, 3, 10
+    ox, oy = 110, 330
+    def P(x, y, z, dx=0, dy=0):
+        return f'{(x - y) * A * S + ox + dx:.1f},{(x + y) * .5 * S - z * HZ + oy + dy:.1f}'
+    def quad(pts): return ' '.join(pts)
+    svg = []
+    # sombra y lote
+    svg.append(f'<polygon class="pj-lot" points="{quad([P(-1.2,-1,0),P(W+1.4,-1,0),P(W+1.4,D+1.4,0),P(-1.2,D+1.4,0)])}"/>')
+    # caras de la torre
+    svg.append(f'<polygon class="pj-face l" points="{quad([P(0,D,0),P(W,D,0),P(W,D,PISOS),P(0,D,PISOS)])}"/>')
+    svg.append(f'<polygon class="pj-face r" points="{quad([P(W,D,0),P(W,0,0),P(W,0,PISOS),P(W,D,PISOS)])}"/>')
+    svg.append(f'<polygon class="pj-face t" points="{quad([P(0,0,PISOS),P(W,0,PISOS),P(W,D,PISOS),P(0,D,PISOS)])}"/>')
+    svg.append(f'<polygon class="pj-roof" points="{quad([P(1.2,.8,PISOS),P(2.8,.8,PISOS),P(2.8,2.2,PISOS),P(1.2,2.2,PISOS)])}"/>')
+    # lobby
+    svg.append(f'<polygon class="pj-lobby" points="{quad([P(.6,D,.1),P(3.4,D,.1),P(3.4,D,.85),P(.6,D,.85)])}"/>')
+    estados = 'dvdsddvdvdddsdvddsdvdddvsddvdsdddvdsd'
+    aptos, i = [], 0
+    for piso in range(2, PISOS + 1):
+        z0, z1 = piso - 1 + .12, piso - .12
+        caras = [('l', 0.15, 1.85), ('l', 2.15, 3.85), ('r', 2.85, 1.65), ('r', 1.35, .15)]
+        for u, (cara, a0, a1) in enumerate(caras, start=1):
+            if cara == 'l':
+                f = [P(a0, D, z0), P(a1, D, z0), P(a1, D, z1), P(a0, D, z1)]
+                g = [P(a0 + .18, D, z0 + .3), P(a1 - .18, D, z0 + .3), P(a1 - .18, D, z1 - .08), P(a0 + .18, D, z1 - .08)]
+            else:
+                f = [P(W, a0, z0), P(W, a1, z0), P(W, a1, z1), P(W, a0, z1)]
+                g = [P(W, a0 - .15, z0 + .3), P(W, a1 + .15, z0 + .3), P(W, a1 + .15, z1 - .08), P(W, a0 - .15, z1 - .08)]
+            t = 'A' if u in (1, 4) else 'B'
+            est = {'d': 'disponible', 'v': 'vendido', 's': 'separado'}[estados[i % len(estados)]]
+            i += 1
+            num = piso * 100 + u
+            area, hab, ban = (84, 3, 2) if t == 'A' else (62, 2, 2)
+            precio = (420 + piso * 6) if t == 'A' else (310 + piso * 4.5)
+            precio = f"${int(precio * 1_000_000):,}".replace(',', '.')
+            vista = 'Esquina · vista a los cerros' if u == 4 else ('Esquina · vista al parque' if u == 1 else ('Vista al parque' if cara == 'l' else 'Vista a los cerros'))
+            aptos.append((num, est))
+            svg.append(f'<g class="apt {est}" role="button" tabindex="0" aria-label="Apto {num}, {est}" data-apto="{num}" data-piso="{piso}" data-tipo="{t}" data-area="{area}" data-hab="{hab}" data-banos="{ban}" data-precio="{precio}" data-estado="{est}" data-vista="{vista}">'
+                       f'<polygon class="ap-f {cara}" points="{quad(f)}"/><polygon class="ap-w {cara}" points="{quad(g)}"/></g>')
+    cuenta = {e: sum(1 for _, x in aptos if x == e) for e in ('disponible', 'separado', 'vendido')}
+    thumbs = ''.join(f'<button type="button" data-img="{pid}"' + (' aria-pressed="true"' if j == 0 else ' aria-pressed="false"') + f'>{E(nm)}</button>' for j, (nm, pid) in enumerate(PJ_FOTOS))
+    wa = 'Hola, vi el render interactivo de proyectos en glysf.com y quiero uno para mi constructora.'
+    return f'''<section class="s-proyecto" aria-labelledby="t-pj">
+<div class="pj-wrap">
+<div class="copy center">
+<h2 id="t-pj" class="h2">Vende tu proyecto <em>antes de terminarlo.</em></h2>
+<p class="sub">Tus clientes eligen el apartamento en el render, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo. Toca cualquier apartamento.</p>
+</div>
+<div class="pj">
+<div class="pj-stage">
+<svg class="pj-svg" viewBox="-45 72 330 415" aria-label="Torre Roble: elige un apartamento">{''.join(svg)}</svg>
+<ul class="pj-legend"><li class="disponible">{cuenta['disponible']} disponibles</li><li class="separado">{cuenta['separado']} separados</li><li class="vendido">{cuenta['vendido']} vendidos</li></ul>
+</div>
+<div class="pj-card" aria-live="polite">
+<h3 class="pj-t">Apto <span data-f="apto">704</span></h3>
+<p class="pj-sub">Torre Roble · Piso <span data-f="piso">7</span> · <span data-f="vista"></span></p>
+<p><span class="pj-pill" data-f="estado">Disponible</span></p>
+<dl class="pj-dl"><div><dt>Área</dt><dd><span data-f="area">84</span> m²</dd></div><div><dt>Habitaciones</dt><dd data-f="hab">3</dd></div><div><dt>Baños</dt><dd data-f="banos">2</dd></div><div><dt>Precio</dt><dd data-f="precio"></dd></div></dl>
+<div class="pj-tabs" role="tablist" aria-label="Ver el apartamento"><button type="button" role="tab" aria-selected="true" data-pt="plano">Plano</button><button type="button" role="tab" aria-selected="false" data-pt="interior">Por dentro</button></div>
+<div class="pj-view" data-pv="plano">{_plano('A')}{_plano('B')}</div>
+<div class="pj-view" data-pv="interior" hidden><div class="pj-photo" role="img" aria-label="Interior de ejemplo"></div><div class="pj-thumbs">{thumbs}</div></div>
+<button type="button" class="pj-cta">Separar este apto</button>
+<p class="pj-note" hidden>En tu proyecto real, aquí el bot de WhatsApp toma los datos del cliente, envía el link de la separación y te avisa.</p>
+<a class="pj-own" href="https://wa.me/573103102908" data-wa="{E(wa)}" target="_blank" rel="noopener">Quiero un render así para mi proyecto</a>
+</div>
+</div>
+</div>
+</section>
+
+'''
+
 def pagina(k, n):
     at = lambda i, base, step: f'{base + i * step:.2f}'
     foto = n['foto']; foto2 = n.get('foto2', foto); foto3 = n.get('foto3', foto)
@@ -470,8 +593,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=7">
-<script src="/negocio.js?v=6" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=8">
+<script src="/negocio.js?v=7" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">
@@ -529,7 +652,7 @@ def pagina(k, n):
 </div>
 </section>
 
-<section class="scene s-web flow" data-scene aria-labelledby="t-web">
+{proyecto(n) if k == 'fabrica' else ''}<section class="scene s-web flow" data-scene aria-labelledby="t-web">
 <div class="sticky">
 <div class="bg dark-solid"></div>
 <div class="web-wrap">

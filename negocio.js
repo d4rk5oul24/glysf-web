@@ -94,3 +94,41 @@
     cp.addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (b) show(b.dataset.v); });
   });
 })();
+
+// Render del proyecto (constructora): elegir apartamento, ver plano y fotos.
+(() => {
+  const pj = document.querySelector('.pj');
+  if (!pj) return;
+  const card = pj.querySelector('.pj-card');
+  const f = k => card.querySelector(`[data-f="${k}"]`);
+  const apts = [...pj.querySelectorAll('.apt')];
+  const cta = card.querySelector('.pj-cta'), note = card.querySelector('.pj-note');
+  const foto = card.querySelector('.pj-photo');
+  const ver = el => {
+    apts.forEach(a => a.classList.toggle('sel', a === el));
+    const d = el.dataset;
+    f('apto').textContent = d.apto; f('piso').textContent = d.piso; f('vista').textContent = d.vista;
+    f('area').textContent = d.area; f('hab').textContent = d.hab; f('banos').textContent = d.banos; f('precio').textContent = d.precio;
+    const est = f('estado'); est.textContent = d.estado[0].toUpperCase() + d.estado.slice(1); est.className = 'pj-pill ' + d.estado;
+    card.querySelectorAll('.pj-plan').forEach(p => p.toggleAttribute('hidden', p.dataset.plan !== d.tipo));
+    cta.disabled = d.estado !== 'disponible';
+    cta.textContent = d.estado === 'disponible' ? 'Separar este apto' : (d.estado === 'separado' ? 'Ya está separado' : 'Vendido');
+    note.hidden = true;
+  };
+  apts.forEach(a => {
+    a.addEventListener('click', () => ver(a));
+    a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ver(a); } });
+  });
+  const ponerFoto = id => { foto.style.backgroundImage = `url('https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1000&q=70')`; };
+  card.querySelectorAll('.pj-tabs [data-pt]').forEach(b => b.addEventListener('click', () => {
+    card.querySelectorAll('.pj-tabs [data-pt]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    card.querySelectorAll('.pj-view').forEach(v => { v.hidden = v.dataset.pv !== b.dataset.pt; });
+    if (b.dataset.pt === 'interior' && !foto.style.backgroundImage) ponerFoto(card.querySelector('.pj-thumbs [aria-pressed="true"]').dataset.img);
+  }));
+  card.querySelectorAll('.pj-thumbs [data-img]').forEach(b => b.addEventListener('click', () => {
+    card.querySelectorAll('.pj-thumbs [data-img]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    ponerFoto(b.dataset.img);
+  }));
+  cta.addEventListener('click', () => { note.hidden = false; });
+  ver([...apts].sort((a, b) => b.dataset.piso - a.dataset.piso).find(a => a.dataset.estado === 'disponible' && a.dataset.piso <= 8) || apts[0]);
+})();
