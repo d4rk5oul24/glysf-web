@@ -212,15 +212,12 @@ function arrowTabs(list){list.addEventListener('keydown',e=>{const t=[...list.qu
  const k=e.key;let n=k==='ArrowRight'?i+1:k==='ArrowLeft'?i-1:k==='Home'?0:k==='End'?t.length-1:null;if(n===null)return;
  e.preventDefault();n=(n+t.length)%t.length;t[n].focus();t[n].click();});}
 function selectTab(list,panel,ix){[...list.querySelectorAll('[role=tab]')].forEach((b,i)=>{const on=i===ix;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;if(on)panel.setAttribute('aria-labelledby',b.id);});}
-const AK=Object.keys(A);let area=AK[0];
-$('autoTabs').append(...AK.map((k,i)=>{const b=el('button','tab',k+' ('+A[k].length+')');b.type='button';b.id='atab'+i;b.setAttribute('role','tab');b.setAttribute('aria-controls','autoGrid');b.onclick=()=>{area=k;renderAuto();};return b;}));
-arrowTabs($('autoTabs'));
-function renderAuto(){selectTab($('autoTabs'),$('autoGrid'),AK.indexOf(area));
- $('autoGrid').replaceChildren(...A[area].map(([h,p])=>{const d=el('div','auto');d.append(el('h3',null,h),el('p',null,p));return d;}));}
-renderAuto();
-
-/* ---------- Calculadora ---------- */
-const r=$('msgs');r.oninput=()=>{const m=+r.value,h=Math.round(m*2*30/60);$('msgsVal').textContent=m;$('hours').textContent=h;$('days').textContent=Math.round(h/8);r.style.setProperty('--p',(m-r.min)/(r.max-r.min)*100+'%');};r.oninput();
+/* ---------- Resultados: números que cuentan y barras que se llenan al aparecer ---------- */
+(()=>{const box=document.getElementById('imp');if(!box)return;const red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const run=()=>{box.classList.add('on');box.querySelectorAll('.imp-n').forEach(n=>{const to=+n.dataset.to,pre=n.dataset.pre||'';if(red){n.textContent=pre+to;return;}
+  const t0=performance.now(),d=1400;const f=t=>{const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3);n.textContent=pre+Math.round(to*e);if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);});};
+ if(!('IntersectionObserver' in window))return run();
+ const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();run();}},{threshold:.3});io.observe(box);})();
 
 /* ---------- Formulario de cotización (con protección anti-spam) ---------- */
 const FORM_T0=Date.now();let lastSend=0;const MAIL='grupolysf@gmail.com';
