@@ -95,15 +95,18 @@
   });
 })();
 
-// Render del proyecto (constructora): elegir apartamento, ver plano y fotos.
+// Torre del proyecto (constructora): elegir piso y apartamento, ver plano y fotos.
 (() => {
   const pj = document.querySelector('.pj');
   if (!pj) return;
   const card = pj.querySelector('.pj-card');
-  const f = k => card.querySelector(`[data-f="${k}"]`);
+  const f = k => pj.querySelector(`[data-f="${k}"]`);
   const apts = [...pj.querySelectorAll('.apt')];
+  const floors = [...pj.querySelectorAll('.pj-floor')];
+  const rows = [...pj.querySelectorAll('.pj-units')];
   const cta = card.querySelector('.pj-cta'), note = card.querySelector('.pj-note');
   const foto = card.querySelector('.pj-photo');
+  const ponerFoto = id => { foto.style.backgroundImage = `url('https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1000&q=70')`; };
   const ver = el => {
     apts.forEach(a => a.classList.toggle('sel', a === el));
     const d = el.dataset;
@@ -115,22 +118,23 @@
     cta.textContent = d.estado === 'disponible' ? 'Separar este apto' : (d.estado === 'separado' ? 'Ya está separado' : 'Vendido');
     note.hidden = true;
   };
-  apts.forEach(a => {
-    a.addEventListener('click', () => ver(a));
-    a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ver(a); } });
-  });
-  const ponerFoto = id => { foto.style.backgroundImage = `url('https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1000&q=70')`; };
+  const piso = (p, elegir) => {
+    floors.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.floor === String(p))));
+    rows.forEach(r => { r.hidden = r.dataset.units !== String(p); });
+    f('pisolbl').textContent = 'piso ' + p;
+    if (elegir) { const fila = rows.find(r => !r.hidden); ver(fila.querySelector('.apt.disponible') || fila.querySelector('.apt')); }
+  };
+  floors.forEach(b => b.addEventListener('click', () => piso(b.dataset.floor, true)));
+  apts.forEach(a => a.addEventListener('click', () => ver(a)));
   card.querySelectorAll('.pj-tabs [data-pt]').forEach(b => b.addEventListener('click', () => {
     card.querySelectorAll('.pj-tabs [data-pt]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
     card.querySelectorAll('.pj-view').forEach(v => { v.hidden = v.dataset.pv !== b.dataset.pt; });
-    if (b.dataset.pt === 'interior' && !foto.style.backgroundImage) ponerFoto(card.querySelector('.pj-thumbs [aria-pressed="true"]').dataset.img);
   }));
   card.querySelectorAll('.pj-thumbs [data-img]').forEach(b => b.addEventListener('click', () => {
     card.querySelectorAll('.pj-thumbs [data-img]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
     ponerFoto(b.dataset.img);
   }));
   cta.addEventListener('click', () => { note.hidden = false; });
-  const tg = pj.querySelector('.pj-toggle'), svg = pj.querySelector('.pj-svg');
-  if (tg) tg.addEventListener('click', () => { const on = tg.getAttribute('aria-pressed') !== 'true'; tg.setAttribute('aria-pressed', String(on)); svg.classList.toggle('estados', on); });
-  ver([...apts].sort((a, b) => b.dataset.piso - a.dataset.piso).find(a => a.dataset.estado === 'disponible' && a.dataset.piso <= 8) || apts[0]);
+  ponerFoto(card.querySelector('.pj-thumbs [aria-pressed="true"]').dataset.img);
+  piso(8, true);
 })();
