@@ -1,7 +1,7 @@
 /* Glysf: funciones comunes a todas las páginas (WhatsApp, cookies y analítica). */
 (function(){
 // ===== Configuración: completa estos dos datos =====
-var WHATSAPP='';      // Número de WhatsApp de Glysf con indicativo y sin espacios, ej.: 573001234567
+var WHATSAPP='573103102908';      // Número de WhatsApp de Glysf con indicativo y sin espacios, ej.: 573001234567
 var GA_ID='';         // ID de Google Analytics 4, ej.: G-ABC123XYZ
 var WA_TEXTO='Hola, quiero información sobre las automatizaciones de Glysf.';
 // ===================================================
@@ -10,10 +10,13 @@ var KEY='glysf-cookies';
 function get(){try{return localStorage.getItem(KEY);}catch(e){return null;}}
 function set(v){try{localStorage.setItem(KEY,v);}catch(e){}}
 
-// Botón de WhatsApp
-var wa=document.getElementById('waBtn');
-if(wa&&/^\d{10,15}$/.test(WHATSAPP)){wa.href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(WA_TEXTO);wa.hidden=false;
- wa.addEventListener('click',function(){if(window.gtag)gtag('event','contacto_whatsapp');});}
+// Botones de WhatsApp: el flotante (#waBtn) y cualquier enlace con data-wa (su valor es el mensaje inicial)
+if(/^\d{10,15}$/.test(WHATSAPP)){
+ document.querySelectorAll('#waBtn,[data-wa]').forEach(function(a){
+  var t=a.getAttribute('data-wa')||WA_TEXTO;
+  a.href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(t);a.hidden=false;
+  a.addEventListener('click',function(){if(window.gtag)gtag('event','contacto_whatsapp');});});
+}
 
 // Analítica: solo se carga con consentimiento
 function loadGA(){if(!/^G-[A-Z0-9]+$/.test(GA_ID)||window.gtag)return;

@@ -271,7 +271,7 @@ fabrica:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-h
 const PHOTO={padel:'https://images.unsplash.com/photo-1709587825135-80b00570c355?auto=format&fit=crop&w=1920&q=70',clinica:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1920&q=70',gym:'https://images.unsplash.com/photo-1620188540300-c156a625c6fc?auto=format&fit=crop&w=1920&q=70',pilates:'https://images.unsplash.com/photo-1717500252709-05a73fc4f1da?auto=format&fit=crop&w=1920&q=70',resto:'https://images.unsplash.com/photo-1760169799369-2b8574466735?auto=format&fit=crop&w=1920&q=70',pelu:'https://images.unsplash.com/photo-1781450090585-1a511b7066d9?auto=format&fit=crop&w=1920&q=70',tienda:'https://images.unsplash.com/photo-1631856956334-35db20cb7748?auto=format&fit=crop&w=1920&q=70',fabrica:'https://images.unsplash.com/photo-1684497404598-6e844dff9cde?auto=format&fit=crop&w=1920&q=70'};
 const photoBg=(k,w)=>`<div class="pwrap"><div class="photo" style="background-image:url('${PHOTO[k].replace('w=1920','w='+(w||1920))}')"></div></div><div class="shade"></div>`;
 // Negocios que ya tienen su propia página inmersiva
-const PAGINA={padel:'/padel.html'};
+const PAGINA={padel:'/padel.html',clinica:'/clinica.html',gym:'/gimnasio.html',pilates:'/pilates.html',resto:'/restaurante.html',pelu:'/peluqueria.html',tienda:'/tienda.html',fabrica:'/constructora.html'};
 const SECT={
 padel:{seo:'Automatización para clubes de pádel · Glysf',card:'Reservas, pagos y nómina',name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol',bg:'#0D4F7A',dark:1,acc:'#C8F560',
  title:'Reservas y pagos de tu club de pádel, sin llamadas',sub:'Reservas, pagos, profesores, nómina e inventario funcionando solos mientras tú juegas.',
@@ -424,3 +424,17 @@ window.addEventListener('hashchange',route);route();
   v.style.setProperty('--dim',Math.min(1,y/700).toFixed(3));});},{passive:true});})();
 // Saltar al contenido: lleva el foco al título de la vista visible.
 $('skipLink').onclick=e=>{e.preventDefault();const t=$('sectorView').hidden?$('heroTitle'):$('svTitle');t.focus();t.scrollIntoView({block:'center'});};
+
+/* ---------- Cómo trabajamos: pasos que avanzan solos (y con clic o flechas) ---------- */
+(()=>{const box=document.getElementById('howto');if(!box)return;
+ const tabs=[...box.querySelectorAll('[role=tab]')],panes=tabs.map(t=>document.getElementById(t.getAttribute('aria-controls')));
+ const red=matchMedia('(prefers-reduced-motion: reduce)').matches;let i=0;
+ function show(n,focus){i=(n+tabs.length)%tabs.length;tabs.forEach((t,k)=>{t.setAttribute('aria-selected',k===i);t.tabIndex=k===i?0:-1;panes[k].hidden=k!==i;});
+  const p=panes[i].cloneNode(true);panes[i].replaceWith(p);panes[i]=p; // reinicia las animaciones del panel
+  if(focus)tabs[i].focus();}
+ tabs.forEach((t,k)=>{t.addEventListener('click',()=>show(k));
+  t.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();show(i+1,true);}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();show(i-1,true);}});
+  t.querySelector('.hbar').addEventListener('animationend',()=>{if(!red)show(i+1);});});
+ box.addEventListener('mouseenter',()=>box.classList.add('paused'));box.addEventListener('mouseleave',()=>box.classList.remove('paused'));
+ box.addEventListener('focusin',()=>box.classList.add('paused'));box.addEventListener('focusout',()=>box.classList.remove('paused'));
+ show(0);})();
