@@ -267,6 +267,9 @@ tienda:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hi
 fabrica:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="bp" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16316B" stroke-width="1.5"/></pattern></defs><rect width="1200" height="800" fill="#0B1F4B"/><rect width="1200" height="800" fill="url(#bp)"/><g stroke="#24458F" stroke-width="8" fill="none"><path d="M900 760V150M940 760V150M900 200L940 240M940 300L900 340M900 400L940 440M900 500L940 540M940 600L900 640"/></g><g class="an-jib" style="transform-origin:920px 150px"><path d="M600 150H1100M640 150L920 90L1100 150" stroke="#24458F" stroke-width="8" fill="none"/><line class="an-hook" x1="700" y1="150" x2="700" y2="380" stroke="#FFC53D" stroke-width="3"/><rect class="an-hook" x="670" y="380" width="60" height="40" fill="#FFC53D" opacity=".7"/></g>${[0,1,2].map(i=>`<rect x="${180+i*130}" y="${560-i*120}" width="120" height="${200+i*120}" fill="#14306A" stroke="#24458F" stroke-width="4"/>`).join('')}</svg>`};
 
 /* ---------- Cada negocio: tema, textos y módulos que se ven en movimiento ---------- */
+/* ---------- Fotos reales de fondo (Unsplash, licencia libre; se cargan desde su CDN) ---------- */
+const PHOTO={padel:'https://images.unsplash.com/photo-1709587825135-80b00570c355?auto=format&fit=crop&w=1920&q=70',clinica:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1920&q=70',gym:'https://images.unsplash.com/photo-1620188540300-c156a625c6fc?auto=format&fit=crop&w=1920&q=70',pilates:'https://images.unsplash.com/photo-1717500252709-05a73fc4f1da?auto=format&fit=crop&w=1920&q=70',resto:'https://images.unsplash.com/photo-1760169799369-2b8574466735?auto=format&fit=crop&w=1920&q=70',pelu:'https://images.unsplash.com/photo-1781450090585-1a511b7066d9?auto=format&fit=crop&w=1920&q=70',tienda:'https://images.unsplash.com/photo-1631856956334-35db20cb7748?auto=format&fit=crop&w=1920&q=70',fabrica:'https://images.unsplash.com/photo-1684497404598-6e844dff9cde?auto=format&fit=crop&w=1920&q=70'};
+const photoBg=(k,w)=>`<div class="pwrap"><div class="photo" style="background-image:url('${PHOTO[k].replace('w=1920','w='+(w||1920))}')"></div></div><div class="shade"></div>`;
 const SECT={
 padel:{seo:'Automatización para clubes de pádel · Glysf',card:'Reservas, pagos y nómina',name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol',bg:'#0D4F7A',dark:1,acc:'#C8F560',
  title:'Reservas y pagos de tu club de pádel, sin llamadas',sub:'Reservas, pagos, profesores, nómina e inventario funcionando solos mientras tú juegas.',
@@ -378,8 +381,8 @@ let cur='padel',modIx=0;
 arrowTabs($('modTabs'));
 function openSector(k,ix){cur=k;modIx=ix||0;const s=SECT[k];chatSector(k);
  $('home').hidden=true;document.body.classList.add('in-sector');const v=$('sectorView');v.hidden=false;
- v.style.setProperty('--bg',s.bg);v.style.setProperty('--acc',s.acc);v.classList.toggle('dark',!!s.dark);
- const sc=$('scene');sc.classList.remove('in');void sc.offsetWidth;sc.innerHTML=SCENE[k];sc.classList.add('in');
+ v.style.setProperty('--bg',s.bg);v.style.setProperty('--acc',s.acc);v.classList.add('dark');
+ const sc=$('scene');sc.classList.remove('in');void sc.offsetWidth;sc.innerHTML=photoBg(k);sc.classList.add('in');
  $('svTabs').replaceChildren(...Object.keys(SECT).map(x=>{const a=el('a','svtab',SECT[x].name);a.href='#/negocio/'+x;if(x===k)a.setAttribute('aria-current','page');return a;}));
  const hero=$('svHero');hero.classList.remove('rise');void hero.offsetWidth;hero.classList.add('rise');
  $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;setTimeout(()=>{const mt=$('modTabs');mt.scrollLeft=0;if(mt.parentElement)mt.parentElement.scrollLeft=0;$('svTabs').scrollLeft=0;},0);
@@ -398,8 +401,8 @@ $('modReplay').onclick=()=>renderMods();
 $('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{$('f-sector').value=SECT[cur].form;},50);};
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
-$('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz'+(s.dark?' dark':''));a.href='#/negocio/'+k;
- const bg=el('div','bizbg');bg.innerHTML=SCENE[k];const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}));
+$('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href='#/negocio/'+k;
+ const bg=el('div','bizbg');bg.innerHTML=photoBg(k,800);const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}));
 
 /* ---------- Navegación ---------- */
 let inSector=false;
@@ -411,5 +414,10 @@ function route(){const h=location.hash;const m=h.match(/^#\/negocio\/(\w+)/);
  if(t)setTimeout(()=>{t.scrollIntoView();if(back){if(!t.hasAttribute('tabindex'))t.setAttribute('tabindex','-1');t.focus({preventScroll:true});}},0);
  else if(back)$('heroTitle').focus({preventScroll:true});}
 window.addEventListener('hashchange',route);route();
+/* Parallax del fondo: la foto se mueve más lento que el contenido y se oscurece al bajar */
+(()=>{let t=0;const red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ addEventListener('scroll',()=>{if(red||t)return;t=requestAnimationFrame(()=>{t=0;const v=$('sectorView');if(!v||v.hidden)return;const y=scrollY;
+  const w=document.querySelector('#scene .pwrap');if(w)w.style.transform=`translate3d(0,${-y*0.12}px,0)`;
+  v.style.setProperty('--dim',Math.min(1,y/700).toFixed(3));});},{passive:true});})();
 // Saltar al contenido: lleva el foco al título de la vista visible.
 $('skipLink').onclick=e=>{e.preventDefault();const t=$('sectorView').hidden?$('heroTitle'):$('svTitle');t.focus();t.scrollIntoView({block:'center'});};
