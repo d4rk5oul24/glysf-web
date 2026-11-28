@@ -505,7 +505,10 @@ def panel(k, n):
             f'<span class="cp-btn">{ic("mas")}Registrar</span><i class="cp-dot" title="En línea"></i></div>{views}</div></div>')
 
 # ---------- Construcción: render interactivo del proyecto (elige el apto y míralo por dentro) ----------
-PJ_FOTOS = [('Sala', '1751945965597-71171ec7a458'), ('Cocina', '1737898415581-7dea57a1905b'), ('Habitación', '1784653548504-c0928cd4737e')]
+PJ_FOTOS = {
+ 'A': [('Sala', '1751945965597-71171ec7a458'), ('Cocina', '1757711990497-4bd910fbe3cb'), ('Hab. principal', '1784653548504-c0928cd4737e'), ('Hab. 2', '1757344454333-cc666252e596'), ('Hab. 3', '1781572725438-ac8c41476752'), ('Baño', '1584622650111-993a426fbf0a')],
+ 'B': [('Sala-comedor', '1737898415581-7dea57a1905b'), ('Cocina', '1757711990497-4bd910fbe3cb'), ('Hab. principal', '1784653548504-c0928cd4737e'), ('Hab. 2', '1757344454333-cc666252e596'), ('Baño', '1584622650111-993a426fbf0a')],
+}
 PJ_PLANOS = {
  'A': [('Sala-comedor',0,0,130,100),('Cocina',130,0,60,55),('Baño',190,0,50,55),('Hab. 3',130,55,110,45),('Balcón',0,100,50,70),('Hab. principal',50,100,110,70),('Hab. 2',160,100,80,70)],
  'B': [('Sala-comedor',0,0,140,100),('Cocina',140,0,100,50),('Baño',140,50,100,50),('Balcón',0,100,50,70),('Hab. principal',50,100,110,70),('Hab. 2',160,100,80,70)],
@@ -515,12 +518,7 @@ def _plano(t):
     return f'<svg class="pj-plan" data-plan="{t}" viewBox="-6 -6 252 182" role="img" aria-label="Plano del apartamento tipo {t}"{"" if t == "A" else " hidden"}>{r}</svg>'
 
 def proyecto(n):
-    FOTO_TORRE = '1744983672789-86703806e626'
     PISOS = 8
-    # Franjas medidas sobre la foto (coordenadas del viewBox 1200x1500)
-    FRANJA_Y = {8: (399, 501), 7: (501, 603), 6: (603, 705), 5: (705, 807), 4: (807, 909), 3: (909, 1011), 2: (1011, 1113)}
-    FRANJA_X = [(0, 396), (396, 703), (703, 1009), (1009, 1200)]
-    hot = []
     estados = 'dvdsddvdvdddsdvddsdvdddvsddvdsdddvdsd'
     pisos_html, aptos, i = [], [], 0
     for piso in range(PISOS, 1, -1):
@@ -534,26 +532,24 @@ def proyecto(n):
             precio = f"${int(precio * 1_000_000):,}".replace(',', '.')
             vista = 'Esquina · vista a los cerros' if u == 4 else ('Esquina · vista al parque' if u == 1 else ('Vista al parque' if u == 2 else 'Vista a los cerros'))
             aptos.append((num, est))
-            (y0, y1), (x0, x1) = FRANJA_Y[piso], FRANJA_X[u - 1]
-            hot.append(f'<rect class="hs {est}" x="{x0 + 6}" y="{y0 + 4}" width="{x1 - x0 - 12}" height="{y1 - y0 - 8}" rx="10" data-apto="{num}" data-piso="{piso}" role="button" tabindex="0" aria-label="Apto {num}, piso {piso}, {est}"><title>Apto {num} · {est}</title></rect>')
             chips.append(f'<button type="button" class="apt {est}" aria-label="Apto {num}, {est}" data-apto="{num}" data-piso="{piso}" data-tipo="{t}" data-area="{area}" data-hab="{hab}" data-banos="{ban}" data-precio="{precio}" data-estado="{est}" data-vista="{vista}"><b>{num}</b><small>{area} m²</small></button>')
         libres = sum(1 for c in chips if 'apt disponible' in c)
         pisos_html.append((piso, libres, ''.join(chips)))
     cuenta = {e: sum(1 for _, x in aptos if x == e) for e in ('disponible', 'separado', 'vendido')}
     torre = ''.join(f'<button type="button" class="pj-floor" data-floor="{p}" aria-pressed="false"><span>Piso {p}</span><small>{l} libre{"s" if l != 1 else ""}</small></button>' for p, l, _ in pisos_html)
     filas = ''.join(f'<div class="pj-units" data-units="{p}" hidden>{c}</div>' for p, _, c in pisos_html)
-    thumbs = ''.join(f'<button type="button" data-img="{pid}"' + (' aria-pressed="true"' if j == 0 else ' aria-pressed="false"') + f'>{E(nm)}</button>' for j, (nm, pid) in enumerate(PJ_FOTOS))
-    guia = ''.join(f'<line x1="{x}" y1="0" x2="{x}" y2="1500"/><text x="{x + 6}" y="40">{x}</text>' for x in range(100, 1200, 100)) + ''.join(f'<line x1="0" y1="{y}" x2="1200" y2="{y}"/><text x="8" y="{y - 8}">{y}</text>' for y in range(100, 1500, 100))
+    thumbs = ''.join(f'<div class="pj-thumbs" data-tipo="{t}"' + ('' if t == 'A' else ' hidden') + '>' + ''.join(f'<button type="button" data-img="{pid}"' + (' aria-pressed="true"' if j == 0 else ' aria-pressed="false"') + f'>{E(nm)}</button>' for j, (nm, pid) in enumerate(fs)) + '</div>' for t, fs in PJ_FOTOS.items())
     wa = 'Hola, vi el render interactivo de proyectos en glysf.com y quiero uno para mi constructora.'
     return f'''<section class="s-proyecto" aria-labelledby="t-pj">
 <div class="pj-wrap">
 <div class="copy center">
 <h2 id="t-pj" class="h2">Vende tu proyecto <em>antes de terminarlo.</em></h2>
-<p class="sub">Tus clientes pasan el dedo por la fachada, eligen su apartamento, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo.</p>
+<p class="sub">Tus clientes giran la torre, pasan el dedo por la fachada, eligen su apartamento, ven el plano y cómo es por dentro, y el bot les ayuda a separarlo.</p>
 </div>
 <div class="pj">
 <div class="pj-stage">
-<svg class="pj-shot" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fotografía de la Torre Roble"><image href="https://images.unsplash.com/photo-{FOTO_TORRE}?auto=format&amp;fit=crop&amp;w=1200&amp;h=1500&amp;q=75" width="1200" height="1500" preserveAspectRatio="xMidYMid slice"/><g class="pj-hot">{"".join(hot)}</g><g class="pj-guia" aria-hidden="true">{guia}</g></svg>
+<canvas class="pj-3d" role="img" aria-label="Modelo 3D de la Torre Roble. Arrastra para girarlo y toca un apartamento para verlo."></canvas>
+<div class="pj-rot"><button type="button" data-girar="1" aria-label="Girar a la izquierda">&#8634;</button><span>Arrastra para girar</span><button type="button" data-girar="-1" aria-label="Girar a la derecha">&#8635;</button></div>
 <div class="pj-shade"></div>
 <div class="pj-top"><b>Torre Roble</b><span>Chapinero Alto · Entrega 2028</span></div>
 <div class="pj-bottom">
@@ -569,7 +565,7 @@ def proyecto(n):
 <dl class="pj-dl"><div><dt>Área</dt><dd><span data-f="area">84</span> m²</dd></div><div><dt>Habitaciones</dt><dd data-f="hab">3</dd></div><div><dt>Baños</dt><dd data-f="banos">2</dd></div><div><dt>Precio</dt><dd data-f="precio"></dd></div></dl>
 <div class="pj-tabs" role="tablist" aria-label="Ver el apartamento"><button type="button" role="tab" aria-selected="false" data-pt="plano">Plano</button><button type="button" role="tab" aria-selected="true" data-pt="interior">Por dentro</button></div>
 <div class="pj-view" data-pv="plano" hidden>{_plano('A')}{_plano('B')}</div>
-<div class="pj-view" data-pv="interior"><div class="pj-photo" role="img" aria-label="Interior de ejemplo"></div><div class="pj-thumbs">{thumbs}</div></div>
+<div class="pj-view" data-pv="interior"><div class="pj-photo" role="img" aria-label="Interior de ejemplo"></div>{thumbs}</div>
 <button type="button" class="pj-cta">Separar este apto</button>
 <p class="pj-note" hidden>En tu proyecto real, aquí el bot de WhatsApp toma los datos del cliente, envía el link de la separación y te avisa.</p>
 <a class="pj-own" href="https://wa.me/573103102908" data-wa="{E(wa)}" target="_blank" rel="noopener">Quiero esto para mi proyecto</a>
@@ -577,6 +573,7 @@ def proyecto(n):
 </div>
 </div>
 </section>
+<script src="/torre3d.js?v=3" defer></script>
 
 '''
 
@@ -640,8 +637,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=12">
-<script src="/negocio.js?v=12" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=15">
+<script src="/negocio.js?v=13" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">

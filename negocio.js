@@ -107,15 +107,23 @@
   const cta = card.querySelector('.pj-cta'), note = card.querySelector('.pj-note');
   const foto = card.querySelector('.pj-photo');
   const ponerFoto = id => { foto.style.backgroundImage = `url('https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1000&q=70')`; };
-  const hs = [...pj.querySelectorAll('.pj-hot .hs')];
+  const stage = pj.querySelector('.pj-stage');
+  let tipoActual = null;
   const ver = el => {
     apts.forEach(a => a.classList.toggle('sel', a === el));
-    hs.forEach(h => h.classList.toggle('sel', h.dataset.apto === el.dataset.apto));
+    stage.dispatchEvent(new CustomEvent('pj:sel', { detail: el.dataset.apto }));
     const d = el.dataset;
     f('apto').textContent = d.apto; f('piso').textContent = d.piso; f('vista').textContent = d.vista;
     f('area').textContent = d.area; f('hab').textContent = d.hab; f('banos').textContent = d.banos; f('precio').textContent = d.precio;
     const est = f('estado'); est.textContent = d.estado[0].toUpperCase() + d.estado.slice(1); est.className = 'pj-pill ' + d.estado;
     card.querySelectorAll('.pj-plan').forEach(p => p.toggleAttribute('hidden', p.dataset.plan !== d.tipo));
+    if (d.tipo !== tipoActual) {
+      tipoActual = d.tipo;
+      card.querySelectorAll('.pj-thumbs').forEach(g => { g.hidden = g.dataset.tipo !== d.tipo; });
+      const g = card.querySelector(`.pj-thumbs[data-tipo="${d.tipo}"]`);
+      g.querySelectorAll('[data-img]').forEach((x, i) => x.setAttribute('aria-pressed', String(i === 0)));
+      ponerFoto(g.querySelector('[data-img]').dataset.img);
+    }
     cta.disabled = d.estado !== 'disponible';
     cta.textContent = d.estado === 'disponible' ? 'Separar este apto' : (d.estado === 'separado' ? 'Ya está separado' : 'Vendido');
     note.hidden = true;
@@ -127,14 +135,9 @@
     if (elegir) { const fila = rows.find(r => !r.hidden); ver(fila.querySelector('.apt.disponible') || fila.querySelector('.apt')); }
   };
   floors.forEach(b => b.addEventListener('click', () => piso(b.dataset.floor, true)));
-  const desdeFoto = h => { piso(h.dataset.piso, false); ver(apts.find(a => a.dataset.apto === h.dataset.apto)); };
-  hs.forEach(h => {
-    h.addEventListener('click', () => desdeFoto(h));
-    h.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); desdeFoto(h); } });
-  });
+  stage.addEventListener('pj:pick', e => { const a = apts.find(x => x.dataset.apto === e.detail); if (a) { piso(a.dataset.piso, false); ver(a); } });
   const tg = pj.querySelector('.pj-toggle');
-  if (tg) tg.addEventListener('click', () => { const on = tg.getAttribute('aria-pressed') !== 'true'; tg.setAttribute('aria-pressed', String(on)); pj.querySelector('.pj-stage').classList.toggle('estados', on); });
-  apts.forEach(a => a.addEventListener('click', () => ver(a)));
+  if (tg) tg.addEventListener('click', () => { const on = tg.getAttribute('aria-pressed') !== 'true'; tg.setAttribute('aria-pressed', String(on)); stage.dispatchEvent(new CustomEvent('pj:estados', { detail: on })); });
   card.querySelectorAll('.pj-tabs [data-pt]').forEach(b => b.addEventListener('click', () => {
     card.querySelectorAll('.pj-tabs [data-pt]').forEach(x => x.setAttribute('aria-selected', String(x === b)));
     card.querySelectorAll('.pj-view').forEach(v => { v.hidden = v.dataset.pv !== b.dataset.pt; });
@@ -144,7 +147,5 @@
     ponerFoto(b.dataset.img);
   }));
   cta.addEventListener('click', () => { note.hidden = false; });
-  ponerFoto(card.querySelector('.pj-thumbs [aria-pressed="true"]').dataset.img);
-  if (/[?&]gui/.test(location.search)) pj.querySelector('.pj-stage').classList.add('guia');
   piso(6, true);
 })();
