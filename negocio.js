@@ -136,5 +136,6 @@
   }));
   cta.addEventListener('click', () => { note.hidden = false; });
   ponerFoto(card.querySelector('.pj-thumbs [aria-pressed="true"]').dataset.img);
+  if (/[?&]guia\b/.test(location.search)) pj.querySelector('.pj-stage').classList.add('guia');
   piso(8, true);
 })();

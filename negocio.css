@@ -367,8 +367,9 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 
 /* Torre en foto real con selector de piso */
 .pj-stage{position:relative;border-radius:26px;overflow:hidden;min-height:clamp(520px,72vh,760px);box-shadow:0 50px 120px rgba(0,0,0,.55);isolation:isolate}
-.pj-shot{position:absolute;inset:-4%;background:#0e1a33 center 35%/cover no-repeat;animation:pjKen 26s ease-in-out infinite alternate;z-index:-2}
-@keyframes pjKen{to{transform:scale(1.08) translate(-1.5%,-1%)}}
+.pj-shot{position:absolute;inset:0;width:100%;height:100%;background:#0e1a33;z-index:-2}
+.pj-guia{display:none}.pj-guia line{stroke:#ff2d55;stroke-width:2;opacity:.8}.pj-guia text{fill:#ff2d55;font:700 26px sans-serif}
+.pj-stage.guia .pj-guia{display:inline}.pj-stage.guia .pj-shade{display:none}
 .pj-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(4,9,22,.55) 0%,rgba(4,9,22,0) 26%,rgba(4,9,22,0) 48%,rgba(4,9,22,.88) 100%),linear-gradient(90deg,rgba(4,9,22,.6),rgba(4,9,22,0) 38%)}
 .pj-top{position:absolute;top:22px;left:24px;right:24px;display:flex;flex-direction:column;gap:2px;text-align:left}
 .pj-top b{font:400 clamp(26px,2.6vw,34px)/1.05 var(--serif);color:#fff}
@@ -393,7 +394,7 @@ em{font-family:var(--serif);font-style:italic;font-weight:400}
 .pj-legend{justify-content:flex-start;color:rgba(255,255,255,.8)}
 @media (max-width:960px){.pj{grid-template-columns:1fr}.pj-stage{min-height:600px}}
 @media (max-width:560px){.pj-stage{min-height:620px}.pj-floors{top:88px;bottom:236px;min-width:0}.pj-floor{min-width:92px;padding:6px 10px}.pj-units{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (prefers-reduced-motion:reduce){.pj-shot{animation:none}}
+
 
 /* Portada: la foto real manda, sin íconos dibujados */
 .s-hero .photo{opacity:1;transform:scale(calc(1.14 - var(--p)*.14));transition:opacity 1.2s ease}

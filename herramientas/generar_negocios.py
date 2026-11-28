@@ -483,6 +483,7 @@ def proyecto(n):
     torre = ''.join(f'<button type="button" class="pj-floor" data-floor="{p}" aria-pressed="false"><span>Piso {p}</span><small>{l} libre{"s" if l != 1 else ""}</small></button>' for p, l, _ in pisos_html)
     filas = ''.join(f'<div class="pj-units" data-units="{p}" hidden>{c}</div>' for p, _, c in pisos_html)
     thumbs = ''.join(f'<button type="button" data-img="{pid}"' + (' aria-pressed="true"' if j == 0 else ' aria-pressed="false"') + f'>{E(nm)}</button>' for j, (nm, pid) in enumerate(PJ_FOTOS))
+    guia = ''.join(f'<line x1="{x}" y1="0" x2="{x}" y2="1500"/><text x="{x + 6}" y="40">{x}</text>' for x in range(100, 1200, 100)) + ''.join(f'<line x1="0" y1="{y}" x2="1200" y2="{y}"/><text x="8" y="{y - 8}">{y}</text>' for y in range(100, 1500, 100))
     wa = 'Hola, vi el render interactivo de proyectos en glysf.com y quiero uno para mi constructora.'
     return f'''<section class="s-proyecto" aria-labelledby="t-pj">
 <div class="pj-wrap">
@@ -492,7 +493,7 @@ def proyecto(n):
 </div>
 <div class="pj">
 <div class="pj-stage">
-<div class="pj-shot" role="img" aria-label="Fotografía de la Torre Roble" style="background-image:url('https://images.unsplash.com/photo-{FOTO_TORRE}?auto=format&amp;fit=crop&amp;w=1400&amp;q=75')"></div>
+<svg class="pj-shot" viewBox="0 0 1200 1500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Fotografía de la Torre Roble"><image href="https://images.unsplash.com/photo-{FOTO_TORRE}?auto=format&amp;fit=crop&amp;w=1200&amp;h=1500&amp;q=75" width="1200" height="1500" preserveAspectRatio="xMidYMid slice"/><g class="pj-hot"></g><g class="pj-guia" aria-hidden="true">{guia}</g></svg>
 <div class="pj-shade"></div>
 <div class="pj-top"><b>Torre Roble</b><span>Chapinero Alto · Entrega 2028</span></div>
 <nav class="pj-floors" aria-label="Elige el piso">{torre}</nav>
@@ -580,8 +581,8 @@ def pagina(k, n):
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/negocio.css?v=10">
-<script src="/negocio.js?v=9" defer></script>
+<link rel="stylesheet" href="/negocio.css?v=11">
+<script src="/negocio.js?v=10" defer></script>
 <script src="/site.js?v=3" defer></script>
 </head>
 <body style="--acc:{n['acc']}">
