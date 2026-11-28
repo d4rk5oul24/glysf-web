@@ -135,6 +135,7 @@
     if (elegir) { const fila = rows.find(r => !r.hidden); ver(fila.querySelector('.apt.disponible') || fila.querySelector('.apt')); }
   };
   floors.forEach(b => b.addEventListener('click', () => piso(b.dataset.floor, true)));
+  apts.forEach(a => a.addEventListener('click', () => ver(a)));
   stage.addEventListener('pj:pick', e => { const a = apts.find(x => x.dataset.apto === e.detail); if (a) { piso(a.dataset.piso, false); ver(a); } });
   const tg = pj.querySelector('.pj-toggle');
   if (tg) tg.addEventListener('click', () => { const on = tg.getAttribute('aria-pressed') !== 'true'; tg.setAttribute('aria-pressed', String(on)); stage.dispatchEvent(new CustomEvent('pj:estados', { detail: on })); });
