@@ -331,7 +331,7 @@ tienda:{seo:'Automatización para tiendas y ferreterías · Glysf',card:'Pedidos
   {t:'Cartera',k:'pagos',d:[['Muebles El Roble','Factura 2201',1250000,1],['Obra Calle 80','Factura 2207',3400000,0],['Carpintería JM','Factura 2210',780000,1],['Constructora Lince','Factura 2214',2150000,0]]},
   {t:'Nómina',k:'nomina',d:[['Ricardo P.','Vendedor','30 días',1900000],['Yuli C.','Caja','30 días',1750000],['Edwin M.','Bodega','30 días',1750000]]},
   {t:'Reporte al dueño',k:'reporte',d:['Ventas de hoy: $6.420.000','Pedidos por WhatsApp: 38','Cartera vencida: $5.550.000 (recordatorios enviados)','Orden de tableros en camino']}]},
-fabrica:{seo:'Automatización para constructoras y fábricas · Glysf',card:'Materiales, cuadrillas y obra',name:'Constructora o fábrica',your:'tu empresa',form:'Fábrica o constructora',bg:'#0B1F4B',dark:1,acc:'#FFC53D',
+fabrica:{seo:'Automatización para constructoras y fábricas · Glysf',card:'Materiales, cuadrillas y obra',name:'Construcción',your:'tu empresa',form:'Fábrica o constructora',bg:'#0B1F4B',dark:1,acc:'#FFC53D',
  title:'Tu obra controlada desde el celular',sub:'Cotizaciones, proveedores, materiales, cuadrillas y nómina de obra sin hojas sueltas.',
  mods:[{t:'Bot de cotizaciones',k:'chat'},
   {t:'Proveedores y materiales',k:'pipeline',d:{item:'Orden #912 · Cemento x 120 bultos, varilla 1/2" x 80',steps:['Solicitud desde la obra','3 cotizaciones comparadas','Orden al mejor precio','Entregado en obra'],toast:'Material recibido y descontado del presupuesto'}},
@@ -403,8 +403,12 @@ $('modReplay').onclick=()=>renderMods();
 $('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{$('f-sector').value=SECT[cur].form;},50);};
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
+// Tarjeta final: para el negocio que no está en la lista
+function otro(){const d=el('div','biz-other');d.innerHTML='<div><strong>¿Tu negocio no está aquí?</strong><span>Cuéntanos qué haces a mano y armamos la demo con tus datos.</span></div><div class="bo-btns"><a class="btn wa-btn" data-wa="Hola, mi negocio no está en la lista de demos de Glysf. Quiero contarles qué hago a mano." href="https://wa.me/573103102908" target="_blank" rel="noopener">Escríbenos por WhatsApp</a><a class="btn mail-btn" href="#cotizar">Pide tu cotización</a></div>';return d;}
+// Negocios que solo tienen página inmersiva (sin demo en pestañas)
+const EXTRA=[['/contable.html','Firmas contables','Soportes, conciliaciones y cierre','1772588627474-ae6acc69ac42'],['/abogados.html','Firmas de abogados','Consultas, expedientes y términos','1752697589029-0fd0ce96a395'],['/logistica.html','Logística','Pedidos, rutas y novedades','1645736315000-6f788915923b'],['/manufactura.html','Manufactura','Producción y relevos de turno','1787422429941-b1966d776195'],['/ecommerce.html','eCommerce','Catálogo, pedidos y envíos','1781899710894-f9ecfea088f3']];
 $('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href=PAGINA[k]||'#/negocio/'+k;
- const bg=el('div','bizbg');bg.innerHTML=photoBg(k,800);const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}));
+ const bg=el('div','bizbg');bg.innerHTML=photoBg(k,800);const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}),...EXTRA.map(([href,name,card,photo])=>{const a=el('a','biz dark');a.href=href;const bg=el('div','bizbg');bg.innerHTML=`<div class="pwrap"><div class="photo" style="background-image:url('https://images.unsplash.com/photo-${photo}?auto=format&fit=crop&w=800&q=70')"></div></div><div class="shade"></div>`;const tx=el('div','biztx');tx.append(el('strong',null,name),el('span',null,card));a.append(bg,tx);return a;}),otro());
 
 /* ---------- Navegación ---------- */
 let inSector=false;
@@ -425,16 +429,33 @@ window.addEventListener('hashchange',route);route();
 // Saltar al contenido: lleva el foco al título de la vista visible.
 $('skipLink').onclick=e=>{e.preventDefault();const t=$('sectorView').hidden?$('heroTitle'):$('svTitle');t.focus();t.scrollIntoView({block:'center'});};
 
-/* ---------- Cómo trabajamos: pasos que avanzan solos (y con clic o flechas) ---------- */
-(()=>{const box=document.getElementById('howto');if(!box)return;
+/* ---------- Cómo trabajamos: en computador los pasos avanzan con el scroll; en celular, con un toque ---------- */
+(()=>{const box=document.getElementById('howto'),track=document.getElementById('howTrack'),rail=document.getElementById('howRail');if(!box||!track)return;
  const tabs=[...box.querySelectorAll('[role=tab]')],panes=tabs.map(t=>document.getElementById(t.getAttribute('aria-controls')));
- const red=matchMedia('(prefers-reduced-motion: reduce)').matches;let i=0;
- function show(n,focus){i=(n+tabs.length)%tabs.length;tabs.forEach((t,k)=>{t.setAttribute('aria-selected',k===i);t.tabIndex=k===i?0:-1;panes[k].hidden=k!==i;});
-  const p=panes[i].cloneNode(true);panes[i].replaceWith(p);panes[i]=p; // reinicia las animaciones del panel
+ const wide=matchMedia('(min-width: 861px)');let i=-1;
+ function show(n,focus){n=Math.max(0,Math.min(tabs.length-1,n));if(n===i){if(focus)tabs[n].focus();return;}i=n;
+  tabs.forEach((t,k)=>{t.setAttribute('aria-selected',k===i);t.tabIndex=k===i?0:-1;});
+  panes.forEach((p,k)=>{if(k===i){const c=p.cloneNode(true);c.hidden=false;p.replaceWith(c);panes[k]=c;}else p.hidden=true;});
   if(focus)tabs[i].focus();}
- tabs.forEach((t,k)=>{t.addEventListener('click',()=>show(k));
-  t.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();show(i+1,true);}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();show(i-1,true);}});
-  t.querySelector('.hbar').addEventListener('animationend',()=>{if(!red)show(i+1);});});
- box.addEventListener('mouseenter',()=>box.classList.add('paused'));box.addEventListener('mouseleave',()=>box.classList.remove('paused'));
- box.addEventListener('focusin',()=>box.classList.add('paused'));box.addEventListener('focusout',()=>box.classList.remove('paused'));
- show(0);})();
+ function prog(){const r=track.getBoundingClientRect(),tot=r.height-innerHeight;return Math.min(1,Math.max(0,-r.top/(tot||1)));}
+ function go(n){if(wide.matches){const r=track.getBoundingClientRect(),tot=r.height-innerHeight;scrollTo({top:scrollY+r.top+tot*((n+.5)/tabs.length),behavior:'smooth'});}else show(n);}
+ tabs.forEach((t,k)=>{t.addEventListener('click',()=>go(k));
+  t.addEventListener('keydown',e=>{const d={ArrowDown:1,ArrowRight:1,ArrowUp:-1,ArrowLeft:-1}[e.key];if(d){e.preventDefault();show(i+d,true);go(i);}});});
+ let raf=0;function tick(){raf=0;if(!wide.matches){if(rail)rail.style.setProperty('--hp','0%');return;}const p=prog();
+  box.style.setProperty('--hp',(p*100).toFixed(1)+'%');if(rail)rail.parentElement.style.setProperty('--hp',(p*100).toFixed(1)+'%');
+  show(Math.min(tabs.length-1,Math.floor(p*tabs.length)));}
+ addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(tick);},{passive:true});addEventListener('resize',tick);
+ show(0);tick();})();
+
+/* ---------- Preguntas frecuentes: cada pregunta se responde como en un chat ---------- */
+(()=>{const chat=document.getElementById('faqChat'),data=document.getElementById('faqData');if(!chat||!data)return;
+ const qs=[...document.querySelectorAll('.fq')],red=matchMedia('(prefers-reduced-motion: reduce)').matches;let t1=0,run=0;
+ function ask(n){const id=++run;clearTimeout(t1);qs.forEach((b,k)=>{b.setAttribute('aria-pressed',k===n);if(k===n)b.classList.add('seen');});
+  const src=document.getElementById('fa'+n);const q=document.createElement('p');q.className='q';q.textContent=src.querySelector('.fa-q').textContent;
+  chat.append(q);while(chat.children.length>5)chat.firstElementChild.remove();
+  const ty=document.createElement('div');ty.className='typing';ty.setAttribute('aria-label','escribiendo');ty.innerHTML='<i></i><i></i><i></i>';
+  const answer=()=>{if(id!==run)return;ty.remove();const a=document.createElement('p');a.className='a';a.textContent=src.querySelector('.fa-a').textContent;chat.append(a);while(chat.children.length>5)chat.firstElementChild.remove();};
+  if(red)answer();else{chat.append(ty);t1=setTimeout(answer,700);}}
+ qs.forEach((b,k)=>b.addEventListener('click',()=>ask(k)));
+ // la primera pregunta se responde sola cuando la sección aparece en pantalla
+ const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();ask(0);}},{threshold:.35});io.observe(chat);})();

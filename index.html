@@ -25,9 +25,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@500&amp;display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;text=lysf&amp;display=swap">
-<link rel="stylesheet" href="/styles.css?v=3">
+<link rel="stylesheet" href="/styles.css?v=4">
 <script src="/site.js?v=3" defer></script>
-<script src="/app.js?v=3" defer></script>
+<script src="/app.js?v=4" defer></script>
 <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "ProfessionalService", "@id": "https://glysf.com/#empresa", "name": "Glysf", "url": "https://glysf.com/", "logo": "https://glysf.com/apple-touch-icon.png", "image": "https://glysf.com/og.png", "email": "grupolysf@gmail.com", "description": "Agentes de IA, chatbots para WhatsApp, Instagram y Telegram, automatización de procesos y páginas web para empresas en Colombia.", "areaServed": {"@type": "Country", "name": "Colombia"}, "priceRange": "Cotización a la medida", "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Servicios", "itemListElement": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Agentes de IA"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Chatbot de WhatsApp"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Bot de Instagram"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Bot de Telegram"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Páginas web"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Automatización de procesos"}}]}}, {"@context": "https://schema.org", "@type": "WebSite", "name": "Glysf", "url": "https://glysf.com/", "inLanguage": "es-CO", "publisher": {"@id": "https://glysf.com/#empresa"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Cuánto cuesta?", "acceptedAnswer": {"@type": "Answer", "text": "Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto."}}, {"@type": "Question", "name": "¿Usan mi propio número de WhatsApp?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre."}}, {"@type": "Question", "name": "¿Cuánto tarda la implementación?", "acceptedAnswer": {"@type": "Answer", "text": "Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización."}}, {"@type": "Question", "name": "¿Todas las automatizaciones usan IA?", "acceptedAnswer": {"@type": "Answer", "text": "No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita."}}, {"@type": "Question", "name": "¿Mis datos y los de mis clientes están seguros?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Cada automatización corre en un servidor a nombre de tu empresa, con accesos cifrados y solo con los permisos que necesita. Tus datos no se mezclan con los de otros clientes."}}, {"@type": "Question", "name": "¿Puedo agregar funciones después?", "acceptedAnswer": {"@type": "Answer", "text": "Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual."}}]}]</script>
 </head>
 <body class="site">
@@ -61,7 +61,7 @@
 <a href="#cotizar" class="btn light">Pide tu cotización</a>
 <a href="#negocios" class="textlink">Ver la demo de tu negocio</a>
 </div>
-<p class="hero-note">Más de 30 automatizaciones listas y demos para 8 tipos de negocio.</p>
+<p class="hero-note">Más de 30 automatizaciones listas y demos para 13 tipos de negocio.</p>
 </div>
 
 <div class="stagebox glow">
@@ -86,7 +86,7 @@
 <section id="negocios" class="sec" aria-labelledby="negociosTitle">
 <div class="wrap">
 <div class="sec-head">
-<h2 class="h2" id="negociosTitle">Demos en vivo para 8 tipos de negocio</h2>
+<h2 class="h2" id="negociosTitle">Demos en vivo para 13 tipos de negocio</h2>
 <p class="lead">Toca un negocio y mira el bot, la agenda, los pagos y el reporte del día trabajando con datos de ejemplo.</p>
 </div>
 <div id="bizGrid" class="biz-grid"></div>
@@ -123,12 +123,15 @@
 </section>
 
 <section id="como" class="sec lift" aria-labelledby="comoTitle">
+<div class="how-track" id="howTrack">
+<div class="how-sticky">
 <div class="wrap">
 <div class="como-head">
 <h2 class="h2" id="comoTitle">Cómo trabajamos</h2>
-<p class="lead">De la primera conversación a tu negocio funcionando solo. Toca cada paso.</p>
+<p class="lead">De la primera conversación a tu negocio funcionando solo, paso a paso.</p>
 </div>
 <div class="howto" id="howto">
+<div class="how-rail" aria-hidden="true"><i id="howRail"></i></div>
 <ol class="how-steps" role="tablist" aria-label="Pasos">
 <li><button type="button" role="tab" id="hs1" aria-controls="hp1" aria-selected="true" data-step="0"><span class="hn">1</span><span><b>Nos cuentas qué haces a mano</b><small>Hoy · por WhatsApp, correo o el formulario</small></span><i class="hbar"></i></button></li>
 <li><button type="button" role="tab" id="hs2" aria-controls="hp2" aria-selected="false" data-step="1"><span class="hn">2</span><span><b>Encontramos qué automatizar</b><small>Diagnóstico y demo con tus datos, sin costo</small></span><i class="hbar"></i></button></li>
@@ -137,7 +140,6 @@
 </ol>
 <div class="how-stage glass">
 <div class="hw-pane" id="hp1" role="tabpanel" aria-labelledby="hs1">
-<p class="hp-k">Paso 1 · Nos escribes</p>
 <div class="hp-chat">
 <p class="hw-m u">Hola, tengo una clínica y agendo todas las citas a mano por WhatsApp.</p>
 <p class="hw-m b">¡Te ayudamos! ¿Cuántos mensajes recibes al día y qué más haces a mano?</p>
@@ -146,7 +148,6 @@
 </div>
 </div>
 <div class="hw-pane" id="hp2" role="tabpanel" aria-labelledby="hs2" hidden>
-<p class="hp-k">Paso 2 · Diagnóstico</p>
 <ul class="hp-list">
 <li><span>Responder preguntas frecuentes</span><b>Agente de IA</b></li>
 <li><span>Agendar y confirmar citas</span><b>Bot + Calendar</b></li>
@@ -156,7 +157,6 @@
 <p class="hp-ok">Demo lista con los datos de tu negocio</p>
 </div>
 <div class="hw-pane" id="hp3" role="tabpanel" aria-labelledby="hs3" hidden>
-<p class="hp-k">Paso 3 · Implementación</p>
 <div class="hp-flow" aria-label="WhatsApp se conecta con el agente de IA, que a su vez se conecta con Google Calendar, Google Sheets y tu correo.">
 <span class="hw-node n-wa">WhatsApp</span>
 <span class="hw-line l1"><i></i></span>
@@ -170,7 +170,6 @@
 <p class="hp-note">Todo queda a nombre de tu empresa: tu número, tus cuentas y tus datos.</p>
 </div>
 <div class="hw-pane" id="hp4" role="tabpanel" aria-labelledby="hs4" hidden>
-<p class="hp-k">Paso 4 · Funcionando solo</p>
 <div class="hp-report">
 <p><b>Resumen del mes</b><small>Ejemplo</small></p>
 <ul><li>Mensajes atendidos por el bot<b>1.240</b></li><li>Citas agendadas sin llamar<b>312</b></li><li>Horas de trabajo recuperadas<b>41 h</b></li><li>Nueva función este mes<b>Encuestas</b></li></ul>
@@ -178,7 +177,10 @@
 </div>
 </div>
 </div>
-<div class="contact-btns center"><a class="btn wa-btn" data-wa="Hola, quiero saber cómo Glysf puede automatizar mi negocio." href="https://wa.me/573103102908?text=Hola, quiero saber cómo Glysf puede automatizar mi negocio." target="_blank" rel="noopener"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.6 14.6 0 0 0 5.6 5c2.1.9 2.9 1 3.9.8a3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg>Escríbenos por WhatsApp</a><a class="btn mail-btn" href="mailto:grupolysf@gmail.com?subject=Quiero%20una%20cotizaci%C3%B3n%20de%20Glysf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Escríbenos un correo</a></div>
+</div>
+</div>
+</div>
+<div class="wrap"><div class="contact-btns center"><a class="btn wa-btn" data-wa="Hola, quiero saber cómo Glysf puede automatizar mi negocio." href="https://wa.me/573103102908?text=Hola, quiero saber cómo Glysf puede automatizar mi negocio." target="_blank" rel="noopener"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.6 14.6 0 0 0 5.6 5c2.1.9 2.9 1 3.9.8a3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg>Escríbenos por WhatsApp</a><a class="btn mail-btn" href="mailto:grupolysf@gmail.com?subject=Quiero%20una%20cotizaci%C3%B3n%20de%20Glysf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Escríbenos un correo</a></div>
 </div>
 </section>
 
@@ -219,7 +221,7 @@
 <div class="field"><label for="f-empresa">Empresa o negocio *</label><input class="f" id="f-empresa" name="empresa" required maxlength="100" autocomplete="organization"><span class="ferr" id="err-empresa" hidden></span></div>
 <div class="field"><label for="f-correo">Correo *</label><input class="f" id="f-correo" name="correo" type="email" required maxlength="120" autocomplete="email" inputmode="email"><span class="ferr" id="err-correo" hidden></span></div>
 <div class="field"><label for="f-telefono">WhatsApp o teléfono</label><input class="f" id="f-telefono" name="telefono" type="tel" maxlength="20" autocomplete="tel"></div>
-<div class="field"><label for="f-sector">Tipo de negocio</label><select class="f" id="f-sector" name="sector"><option value="">Selecciona…</option><option>Canchas de pádel o fútbol</option><option>Clínica o consultorio</option><option>Gimnasio</option><option>Pilates o yoga</option><option>Restaurante</option><option>Peluquería o spa</option><option>Tienda o ferretería</option><option>Fábrica o constructora</option><option>Otro</option></select></div>
+<div class="field"><label for="f-sector">Tipo de negocio</label><select class="f" id="f-sector" name="sector"><option value="">Selecciona…</option><option>Canchas de pádel o fútbol</option><option>Clínica o consultorio</option><option>Gimnasio</option><option>Pilates o yoga</option><option>Restaurante</option><option>Peluquería o spa</option><option>Tienda o ferretería</option><option>Fábrica o constructora</option><option>Firma contable</option><option>Firma de abogados</option><option>Logística</option><option>Manufactura</option><option>eCommerce</option><option>Otro</option></select></div>
 <div class="field"><label for="f-volumen">Mensajes que reciben al día</label><select class="f" id="f-volumen" name="volumen"><option value="">Selecciona…</option><option>Menos de 20</option><option>20 a 100</option><option>100 a 300</option><option>Más de 300</option></select></div>
 </div>
 <label class="hp" aria-hidden="true">Sitio web<input name="sitio" tabindex="-1" autocomplete="off"></label>
@@ -254,16 +256,19 @@
 </section>
 
 <section id="faq" class="sec" aria-labelledby="faqTitle">
-<div class="wrap split">
+<div class="wrap faq2">
+<div class="faq-side">
 <h2 class="h2" id="faqTitle">Preguntas frecuentes</h2>
-<div class="faq">
-<details><summary>¿Cuánto cuesta?</summary><p>Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto.</p></details>
-<details><summary>¿Usan mi propio número de WhatsApp?</summary><p>Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre.</p></details>
-<details><summary>¿Cuánto tarda la implementación?</summary><p>Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización.</p></details>
-<details><summary>¿Todas las automatizaciones usan IA?</summary><p>No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita.</p></details>
-<details><summary>¿Mis datos y los de mis clientes están seguros?</summary><p>Sí. Cada automatización corre en un servidor a nombre de tu empresa, con accesos cifrados y solo con los permisos que necesita. Tus datos no se mezclan con los de otros clientes.</p></details>
-<details><summary>¿Puedo agregar funciones después?</summary><p>Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual.</p></details>
+<p class="lead">Toca una pregunta y te responde nuestro asistente, igual que lo haría con tus clientes.</p>
+<ul class="fq-list" aria-label="Preguntas"><li><button type="button" class="fq" aria-pressed="true" aria-controls="faqChat" data-i="0">¿Cuánto cuesta?</button></li><li><button type="button" class="fq" aria-pressed="false" aria-controls="faqChat" data-i="1">¿Usan mi propio número de WhatsApp?</button></li><li><button type="button" class="fq" aria-pressed="false" aria-controls="faqChat" data-i="2">¿Cuánto tarda la implementación?</button></li><li><button type="button" class="fq" aria-pressed="false" aria-controls="faqChat" data-i="3">¿Todas las automatizaciones usan IA?</button></li><li><button type="button" class="fq" aria-pressed="false" aria-controls="faqChat" data-i="4">¿Mis datos y los de mis clientes están seguros?</button></li><li><button type="button" class="fq" aria-pressed="false" aria-controls="faqChat" data-i="5">¿Puedo agregar funciones después?</button></li></ul>
 </div>
+<div class="faq-phone glass">
+<div class="fp-head"><span class="fp-av"><svg aria-hidden="true"><use href="#g"/></svg></span><span><b>Asistente Glysf</b><small>en línea</small></span></div>
+<div class="fp-chat" id="faqChat" aria-live="polite"></div>
+<a class="fp-ask" data-wa="Hola, tengo una pregunta sobre Glysf:" href="https://wa.me/573103102908" target="_blank" rel="noopener"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.7a10.6 10.6 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.7 3.7 0 0 0-1.1 2.7 6.4 6.4 0 0 0 1.3 3.4 14.6 14.6 0 0 0 5.6 5c2.1.9 2.9 1 3.9.8a3.3 3.3 0 0 0 2.2-1.5 2.7 2.7 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg><span>¿Otra pregunta? Escríbenos por WhatsApp</span></a>
+</div>
+<div class="faq-data" id="faqData" hidden><div class="fa" id="fa0"><p class="fa-q">¿Cuánto cuesta?</p><p class="fa-a">Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto.</p></div><div class="fa" id="fa1"><p class="fa-q">¿Usan mi propio número de WhatsApp?</p><p class="fa-a">Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre.</p></div><div class="fa" id="fa2"><p class="fa-q">¿Cuánto tarda la implementación?</p><p class="fa-a">Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización.</p></div><div class="fa" id="fa3"><p class="fa-q">¿Todas las automatizaciones usan IA?</p><p class="fa-a">No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita.</p></div><div class="fa" id="fa4"><p class="fa-q">¿Mis datos y los de mis clientes están seguros?</p><p class="fa-a">Sí. Cada automatización corre en un servidor a nombre de tu empresa, con accesos cifrados y solo con los permisos que necesita. Tus datos no se mezclan con los de otros clientes.</p></div><div class="fa" id="fa5"><p class="fa-q">¿Puedo agregar funciones después?</p><p class="fa-a">Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual.</p></div></div>
+<noscript><div class="faq"><details><summary>¿Cuánto cuesta?</summary><p>Depende de lo que necesites: canales, automatizaciones y si usan IA. Cobramos una implementación y una mensualidad de mantenimiento. Pide tu cotización y te damos el valor exacto.</p></details><details><summary>¿Usan mi propio número de WhatsApp?</summary><p>Sí. El bot funciona con el número oficial de tu empresa, conectado a Meta a tu nombre.</p></details><details><summary>¿Cuánto tarda la implementación?</summary><p>Una automatización sencilla puede estar lista en pocos días. Te damos el tiempo exacto con la cotización.</p></details><details><summary>¿Todas las automatizaciones usan IA?</summary><p>No. Muchas tareas se resuelven sin IA y salen más económicas. Te recomendamos lo que tu negocio realmente necesita.</p></details><details><summary>¿Mis datos y los de mis clientes están seguros?</summary><p>Sí. Cada automatización corre en un servidor a nombre de tu empresa, con accesos cifrados y solo con los permisos que necesita. Tus datos no se mezclan con los de otros clientes.</p></details><details><summary>¿Puedo agregar funciones después?</summary><p>Claro. Las nuevas funciones se cotizan aparte y se suman a tu automatización actual.</p></details></div></noscript>
 </div>
 </section>
 

@@ -23,6 +23,13 @@ OBJ = {
 'casco': '''<svg viewBox="0 0 200 200"><defs><linearGradient id="o8" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE38A"/><stop offset=".55" stop-color="#FFC53D"/><stop offset="1" stop-color="#B07E0A"/></linearGradient></defs><path d="M30 132a70 70 0 0 1 140 0z" fill="url(#o8)"/><path d="M84 66h32v66H84z" fill="#FFD460"/><rect x="14" y="128" width="172" height="20" rx="10" fill="#E2A91F"/><path d="M52 112c4-22 16-38 30-44" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".7"/></svg>''',
 }
 
+OBJ.update({'calculadora': '''<svg viewBox="0 0 200 200"><defs><linearGradient id="o9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A4766"/><stop offset="1" stop-color="#0E1530"/></linearGradient></defs><rect x="44" y="14" width="112" height="172" rx="16" fill="url(#o9)"/><rect x="58" y="30" width="84" height="34" rx="6" fill="#B8F2D9"/><text x="134" y="55" text-anchor="end" font-family="monospace" font-size="18" fill="#0B1F4B">2.340</text><g fill="#5B6A90">''' + ''.join(f'<rect x="{58+c*30}" y="{78+r*26}" width="22" height="18" rx="5"/>' for r in range(4) for c in range(3)) + '''</g><rect x="148" y="78" width="0" height="0"/><rect x="118" y="156" width="22" height="18" rx="5" fill="#9BE7C4"/></svg>''',
+'balanza': '''<svg viewBox="0 0 200 200"><defs><linearGradient id="o10" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1C9"/><stop offset=".6" stop-color="#D9B25C"/><stop offset="1" stop-color="#8A6A22"/></linearGradient></defs><g fill="none" stroke="url(#o10)" stroke-width="8" stroke-linecap="round"><path d="M100 26v140M30 52h140M30 52 12 112M30 52l18 60M170 52l-18 60M170 52l18 60"/></g><path d="M8 112a22 12 0 0 0 44 0z" fill="url(#o10)"/><path d="M148 112a22 12 0 0 0 44 0z" fill="url(#o10)"/><rect x="66" y="166" width="68" height="14" rx="7" fill="url(#o10)"/><circle cx="100" cy="26" r="9" fill="url(#o10)"/></svg>''',
+'camion': '''<svg viewBox="0 0 200 200"><rect x="10" y="62" width="112" height="80" rx="8" fill="#E8EEF9"/><rect x="10" y="62" width="112" height="16" rx="6" fill="#7FD4F5"/><path d="M122 86h38l26 28v28h-64z" fill="#7FD4F5"/><path d="M134 94h22l16 18h-38z" fill="#0B1F4B" opacity=".55"/><circle cx="46" cy="148" r="17" fill="#141A2E"/><circle cx="46" cy="148" r="7" fill="#C9D3E6"/><circle cx="156" cy="148" r="17" fill="#141A2E"/><circle cx="156" cy="148" r="7" fill="#C9D3E6"/><path d="M26 100h50M26 116h34" stroke="#9FB2D6" stroke-width="7" stroke-linecap="round"/></svg>''',
+'engranaje': '''<svg viewBox="0 0 200 200"><defs><linearGradient id="o12" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F6FA"/><stop offset="1" stop-color="#8E97A8"/></linearGradient></defs><g fill="url(#o12)">''' + ''.join(f'<rect x="88" y="10" width="24" height="40" rx="5" transform="rotate({a} 100 100)"/>' for a in range(0,360,45)) + '''<circle cx="100" cy="100" r="62"/></g><circle cx="100" cy="100" r="26" fill="#0B1530"/><circle cx="100" cy="100" r="62" fill="none" stroke="#FFB347" stroke-width="4" stroke-dasharray="30 360" opacity=".9"/></svg>''',
+'bolsa': '''<svg viewBox="0 0 200 200"><defs><linearGradient id="o13" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFC6E4"/><stop offset="1" stop-color="#C24C8C"/></linearGradient></defs><path d="M70 66V52a30 30 0 0 1 60 0v14" fill="none" stroke="#F7D9EA" stroke-width="10" stroke-linecap="round"/><path d="M34 66h132l-10 112H44z" fill="url(#o13)"/><path d="M62 96c8 22 68 22 76 0" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".85"/></svg>'''
+})
+
 # ---------- Contenido por negocio ----------
 # chat: (quién, texto) con quién = u (cliente), b (bot) o pay (aviso de pago "Texto|Valor")
 # cards: (etiqueta, título, [(hora, ocupado)], precio, posición de la foto)
@@ -154,7 +161,7 @@ NEGOCIOS = {
   reporte=['Ventas de hoy: $6.420.000','Pedidos por WhatsApp: 38','Cartera vencida: $5.550.000, recordatorios enviados','Orden de tableros en camino'],
   final=('Más ventas por chat,','cero productos agotados.')),
 
-'fabrica': dict(nombre='Constructora o fábrica', archivo='constructora', palabra='OBRA', obj='casco', acc='#FFC53D', su='tu empresa',
+'fabrica': dict(nombre='Construcción', archivo='constructora', palabra='OBRA', obj='casco', acc='#FFC53D', su='tu empresa',
   foto='1684497404598-6e844dff9cde',
   seo='Automatización para constructoras y fábricas', desc='Cotizaciones, proveedores, materiales, cuadrillas, nómina de obra y cartera de tu constructora o fábrica.',
   kicker='Glysf para constructoras y fábricas', hero=('Tu obra controlada', 'desde el celular.'),
@@ -171,6 +178,95 @@ NEGOCIOS = {
        ('inv','Materiales en bodega',[('Cemento',18,'200 bultos','Pedido automático al proveedor'),('Ladrillo',45,'8.000 und','')])],
   reporte=['Avance Obra Calle 80: 62%','Material entregado hoy: cemento y varilla','Gasto vs. presupuesto: 48% usado','Cuenta por cobrar: $45.000.000, recordatorio enviado'],
   final=('Más obra avanzando,','menos hojas sueltas.')),
+'contable': dict(nombre='Firmas contables', archivo='contable', palabra='CIERRE', obj='calculadora', acc='#9BE7C4', su='tu firma',
+  foto='1772588627474-ae6acc69ac42',
+  seo='Automatización para firmas contables', desc='Recepción de soportes por WhatsApp, causación, conciliaciones, recordatorios de impuestos y preparación del cierre para firmas contables.',
+  kicker='', hero=('El cierre del mes', 'sin perseguir soportes.'),
+  bot_t=('El bot recibe soportes', 'mientras tú concilias.'), bot_sub='Tus clientes envían facturas por WhatsApp; la IA las lee, las clasifica y las deja listas para causar.', bot_nombre='Contadores Asociados',
+  chat=[('u','Hola, te envío las facturas de compra de octubre'),('b','Recibidas 12 facturas. Leí NIT, fecha, base e IVA de cada una. Falta la de Ferretería Central, ¿la tienes?'),('u','Ya te la mando'),('b','Listo, completas. Quedaron en la carpeta de octubre y en la hoja de causación.'),('pay','Soportes completos|13/13'),('b','Te recuerdo: la declaración de IVA vence el 15.')],
+  cards_t=('Cada cliente,', 'con su cierre al día.'), cards_num='',
+  cards=[('Comercial Andina','Cierre de octubre',[('Soportes',1),('Causación',1),('Conciliación',1),('Informe',0)],'92%','center 40%'),
+         ('Clínica Sonrisa','Cierre de octubre',[('Soportes',1),('Causación',1),('Conciliación',0),('Informe',0)],'64%','left 50%'),
+         ('Gym Fuerza','Cierre de octubre',[('Soportes',1),('Causación',0),('Conciliación',0),('Informe',0)],'31%','right 50%')],
+  meter=(48,' clientes activos ·',412,'facturas leídas este mes'),
+  ops_t=('Conciliaciones, causaciones y vencimientos','en orden.'),
+  ops=[('Conciliación bancaria',[('Bancolombia · octubre','Cruzando…','ok','148 de 150 cruzados'),('Davivienda · octubre','Cruzando…','ok','Conciliado'),('Partidas sin soporte','2','warn','Pedido al cliente')]),
+       ('Vencimientos',[('IVA bimestral · 15 nov','Pendiente','warn','Recordatorio enviado'),('Retención en la fuente','Presentada','ok',''),('ICA Bogotá','Preparando','ok','Lista para firmar')]),
+       ('inv','Avance del cierre',[('Soportes recibidos',96,'412 de 430','Faltantes pedidos por WhatsApp'),('Causaciones',70,'301 de 430','')])],
+  reporte=['Clientes con cierre listo: 31 de 48','Facturas leídas hoy: 64','Partidas por conciliar: 2, pedidas al cliente','Vencimientos de la semana: 5, recordatorios enviados'],
+  final=('Más clientes atendidos,','menos soportes perdidos.')),
+
+'abogados': dict(nombre='Firmas de abogados', archivo='abogados', palabra='LEX', obj='balanza', acc='#E8C77A', su='tu firma',
+  foto='1752697589029-0fd0ce96a395',
+  seo='Automatización para firmas de abogados', desc='Atención de consultas, agendamiento, expedientes, borradores con IA, términos y seguimiento de casos para firmas de abogados.',
+  kicker='', hero=('Expedientes en orden', 'y ningún término vencido.'),
+  bot_t=('El bot atiende consultas', 'mientras tú litigas.'), bot_sub='Filtra cada consulta, recoge los datos del caso y agenda la cita con el abogado correcto.', bot_nombre='Rojas & Asociados',
+  chat=[('u','Buenas, necesito asesoría por un despido sin justa causa'),('b','Con gusto. ¿Cuándo fue el despido y tenías contrato a término fijo o indefinido?'),('u','Hace 2 semanas, indefinido'),('b','Gracias. Te agendo con la Dra. Rojas, laboral: jueves 10:00 a. m. Te pido la carta de despido por aquí.'),('pay','Caso creado|LAB-0231'),('b','Documento recibido y guardado en tu expediente.')],
+  cards_t=('Cada caso,', 'con su próximo paso a la vista.'), cards_num='',
+  cards=[('LAB-0231 · Laboral','Despido sin justa causa',[('Consulta',1),('Poder',1),('Demanda',0),('Audiencia',0)],'Jue 10 a. m.','center 40%'),
+         ('CIV-0118 · Civil','Cobro de pagaré',[('Consulta',1),('Poder',1),('Demanda',1),('Audiencia',0)],'Término: 5 días','left 50%'),
+         ('FAM-0092 · Familia','Sucesión',[('Consulta',1),('Poder',1),('Demanda',1),('Audiencia',1)],'Sentencia','right 50%')],
+  meter=(37,' casos activos ·',0,'términos vencidos'),
+  ops_t=('Términos, borradores y honorarios','bajo control.'),
+  ops=[('Términos',[('CIV-0118 · Contestación','5 días','warn','Alerta enviada al abogado'),('LAB-0207 · Recurso','Presentado','ok',''),('Audiencias de la semana','3','ok','En el calendario')]),
+       ('Borradores con IA',[('Poder especial · LAB-0231','Generando…','ok','Listo para revisión'),('Derecho de petición','Generando…','ok','Listo para revisión'),('Resumen del expediente','Generando…','ok','Listo')]),
+       ('inv','Honorarios',[('Cobrado del mes',72,'$18.400.000',''),('Por cobrar',28,'$7.100.000','Recordatorios enviados')])],
+  reporte=['Consultas nuevas hoy: 9 (4 agendadas)','Términos en los próximos 7 días: 6','Borradores listos para revisión: 3','Honorarios por cobrar: $7.100.000, recordatorios enviados'],
+  final=('Más casos atendidos,','ningún término olvidado.')),
+
+'logistica': dict(nombre='Logística', archivo='logistica', palabra='RUTA', obj='camion', acc='#7FD4F5', su='tu operación',
+  foto='1645736315000-6f788915923b',
+  seo='Automatización para empresas de logística', desc='Pedidos, rutas, entregas, novedades y avisos a clientes de tu operación logística, funcionando solos.',
+  kicker='', hero=('Cada pedido rastreado,', 'cada cliente avisado.'),
+  bot_t=('El bot informa entregas', 'mientras tú despachas.'), bot_sub='Tus clientes preguntan por su pedido y el bot responde con el estado real, sin llamar a nadie.', bot_nombre='Envíos Rápidos',
+  chat=[('u','Hola, ¿dónde va mi pedido 8842?'),('b','Tu pedido 8842 salió a las 9:20 a. m. en la ruta Norte. Vas de tercera parada, llega entre 11:00 y 11:30.'),('u','Perfecto, ¿pueden dejarlo en portería?'),('b','Listo, le avisé al conductor: entrega en portería.'),('pay','Entregado|11:14 a. m.'),('b','Tu pedido fue entregado. Aquí está la foto de la entrega.')],
+  cards_t=('Cada ruta,', 'en tiempo real.'), cards_num='',
+  cards=[('Ruta Norte · Camión 12','14 entregas',[('Cargue',1),('En ruta',1),('Entregas',1),('Cierre',0)],'11 de 14','center 50%'),
+         ('Ruta Sur · Camión 07','9 entregas',[('Cargue',1),('En ruta',1),('Entregas',0),('Cierre',0)],'3 de 9','left 50%'),
+         ('Ruta Centro · Moto 03','22 entregas',[('Cargue',1),('En ruta',1),('Entregas',1),('Cierre',1)],'22 de 22','right 50%')],
+  meter=(94,'% de entregas a tiempo ·',45,'pedidos en ruta'),
+  ops_t=('Novedades, flota y cobros','en orden.'),
+  ops=[('Novedades',[('8851 · Dirección errada','Novedad','warn','Cliente contactado'),('8860 · Nadie en casa','Novedad','warn','Reprogramado mañana'),('8842 · Entregado','Con foto','ok','')]),
+       ('Flota',[('Camión 12 · Revisión','Pendiente','warn','Agendada'),('Camión 07 · SOAT','Vigente','ok',''),('Moto 03 · Combustible','Registrado','ok','')]),
+       ('inv','Bodega',[('Pedidos por despachar',30,'18 pedidos','Ruta asignada'),('Capacidad del día',76,'45 de 60','')])],
+  reporte=['Entregas hoy: 42 de 45 (94% a tiempo)','Novedades: 3, clientes contactados','Rutas cerradas: 2 de 3','Mañana: 51 pedidos programados'],
+  final=('Más entregas a tiempo,','menos llamadas de "¿dónde va mi pedido?".')),
+
+'manufactura': dict(nombre='Manufactura', archivo='manufactura', palabra='TURNO', obj='engranaje', acc='#FFB347', su='tu planta',
+  foto='1787422429941-b1966d776195',
+  seo='Automatización para manufactura', desc='Reportes de producción, relevos de turno, órdenes, materias primas y mantenimiento de tu planta, funcionando solos.',
+  kicker='', hero=('Cada turno reportado', 'sin papeles.'),
+  bot_t=('El bot recibe el reporte', 'mientras la línea produce.'), bot_sub='El supervisor reporta por WhatsApp o nota de voz; la IA lo ordena y lo deja en el tablero.', bot_nombre='Planta Industrial',
+  chat=[('u','Reporte turno mañana: línea 2 hizo 1.180 unidades, 22 defectuosas, paro de 15 min por cambio de molde'),('b','Registrado. Eficiencia línea 2: 92%. ¿El cambio de molde estaba programado?'),('u','Sí, programado'),('b','Listo. Relevo enviado al supervisor de la tarde con los pendientes.'),('pay','Turno cerrado|1.180 und'),('b','Aviso: la resina PP está por debajo del mínimo.')],
+  cards_t=('Cada línea,', 'con su meta a la vista.'), cards_num='',
+  cards=[('Línea 1 · Inyección','OP-3021',[('6 a. m.',1),('10 a. m.',1),('2 p. m.',1),('6 p. m.',0)],'1.240 und','center 50%'),
+         ('Línea 2 · Ensamble','OP-3022',[('6 a. m.',1),('10 a. m.',1),('2 p. m.',0),('6 p. m.',0)],'1.180 und','left 50%'),
+         ('Línea 3 · Empaque','OP-3023',[('6 a. m.',1),('10 a. m.',1),('2 p. m.',1),('6 p. m.',1)],'2.300 und','right 50%')],
+  meter=(91,'% de eficiencia ·',3,'órdenes en producción'),
+  ops_t=('Relevos, materias primas y mantenimiento','en orden.'),
+  ops=[('Relevo de turno',[('Pendiente · Molde línea 2','Abierto','warn','Entregado al turno tarde'),('Calidad · 22 defectuosas','Registrado','ok',''),('Paros del turno','15 min','ok','Con causa')]),
+       ('Mantenimiento',[('Inyectora 1 · Preventivo','Jue 6 a. m.','ok','Programado'),('Compresor · Ruido','Reportado','warn','Orden de trabajo creada'),('Banda línea 3','Al día','ok','')]),
+       ('inv','Materias primas',[('Resina PP',16,'1.200 kg','Pedido automático al proveedor'),('Cajas de empaque',64,'3.400 und','')])],
+  reporte=['Producción de hoy: 4.720 unidades (91% de eficiencia)','Defectuosas: 0,9%','Paros: 2, con causa registrada','Resina PP: pedido enviado al proveedor'],
+  final=('Más producción medida,','menos reportes a mano.')),
+
+'ecommerce': dict(nombre='eCommerce', archivo='ecommerce', palabra='CARRITO', obj='bolsa', acc='#FF9FD0', su='tu tienda online',
+  foto='1781899710894-f9ecfea088f3',
+  seo='Automatización para tiendas online (eCommerce)', desc='Catálogo, pedidos, pagos, carritos abandonados, guías de envío y respuestas a clientes de tu tienda online.',
+  kicker='', hero=('Vende de día y de noche,', 'sin responder a mano.'),
+  bot_t=('El bot vende', 'mientras tú empacas.'), bot_sub='Responde por WhatsApp e Instagram, muestra el catálogo, cobra y genera la guía de envío.', bot_nombre='Tienda Nube',
+  chat=[('u','Hola, ¿tienen el buzo negro en talla M?'),('b','Sí, quedan 4 en talla M. Precio $89.000 con envío gratis a Bogotá. ¿Te lo separo?'),('u','Sí, de una'),('b','Listo. Te envío el link de pago; apenas pagues genero tu guía.'),('pay','Pago aprobado|$89.000'),('b','Guía 7781 creada. Te aviso cuando la transportadora lo recoja.')],
+  cards_t=('Cada pedido,', 'del carrito a la puerta.'), cards_num='',
+  cards=[('Pedido #2041','Buzo negro · M',[('Pagado',1),('Empacado',1),('Guía',1),('Entregado',0)],'$89.000','center 50%'),
+         ('Carrito abandonado','Tenis blancos · 40',[('Recordatorio',1),('Descuento',1),('Pagado',0),('Enviado',0)],'$159.000','left 50%'),
+         ('Pedido #2042','Gorra + medias',[('Pagado',1),('Empacado',1),('Guía',1),('Entregado',1)],'$64.000','right 50%')],
+  meter=(63,' pedidos hoy ·',9,'carritos recuperados'),
+  ops_t=('Pagos, envíos e inventario','en orden.'),
+  ops=[('Pagos',[('#2041 · Buzo negro','Aprobado','ok',''),('#2043 · Chaqueta','Pendiente','warn','Recordatorio enviado'),('#2044 · Jean','Aprobado','ok','')]),
+       ('Envíos',[('Guías del día','Generando…','ok','18 creadas'),('Recogida transportadora','3 p. m.','ok','Programada'),('Devoluciones','1','warn','Etiqueta enviada')]),
+       ('inv','Inventario',[('Buzo negro · M',12,'4 und','Alerta de reposición enviada'),('Tenis blancos',58,'31 und','')])],
+  reporte=['Ventas de hoy: $5.230.000 (63 pedidos)','Carritos recuperados: 9','Guías generadas: 18','Buzo negro M por agotarse, reposición pedida'],
+  final=('Más ventas cerradas,','ningún mensaje sin respuesta.')),
 }
 
 E = lambda s: html.escape(str(s), quote=True)
@@ -256,7 +352,6 @@ def pagina(k, n):
 <section class="scene s-hero" data-scene aria-labelledby="t-hero">
 <div class="sticky">
 <div class="bg"><div class="photo" data-src="{foto}"></div><div class="veil"></div></div>
-<p class="kicker">{E(n['kicker'])}</p>
 <h1 id="t-hero" class="giant" aria-label="{E(n['nombre'])}">{E(n['palabra'])}</h1>
 <div class="{obj_cls}" aria-hidden="true">{OBJ[n['obj']]}</div>
 <p class="hero-line"><em>{E(n['hero'][0])}</em> {E(n['hero'][1])}</p>
@@ -269,7 +364,6 @@ def pagina(k, n):
 <div class="bg"><div class="photo" data-src="{foto2}" style="background-position:30% 50%"></div><div class="veil"></div></div>
 <div class="split">
 <div class="copy">
-<p class="num">01 · Atención 24/7</p>
 <h2 id="t-bot" class="h2">{E(n['bot_t'][0])} <em>{E(n['bot_t'][1])}</em></h2>
 <p class="sub">{E(n['bot_sub'])}</p>
 </div>
@@ -288,7 +382,6 @@ def pagina(k, n):
 <div class="bg dark-solid"></div>
 <div class="courts-wrap">
 <div class="copy center">
-<p class="num">{E(n['cards_num'])}</p>
 <h2 id="t-courts" class="h2">{E(n['cards_t'][0])} <em>{E(n['cards_t'][1])}</em></h2>
 </div>
 <div class="courts">
@@ -304,7 +397,6 @@ def pagina(k, n):
 <div class="bg"><div class="photo" data-src="{foto3}" style="background-position:70% 50%"></div><div class="veil strong"></div></div>
 <div class="ops">
 <div class="copy">
-<p class="num">03 · Operación</p>
 <h2 id="t-ops" class="h2">{E(n['ops_t'][0])} <em>{E(n['ops_t'][1])}</em></h2>
 </div>
 <div class="cards">
@@ -318,7 +410,6 @@ def pagina(k, n):
 <div class="sticky">
 <div class="bg"><div class="photo" data-src="{foto2}" style="background-position:50% 30%"></div><div class="veil strong"></div></div>
 <div class="report">
-<p class="num">04 · Reporte</p>
 <h2 id="t-report" class="h2 center">Cada noche, <em>{E(n['su'])} en un mensaje.</em></h2>
 <div class="msg-card">
 <p class="mc-h"><b>Glysf · Asistente</b><small>Hoy, 10:00 p. m.</small></p>

@@ -15,6 +15,8 @@
     im.src = url;
   });
 
+  const cur = document.querySelector('.biztabs [aria-current]'); if (cur) cur.scrollIntoView({ inline: 'center', block: 'nearest' });
+
   const scenes = [...document.querySelectorAll('[data-scene]')].map(s => ({
     el: s,
     at: [...s.querySelectorAll('[data-at]')],
