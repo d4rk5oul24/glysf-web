@@ -270,6 +270,8 @@ fabrica:`<svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-h
 /* ---------- Fotos reales de fondo (Unsplash, licencia libre; se cargan desde su CDN) ---------- */
 const PHOTO={padel:'https://images.unsplash.com/photo-1709587825135-80b00570c355?auto=format&fit=crop&w=1920&q=70',clinica:'https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1920&q=70',gym:'https://images.unsplash.com/photo-1620188540300-c156a625c6fc?auto=format&fit=crop&w=1920&q=70',pilates:'https://images.unsplash.com/photo-1717500252709-05a73fc4f1da?auto=format&fit=crop&w=1920&q=70',resto:'https://images.unsplash.com/photo-1760169799369-2b8574466735?auto=format&fit=crop&w=1920&q=70',pelu:'https://images.unsplash.com/photo-1781450090585-1a511b7066d9?auto=format&fit=crop&w=1920&q=70',tienda:'https://images.unsplash.com/photo-1631856956334-35db20cb7748?auto=format&fit=crop&w=1920&q=70',fabrica:'https://images.unsplash.com/photo-1684497404598-6e844dff9cde?auto=format&fit=crop&w=1920&q=70'};
 const photoBg=(k,w)=>`<div class="pwrap"><div class="photo" style="background-image:url('${PHOTO[k].replace('w=1920','w='+(w||1920))}')"></div></div><div class="shade"></div>`;
+// Negocios que ya tienen su propia página inmersiva
+const PAGINA={padel:'/padel.html'};
 const SECT={
 padel:{seo:'Automatización para clubes de pádel · Glysf',card:'Reservas, pagos y nómina',name:'Canchas de pádel',your:'tu club',form:'Canchas de pádel o fútbol',bg:'#0D4F7A',dark:1,acc:'#C8F560',
  title:'Reservas y pagos de tu club de pádel, sin llamadas',sub:'Reservas, pagos, profesores, nómina e inventario funcionando solos mientras tú juegas.',
@@ -383,7 +385,7 @@ function openSector(k,ix){cur=k;modIx=ix||0;const s=SECT[k];chatSector(k);
  $('home').hidden=true;document.body.classList.add('in-sector');const v=$('sectorView');v.hidden=false;
  v.style.setProperty('--bg',s.bg);v.style.setProperty('--acc',s.acc);v.classList.add('dark');
  const sc=$('scene');sc.classList.remove('in');void sc.offsetWidth;sc.innerHTML=photoBg(k);sc.classList.add('in');
- $('svTabs').replaceChildren(...Object.keys(SECT).map(x=>{const a=el('a','svtab',SECT[x].name);a.href='#/negocio/'+x;if(x===k)a.setAttribute('aria-current','page');return a;}));
+ $('svTabs').replaceChildren(...Object.keys(SECT).map(x=>{const a=el('a','svtab',SECT[x].name);a.href=PAGINA[x]||'#/negocio/'+x;if(x===k)a.setAttribute('aria-current','page');return a;}));
  const hero=$('svHero');hero.classList.remove('rise');void hero.offsetWidth;hero.classList.add('rise');
  $('svTitle').textContent=s.title;$('svSub').textContent=s.sub;setTimeout(()=>{const mt=$('modTabs');mt.scrollLeft=0;if(mt.parentElement)mt.parentElement.scrollLeft=0;$('svTabs').scrollLeft=0;},0);
  // Las pestañas de módulos se crean al abrir el negocio; al cambiar de módulo solo cambia su estado.
@@ -401,12 +403,13 @@ $('modReplay').onclick=()=>renderMods();
 $('svCta').onclick=e=>{e.preventDefault();location.hash='#cotizar';setTimeout(()=>{$('f-sector').value=SECT[cur].form;},50);};
 
 /* ---------- Tarjetas de negocios en el inicio ---------- */
-$('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href='#/negocio/'+k;
+$('bizGrid').replaceChildren(...Object.keys(SECT).map(k=>{const s=SECT[k];const a=el('a','biz dark');a.href=PAGINA[k]||'#/negocio/'+k;
  const bg=el('div','bizbg');bg.innerHTML=photoBg(k,800);const tx=el('div','biztx');tx.append(el('strong',null,s.name),el('span',null,s.card));a.append(bg,tx);return a;}));
 
 /* ---------- Navegación ---------- */
 let inSector=false;
 function route(){const h=location.hash;const m=h.match(/^#\/negocio\/(\w+)/);
+ if(m&&PAGINA[m[1]]){location.replace(PAGINA[m[1]]);return;}
  if(m&&SECT[m[1]]){inSector=true;openSector(m[1]);return;}
  const back=inSector;inSector=false;
  runId++;$('sectorView').hidden=true;$('home').hidden=false;document.body.classList.remove('in-sector');document.title=HOME_TITLE;heroWake();
